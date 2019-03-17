@@ -1,11 +1,17 @@
 //
 // Created by Mark David on 17/03/2019.
 //
-
 #include "shape.h"
+#include "board.h"
 
-bool Shape::IsValidPosition(Board const *const board) {
-    return false;
+bool Shape::IsValidPosition(Board const *const board) const {
+    for (int i = 0; i < ShapeSize; i++)
+        for (int j = 0; j < ShapeSize; j++) {
+            char board_char = board->Get(pos_x + i, pos_y + j);
+            char shape_char = GetCharAt(i, j);
+            if (board_char != ' ' && shape_char != ' ') return false;
+        }
+    return true;
 }
 
 void Shape::Rotate(Board const *const board, int dir) {
@@ -28,7 +34,7 @@ int Shape::Modulo(int value, int min, int max) {
     else return value;
 }
 
-char Shape::GetCharAt(int x, int y) {
+char Shape::GetCharAt(int x, int y) const {
     switch (rotation) {
         case 0:
             return shape[x + y * ShapeSize];
@@ -38,6 +44,23 @@ char Shape::GetCharAt(int x, int y) {
             return shape[((ShapeSize * ShapeSize) - 1) - x - y * ShapeSize];
         case 3:
             return shape[(ShapeSize * (ShapeSize - 1)) - (x * ShapeSize) + y];
+        default:
+            return ' ';
     }
+}
+
+void Shape::MoveDown(Board *const board) {
+    if (pos_y == 0) PlaceShape(board);
+    --pos_x;
+    if (!IsValidPosition(board)) {
+        ++pos_x;
+        PlaceShape(board);
+    }
+}
+
+void Shape::PlaceShape(Board *const board) {
+    for (int i = 0; i < ShapeSize; i++)
+        for (int j = 0; j < ShapeSize; j++)
+            if (GetCharAt(i, j) != ' ') board->Put(pos_x + i, pos_y + j, repr);
 }
 

@@ -5,16 +5,17 @@
 #ifndef TETRISVS_SHAPE_H
 #define TETRISVS_SHAPE_H
 
-#include "board.h"
+class Board;
 
 class Shape {
 private:
-    bool IsValidPosition(Board const *const board);
+    bool IsValidPosition(Board const *const board) const;
 
     int Modulo(int value, int min, int max);
 
 protected:
     const char *const shape;
+    const char repr;
     int pos_x;
     int pos_y;
     int rotation;
@@ -28,7 +29,11 @@ public:
 
     void Move(Board const *const board, int dir);
 
-    char GetCharAt(int x, int y);
+    void MoveDown(Board *const board);
+
+    void PlaceShape(Board *const board);
+
+    char GetCharAt(int x, int y) const;
 };
 
 

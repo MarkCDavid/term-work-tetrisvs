@@ -9,6 +9,7 @@
 
 class Board {
 private:
+    char *board = new char[Width * Height];
     std::queue<Shape> regular_queue;
     std::queue<Shape> garbage_queue;
 public:
@@ -17,6 +18,10 @@ public:
     const int root_x;
     const int root_y;
     Board(int root_x, int root_y);
+
+    char Get(int x, int y) const;
+
+    void Put(int x, int y, char s);
 };
 
 
