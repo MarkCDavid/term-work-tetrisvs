@@ -12,8 +12,8 @@ private:
     char *board = new char[Width * Height];
     std::queue<Shape *> regular_queue;
     std::queue<Shape *> garbage_queue;
-    Shape *current_shape;
 public:
+    Shape *current_shape;
     static constexpr int Width = 10;
     static constexpr int Height = 24;
     const int root_x;

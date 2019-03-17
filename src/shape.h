@@ -15,19 +15,26 @@ private:
 
 protected:
     const char *const shape;
-    const char repr;
     int pos_x;
     int pos_y;
-    int rotation;
+    int rotation = 0;
 public:
+    Shape(char repr, int x, int y, const char *const shape);
 
+    // TODO: Make ShapeSize variable for each shape.
     static constexpr int ShapeSize = 5;
+
+    const char repr;
+
+    int X() { return pos_x; }
+
+    int Y() { return pos_y; }
 
     void Rotate(Board const *const board, int dir);
 
     void Move(Board const *const board, int dir);
 
-    void MoveDown(Board *const board);
+    bool MoveDown(Board *const board);
 
     void PlaceShape(Board *const board);
 

@@ -49,18 +49,27 @@ char Shape::GetCharAt(int x, int y) const {
     }
 }
 
-void Shape::MoveDown(Board *const board) {
-    if (pos_y == 0) PlaceShape(board);
-    --pos_x;
-    if (!IsValidPosition(board)) {
-        ++pos_x;
+bool Shape::MoveDown(Board *const board) {
+    if (pos_y == Board::Height) {
         PlaceShape(board);
+        return true;
     }
+    ++pos_y;
+    if (!IsValidPosition(board)) {
+        --pos_y;
+        PlaceShape(board);
+        return true;
+    }
+    return false;
 }
 
 void Shape::PlaceShape(Board *const board) {
     for (int i = 0; i < ShapeSize; i++)
         for (int j = 0; j < ShapeSize; j++)
             if (GetCharAt(i, j) != ' ') board->Put(pos_x + i, pos_y + j, repr);
+}
+
+Shape::Shape(char repr, int x, int y, const char *const shape) : repr(repr), pos_x(x), pos_y(y), shape(shape) {
+
 }
 

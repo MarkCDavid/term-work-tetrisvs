@@ -15,14 +15,44 @@ bool TetrisVS::Start() {
     left_board = new Board(14, 10);
     right_board = new Board(g_terminal->GetWidth() - 26, 10);
     DrawSeparatingLine();
-    DrawBoard(left_board);
+    DrawBorders(left_board);
     DrawUpcomingBox(left_board);
-    DrawBoard(right_board);
+    DrawBorders(right_board);
     DrawUpcomingBox(right_board);
+    left_board->current_shape = new Shape('Z', 5, 0, new char[Shape::ShapeSize * Shape::ShapeSize]
+            {' ', ' ', ' ', ' ', ' ',
+             ' ', 'F', ' ', ' ', ' ',
+             ' ', 'F', ' ', ' ', ' ',
+             ' ', 'F', ' ', ' ', ' ',
+             ' ', 'F', ' ', ' ', ' '});
     return true;
 }
 
 bool TetrisVS::Update(float delta_time) {
+
+    ClearShape(left_board);
+    current_tick_time += delta_time * 20;
+    if (current_tick_time > tick_time) {
+        current_tick_time = 0.0f;
+        if (left_board->current_shape->MoveDown(left_board)) {
+            delete left_board->current_shape;
+            left_board->current_shape = new Shape('H', 5, 0, new char[Shape::ShapeSize * Shape::ShapeSize]
+                    {' ', ' ', ' ', ' ', ' ',
+                     ' ', ' ', ' ', ' ', ' ',
+                     ' ', 'F', ' ', ' ', ' ',
+                     ' ', 'F', 'F', ' ', ' ',
+                     ' ', ' ', 'F', ' ', ' '});
+        }
+
+    }
+
+    if (g_in->GetKeyDown('D')) left_board->current_shape->Move(left_board, 1);
+    else if (g_in->GetKeyDown('A')) left_board->current_shape->Move(left_board, -1);
+    if (g_in->GetKeyDown('S')) left_board->current_shape->MoveDown(left_board);
+    if (g_in->GetKeyDown('E')) left_board->current_shape->Rotate(left_board, 1);
+    else if (g_in->GetKeyDown('Q')) left_board->current_shape->Rotate(left_board, -1);
+    DrawShape(left_board);
+    DrawBoard(left_board);
     return true;
 }
 
@@ -37,7 +67,7 @@ bool TetrisVS::Exit() {
     return GameEngine::Exit();
 }
 
-void TetrisVS::DrawBoard(Board const *const board) {
+void TetrisVS::DrawBorders(Board const *const board) {
     g_terminal->PutLines({
                                  {board->root_x,                    board->root_y},
                                  {board->root_x,                    board->root_y + Board::Height},
@@ -64,5 +94,47 @@ void TetrisVS::DrawUpcomingBox(Board const *const board) {
                                  {board->root_x + offset_x,                    board->root_y}
                          }, ' ', FG_COLOR::WHITE,
                          BG_COLOR::WHITE);
+}
+
+void TetrisVS::DrawShape(Board const *const board) {
+    for (int i = 0; i < Shape::ShapeSize; i++)
+        for (int j = 0; j < Shape::ShapeSize; j++) {
+            if (board->current_shape->GetCharAt(i, j) != ' ') {
+                g_terminal->PutAt(
+                        board->root_x + board->current_shape->X() + i,
+                        board->root_y + board->current_shape->Y() + j,
+                        board->current_shape->repr,
+                        FG_COLOR::BLACK,
+                        BG_COLOR::BLUE);
+            }
+        }
+}
+
+void TetrisVS::ClearShape(Board const *const board) {
+    for (int i = 0; i < Shape::ShapeSize; i++)
+        for (int j = 0; j < Shape::ShapeSize; j++) {
+            if (board->current_shape->GetCharAt(i, j) != ' ') {
+                g_terminal->PutAt(
+                        board->root_x + board->current_shape->X() + i,
+                        board->root_y + board->current_shape->Y() + j,
+                        ' ',
+                        FG_COLOR::BLACK,
+                        BG_COLOR::BLACK);
+            }
+        }
+}
+
+void TetrisVS::DrawBoard(Board const *const board) {
+    for (int i = 0; i < Board::Width; i++)
+        for (int j = 0; j < Board::Height; j++) {
+            if (board->Get(i, j) != ' ') {
+                g_terminal->PutAt(
+                        board->root_x + i,
+                        board->root_y + j,
+                        'X',
+                        FG_COLOR::BLACK,
+                        BG_COLOR::BLUE);
+            }
+        }
 }
 
