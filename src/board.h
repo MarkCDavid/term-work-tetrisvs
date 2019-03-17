@@ -10,8 +10,9 @@
 class Board {
 private:
     char *board = new char[Width * Height];
-    std::queue<Shape> regular_queue;
-    std::queue<Shape> garbage_queue;
+    std::queue<Shape *> regular_queue;
+    std::queue<Shape *> garbage_queue;
+    Shape *current_shape;
 public:
     static constexpr int Width = 10;
     static constexpr int Height = 24;

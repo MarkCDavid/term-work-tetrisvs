@@ -23,8 +23,6 @@ public:
 
     static constexpr int ShapeSize = 5;
 
-    virtual void Draw() = 0;
-
     void Rotate(Board const *const board, int dir);
 
     void Move(Board const *const board, int dir);
