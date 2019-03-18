@@ -7,28 +7,17 @@
 
 #include "lib/tge/gameengine.h"
 #include "src/board.h"
-#include "src/shapefactory.h"
+#include "src/game.h"
 
 class TetrisVS : public GameEngine {
 private:
     float tick_time = 1.0f;
     float current_tick_time = 0.0f;
-    Board * left_board;
-    Board * right_board;
-    ShapeFactory *shape_factory;
+    Game *game;
     bool Start() override;
     bool Update(float delta_time) override;
     bool Exit() override;
 
-    void DrawBorders(Board const *const board);
-    void DrawUpcomingBox(Board const * const board);
-    void DrawSeparatingLine();
-
-    void DrawBoard(Board const *const board);
-
-    void DrawShape(Board const *const board);
-
-    void ClearShape(Board const *const board);
 public:
     TetrisVS();
 };
