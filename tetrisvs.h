@@ -30,7 +30,6 @@ private:
 
     void ClearShape(Board const *const board);
 public:
-    int x = 0, y = 0;
     TetrisVS();
 };
 
