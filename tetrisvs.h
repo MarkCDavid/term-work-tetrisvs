@@ -7,7 +7,7 @@
 
 #include "lib/tge/gameengine.h"
 #include "src/board.h"
-#include "src/game.h"
+#include "src/views/game.h"
 
 class TetrisVS : public GameEngine {
 private:

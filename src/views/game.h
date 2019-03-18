@@ -5,11 +5,11 @@
 #ifndef TETRISVS_GAME_H
 #define TETRISVS_GAME_H
 
-#include "board.h"
-#include "shapefactory.h"
-#include "controllers/controller.h"
+#include "../board.h"
+#include "../shapefactory.h"
+#include "../controllers/controller.h"
 #include "abstractview.h"
-#include "../lib/tge/terminal/abstractterminal.h"
+#include "terminal/abstractterminal.h"
 
 
 class Game : public AbstractView {

@@ -5,7 +5,7 @@
 #ifndef TETRISVS_ABSTRACTVIEW_H
 #define TETRISVS_ABSTRACTVIEW_H
 
-#include "../lib/tge/terminal/abstractterminal.h"
+#include "terminal/abstractterminal.h"
 
 class AbstractView {
 public:
