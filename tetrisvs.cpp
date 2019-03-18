@@ -10,14 +10,14 @@ TetrisVS::TetrisVS() :
 
 
 bool TetrisVS::Start() {
-    game = new Game(g_terminal, g_in);
-    game->InitialDraw();
+    current_view = new Menu(g_terminal, g_in);
+    current_view->InitialDraw();
     return true;
 }
 
 bool TetrisVS::Update(float delta_time) {
-    game->Update(delta_time);
-    game->Draw();
+    current_view->Update(delta_time);
+    current_view->Draw();
     return true;
 }
 

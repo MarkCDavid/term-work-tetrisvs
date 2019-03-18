@@ -8,12 +8,14 @@
 #include "lib/tge/gameengine.h"
 #include "src/board.h"
 #include "src/views/game.h"
+#include "src/views/menu.h"
+
 
 class TetrisVS : public GameEngine {
 private:
     float tick_time = 1.0f;
     float current_tick_time = 0.0f;
-    Game *game;
+    AbstractView *current_view;
     bool Start() override;
     bool Update(float delta_time) override;
     bool Exit() override;
