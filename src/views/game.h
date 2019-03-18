@@ -9,15 +9,13 @@
 #include "../shapefactory.h"
 #include "../controllers/abstractcontroller.h"
 #include "abstractview.h"
-#include "terminal/abstractterminal.h"
-#include "input/abstractinput.h"
 #include <queue>
 
 class Game : public AbstractView {
 public:
     Game(AbstractTerminal *terminal, AbstractInput *input);
 
-    void Update(float delta_time) override;
+    int Update(float delta_time) override;
 
     void InitialDraw() override;
 

@@ -10,14 +10,33 @@ TetrisVS::TetrisVS() :
 
 
 bool TetrisVS::Start() {
-    current_view = new Menu(g_terminal, g_in);
+    current_view = new Game(g_terminal, g_in);
     current_view->InitialDraw();
     return true;
 }
 
 bool TetrisVS::Update(float delta_time) {
-    current_view->Update(delta_time);
-    current_view->Draw();
+//    int message = current_view->Update(delta_time);
+//    current_view->Draw();
+//    switch(message){
+//        case 0:
+//            delete current_view;
+//            current_view = new Game(g_terminal, g_in);
+//            current_view->InitialDraw();
+//            break;
+//        case 4:
+//            delete current_view;
+//            current_view = new Controls(g_terminal, g_in);
+//            current_view->InitialDraw();
+//            break;
+//        case 11:
+//            delete current_view;
+//            current_view = new Menu(g_terminal, g_in);
+//            current_view->InitialDraw();
+//            break;
+//        default:
+//            break;
+//    }
     return true;
 }
 
@@ -25,6 +44,7 @@ bool TetrisVS::Exit() {
 
     return GameEngine::Exit();
 }
+
 
 int main() {
     GameEngine *engine = new TetrisVS();

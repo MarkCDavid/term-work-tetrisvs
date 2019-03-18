@@ -7,7 +7,7 @@
 #include "../controllers/rcontroller.h"
 
 
-void Game::Update(float delta_time) {
+int Game::Update(float delta_time) {
     c_tick_time += delta_time * 10;
     if (c_tick_time > tick_time) {
         c_tick_time = 0.0f;
@@ -27,6 +27,7 @@ void Game::Update(float delta_time) {
     }
     l_controller->Apply(l_board);
     r_controller->Apply(r_board);
+    return -1;
 }
 
 
@@ -118,7 +119,7 @@ void Game::DrawShape(Board const *const board) {
 }
 
 void Game::DrawBoard(Board const *const board) {
-    for (int i = 1; i <= Board::Width; i++)
+    for (int i = 0; i < Board::Width; i++)
         for (int j = 0; j < Board::Height; j++) {
             char symbol = board->Get(i, j);
             if (symbol != ' ') {
@@ -175,7 +176,7 @@ Game::Game(AbstractTerminal *terminal, AbstractInput *input) : AbstractView(term
     int ystep = terminal->GetHeight() / 5;
     int l_offset = xstep;
     int r_offset = terminal->GetWidth() - xstep - (Board::Width + 2);
-    l_board = new Board(l_offset, ystep);
+    l_board = new Board(5, 5);
     r_board = new Board(r_offset, ystep);
     l_board->current_shape = GetNext(l_shapes);
     r_board->current_shape = GetNext(r_shapes);

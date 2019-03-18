@@ -2,26 +2,24 @@
 // Created by Mark David on 18/03/2019.
 //
 
-#ifndef TETRISVS_MENU_H
-#define TETRISVS_MENU_H
+#ifndef TETRISVS_CONTROLS_H
+#define TETRISVS_CONTROLS_H
 
 #include "abstractview.h"
 
-class Menu : public AbstractView {
+class Controls : public AbstractView {
 private:
     AbstractInput *input;
-    int prev_menu_item = 0;
-    int menu_item = 0;
 public:
-    Menu(AbstractTerminal *terminal, AbstractInput *input);
+
+    Controls(AbstractTerminal *terminal, AbstractInput *input);
 
     int Update(float delta_time) override;
 
     void InitialDraw() override;
 
     void Draw() override;
-
 };
 
 
-#endif //TETRISVS_MENU_H
+#endif //TETRISVS_CONTROLS_H

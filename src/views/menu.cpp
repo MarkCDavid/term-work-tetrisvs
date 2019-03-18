@@ -5,7 +5,7 @@
 #include "menu.h"
 #include "windows.h"
 
-void Menu::Update(float delta_time) {
+int Menu::Update(float delta_time) {
     if (input->GetKeyDown(VK_UP)) {
         prev_menu_item = menu_item;
         menu_item--;
@@ -15,6 +15,10 @@ void Menu::Update(float delta_time) {
         menu_item++;
         if (menu_item > 5) menu_item = 5;
     }
+    if (input->GetKeyDown(VK_RETURN)) {
+        return menu_item;
+    }
+    return -1;
 }
 
 void Menu::InitialDraw() {

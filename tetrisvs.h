@@ -9,6 +9,7 @@
 #include "src/board.h"
 #include "src/views/game.h"
 #include "src/views/menu.h"
+#include "src/views/controls.h"
 
 
 class TetrisVS : public GameEngine {
