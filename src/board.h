@@ -22,7 +22,7 @@ public:
 
     char Get(int x, int y) const;
 
-    void Put(int x, int y, char s);
+    void Put(int x, int y);
 };
 
 

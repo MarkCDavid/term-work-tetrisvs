@@ -19,12 +19,11 @@ bool TetrisVS::Start() {
     DrawUpcomingBox(left_board);
     DrawBorders(right_board);
     DrawUpcomingBox(right_board);
-    left_board->current_shape = new Shape('Z', 5, 0, new char[Shape::ShapeSize * Shape::ShapeSize]
-            {' ', ' ', ' ', ' ', ' ',
-             ' ', 'F', ' ', ' ', ' ',
-             ' ', 'F', ' ', ' ', ' ',
-             ' ', 'F', ' ', ' ', ' ',
-             ' ', 'F', ' ', ' ', ' '});
+    left_board->current_shape = new Shape(BG_COLOR::RED, 5, 0, 4, new char[16]
+            {' ', 'F', ' ', ' ',
+             ' ', 'F', ' ', ' ',
+             ' ', 'F', ' ', ' ',
+             ' ', 'F', ' ', ' ',});
     return true;
 }
 
@@ -36,12 +35,11 @@ bool TetrisVS::Update(float delta_time) {
         current_tick_time = 0.0f;
         if (left_board->current_shape->MoveDown(left_board)) {
             delete left_board->current_shape;
-            left_board->current_shape = new Shape('H', 5, 0, new char[Shape::ShapeSize * Shape::ShapeSize]
-                    {' ', ' ', ' ', ' ', ' ',
-                     ' ', ' ', ' ', ' ', ' ',
-                     ' ', 'F', ' ', ' ', ' ',
-                     ' ', 'F', 'F', ' ', ' ',
-                     ' ', ' ', 'F', ' ', ' '});
+            left_board->current_shape = new Shape(BG_COLOR::GREEN, 5, 0, 4, new char[16]
+                    {'F', ' ', ' ', 'F',
+                     ' ', ' ', ' ', ' ',
+                     ' ', ' ', ' ', ' ',
+                     'F', ' ', ' ', 'F',});
         }
 
     }
@@ -97,22 +95,22 @@ void TetrisVS::DrawUpcomingBox(Board const *const board) {
 }
 
 void TetrisVS::DrawShape(Board const *const board) {
-    for (int i = 0; i < Shape::ShapeSize; i++)
-        for (int j = 0; j < Shape::ShapeSize; j++) {
+    for (int i = 0; i < board->current_shape->shape_size; i++)
+        for (int j = 0; j < board->current_shape->shape_size; j++) {
             if (board->current_shape->GetCharAt(i, j) != ' ') {
                 g_terminal->PutAt(
                         board->root_x + board->current_shape->X() + i,
                         board->root_y + board->current_shape->Y() + j,
-                        board->current_shape->repr,
+                        ' ',
                         FG_COLOR::BLACK,
-                        BG_COLOR::BLUE);
+                        board->current_shape->color);
             }
         }
 }
 
 void TetrisVS::ClearShape(Board const *const board) {
-    for (int i = 0; i < Shape::ShapeSize; i++)
-        for (int j = 0; j < Shape::ShapeSize; j++) {
+    for (int i = 0; i < board->current_shape->shape_size; i++)
+        for (int j = 0; j < board->current_shape->shape_size; j++) {
             if (board->current_shape->GetCharAt(i, j) != ' ') {
                 g_terminal->PutAt(
                         board->root_x + board->current_shape->X() + i,
@@ -127,7 +125,8 @@ void TetrisVS::ClearShape(Board const *const board) {
 void TetrisVS::DrawBoard(Board const *const board) {
     for (int i = 0; i < Board::Width; i++)
         for (int j = 0; j < Board::Height; j++) {
-            if (board->Get(i, j) != ' ') {
+            char symbol = board->Get(i, j);
+            if (symbol != ' ' && symbol != 'X') {
                 g_terminal->PutAt(
                         board->root_x + i,
                         board->root_y + j,

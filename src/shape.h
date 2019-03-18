@@ -5,6 +5,8 @@
 #ifndef TETRISVS_SHAPE_H
 #define TETRISVS_SHAPE_H
 
+#include "../lib/tge/terminal/color.h"
+
 class Board;
 
 class Shape {
@@ -13,18 +15,19 @@ private:
 
     int Modulo(int value, int min, int max);
 
+    int Clamp(int value, int min, int max);
+
 protected:
     const char *const shape;
     int pos_x;
     int pos_y;
     int rotation = 0;
 public:
-    Shape(char repr, int x, int y, const char *const shape);
+    Shape(BG_COLOR color, int x, int y, int shape_size, const char *const shape);
 
-    // TODO: Make ShapeSize variable for each shape.
-    static constexpr int ShapeSize = 5;
+    const int shape_size;
 
-    const char repr;
+    const BG_COLOR color;
 
     int X() { return pos_x; }
 
