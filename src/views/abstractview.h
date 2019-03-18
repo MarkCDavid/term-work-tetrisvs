@@ -9,11 +9,16 @@
 
 class AbstractView {
 public:
+    AbstractView(AbstractTerminal *terminal) : terminal(terminal) {}
+
     virtual void Update(float delta_time) = 0;
 
-    virtual void InitialDraw(AbstractTerminal *terminal) = 0;
+    virtual void InitialDraw() = 0;
 
-    virtual void Draw(AbstractTerminal *terminal) = 0;
+    virtual void Draw() = 0;
+
+protected:
+    AbstractTerminal *terminal;
 };
 
 
