@@ -13,7 +13,7 @@ void LController::Apply(Board *const board) {
     if (input->GetKeyDown('W')) Drop(board);
     if (input->GetKeyDown('C')) LRotate(board);
     if (input->GetKeyDown('V')) RRotate(board);
-    if (input->GetKeyDown(VK_LMENU)) Drop(board);
+    if (input->GetKeyDown(VK_LMENU)) Hold(board);
 }
 
 LController::LController(AbstractInput *input) : AbstractController(input) {
