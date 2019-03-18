@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(TetrisVS)
 include_directories(lib/tge)
-add_executable(tetrisvs tetrisvs.cpp src/board.cpp src/shape.cpp)
+add_executable(tetrisvs tetrisvs.cpp src/board.cpp src/shape.cpp src/shapefactory.cpp)
 target_link_libraries(tetrisvs ${CMAKE_CURRENT_SOURCE_DIR}/libgameengine.dll)
 set(CMAKE_CXX_STANDARD 14)
 set(GCC_COVERAGE_COMPILE_FLAGS "-static")
