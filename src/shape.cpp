@@ -65,6 +65,11 @@ bool Shape::MoveDown(Board *const board) {
     return false;
 }
 
+
+void Shape::DropDown(Board *const board) {
+    while (!board->current_shape->MoveDown(board));
+}
+
 void Shape::PlaceShape(Board *const board) {
     for (int i = 0; i < shape_size; i++)
         for (int j = 0; j < shape_size; j++)

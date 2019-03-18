@@ -7,13 +7,16 @@
 
 #include "../board.h"
 #include "../shapefactory.h"
-#include "../controllers/controller.h"
+#include "../controllers/abstractcontroller.h"
 #include "abstractview.h"
 #include "terminal/abstractterminal.h"
+#include "input/abstractinput.h"
 
 
 class Game : public AbstractView {
 public:
+    explicit Game(AbstractInput *input);
+
     void Update(float delta_time) override;
 
     void InitialDraw(AbstractTerminal *terminal) override;
@@ -24,8 +27,8 @@ private:
     float tick_time = 1.0f;
     float c_tick_time = 0.0f;
     ShapeFactory *shape_factory;
-    Controller *l_controller;
-    Controller *r_controller;
+    AbstractController *l_controller;
+    AbstractController *r_controller;
     Board *l_board;
     Board *r_board;
 

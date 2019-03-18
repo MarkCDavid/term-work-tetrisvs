@@ -3,6 +3,9 @@
 //
 
 #include "game.h"
+#include "../controllers/lcontroller.h"
+#include "../controllers/rcontroller.h"
+
 
 void Game::Update(float delta_time) {
     c_tick_time += delta_time;
@@ -123,7 +126,14 @@ BG_COLOR Game::GetColor(const char symbol) const {
             return BG_COLOR::GREEN;
         case 'R':
             return BG_COLOR::RED;
+        default:
+            return BG_COLOR::WHITE;
     }
+}
+
+Game::Game(AbstractInput *input) {
+    l_controller = new LController(input);
+    r_controller = new RController(input);
 }
 
 

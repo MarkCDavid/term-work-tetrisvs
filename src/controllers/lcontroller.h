@@ -5,10 +5,15 @@
 #ifndef TETRISVS_LCONTROLLER_H
 #define TETRISVS_LCONTROLLER_H
 
-#include "controller.h"
+#include "abstractcontroller.h"
+
 
 class LController : public AbstractController {
 
+public:
+    explicit LController(AbstractInput *input);
+
+    void Apply(Board *const board) override;
 };
 
 

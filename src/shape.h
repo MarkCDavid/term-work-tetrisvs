@@ -39,6 +39,8 @@ public:
 
     bool MoveDown(Board *const board);
 
+    void DropDown(Board *const board);
+
     void PlaceShape(Board *const board);
 
     char GetCharAt(int x, int y) const;
