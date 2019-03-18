@@ -56,10 +56,6 @@ char Shape::GetCharAt(int x, int y) const {
 }
 
 bool Shape::MoveDown(Board *const board) {
-    if (pos_y == Board::Height) {
-        PlaceShape(board);
-        return true;
-    }
     ++pos_y;
     if (!IsValidPosition(board)) {
         --pos_y;
@@ -75,7 +71,7 @@ void Shape::PlaceShape(Board *const board) {
             if (GetCharAt(i, j) != ' ') board->Put(pos_x + i, pos_y + j);
 }
 
-Shape::Shape(BG_COLOR color, int x, int y, int shape_size, const char *const shape) :
-        color(color), pos_x(x), pos_y(y), shape_size(shape_size), shape(shape) {
+Shape::Shape(BG_COLOR color, int shape_size, const char *const shape) :
+        color(color), pos_x(5), pos_y(0), shape_size(shape_size), shape(shape) {
 }
 

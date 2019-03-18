@@ -19,11 +19,7 @@ bool TetrisVS::Start() {
     DrawUpcomingBox(left_board);
     DrawBorders(right_board);
     DrawUpcomingBox(right_board);
-    left_board->current_shape = new Shape(BG_COLOR::RED, 5, 0, 4, new char[16]
-            {' ', 'F', ' ', ' ',
-             ' ', 'F', ' ', ' ',
-             ' ', 'F', ' ', ' ',
-             ' ', 'F', ' ', ' ',});
+    left_board->current_shape = shape_factory->Regular();
     return true;
 }
 
@@ -35,15 +31,9 @@ bool TetrisVS::Update(float delta_time) {
         current_tick_time = 0.0f;
         if (left_board->current_shape->MoveDown(left_board)) {
             delete left_board->current_shape;
-            left_board->current_shape = new Shape(BG_COLOR::GREEN, 5, 0, 4, new char[16]
-                    {'F', ' ', ' ', 'F',
-                     ' ', ' ', ' ', ' ',
-                     ' ', ' ', ' ', ' ',
-                     'F', ' ', ' ', 'F',});
+            left_board->current_shape = shape_factory->Regular();
         }
-
     }
-
     if (g_in->GetKeyDown('D')) left_board->current_shape->Move(left_board, 1);
     else if (g_in->GetKeyDown('A')) left_board->current_shape->Move(left_board, -1);
     if (g_in->GetKeyDown('S')) left_board->current_shape->MoveDown(left_board);
@@ -54,14 +44,13 @@ bool TetrisVS::Update(float delta_time) {
     return true;
 }
 
-TetrisVS::TetrisVS() : GameEngine(new Win32Input(), new CMDTerminal()) {
-
-
+TetrisVS::TetrisVS() : GameEngine(new Win32Input(), new CMDTerminal()), shape_factory(new ShapeFactory()) {
 }
 
 bool TetrisVS::Exit() {
     delete left_board;
     delete right_board;
+    delete shape_factory;
     return GameEngine::Exit();
 }
 
@@ -123,10 +112,10 @@ void TetrisVS::ClearShape(Board const *const board) {
 }
 
 void TetrisVS::DrawBoard(Board const *const board) {
-    for (int i = 0; i < Board::Width; i++)
-        for (int j = 0; j < Board::Height; j++) {
+    for (int i = 1; i <= Board::Width; i++)
+        for (int j = 1; j < Board::Height; j++) {
             char symbol = board->Get(i, j);
-            if (symbol != ' ' && symbol != 'X') {
+            if (symbol != ' ') {
                 g_terminal->PutAt(
                         board->root_x + i,
                         board->root_y + j,

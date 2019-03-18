@@ -4,8 +4,11 @@
 
 #include "shapefactory.h"
 #include <random>
+#include <ctime>
+
 
 Shape *ShapeFactory::Regular() {
+    srand((unsigned) time(0));
     int choice = rand() % 7;
     switch (choice) {
         case 0:
@@ -22,8 +25,9 @@ Shape *ShapeFactory::Regular() {
             return new Shape(BG_COLOR::GREEN, 3, regular_shapes[5]);
         case 6:
             return new Shape(BG_COLOR::RED, 3, regular_shapes[6]);
+        default:
+            return nullptr;
     }
-    return nullptr;
 }
 
 Shape *ShapeFactory::Garbage(int level) {
@@ -31,6 +35,7 @@ Shape *ShapeFactory::Garbage(int level) {
 }
 
 ShapeFactory::ShapeFactory() {
+
     regular_shapes = new char *[7];
     // ---------- I shape ----------
     regular_shapes[0] = new char[16]{' ', 'C', ' ', ' ',

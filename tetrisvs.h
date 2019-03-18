@@ -7,6 +7,7 @@
 
 #include "lib/tge/gameengine.h"
 #include "src/board.h"
+#include "src/shapefactory.h"
 
 class TetrisVS : public GameEngine {
 private:
@@ -14,6 +15,7 @@ private:
     float current_tick_time = 0.0f;
     Board * left_board;
     Board * right_board;
+    ShapeFactory *shape_factory;
     bool Start() override;
     bool Update(float delta_time) override;
     bool Exit() override;

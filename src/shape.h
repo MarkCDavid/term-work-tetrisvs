@@ -23,7 +23,7 @@ protected:
     int pos_y;
     int rotation = 0;
 public:
-    Shape(BG_COLOR color, int x, int y, int shape_size, const char *const shape);
+    Shape(BG_COLOR color, int shape_size, const char *const shape);
 
     const int shape_size;
 
