@@ -13,12 +13,14 @@ void Game::Update(float delta_time) {
         c_tick_time = 0.0f;
 
         if (l_board->current_shape->MoveDown(l_board)) {
-            RemoveRows(l_board);
+            int garbage_level = RemoveRows(l_board);
+            if (garbage_level > 0) { PutGarbage(r_shapes, garbage_level); }
             delete l_board->current_shape;
             l_board->current_shape = GetNext(l_shapes);
         }
         if (r_board->current_shape->MoveDown(r_board)) {
-            RemoveRows(r_board);
+            int garbage_level = RemoveRows(r_board);
+            if (garbage_level > 0) { PutGarbage(l_shapes, garbage_level); }
             delete r_board->current_shape;
             r_board->current_shape = GetNext(r_shapes);
         }
@@ -152,6 +154,14 @@ BG_COLOR Game::GetColor(const char symbol) const {
             return BG_COLOR::GREEN;
         case 'R':
             return BG_COLOR::RED;
+        case 'V':
+            return BG_COLOR::GREY;
+        case 'v':
+            return BG_COLOR::DARK_GREY;
+        case 'N':
+            return BG_COLOR::DARK_GREEN;
+        case 'n':
+            return BG_COLOR::DARK_RED;
         case ' ':
             return BG_COLOR::BLACK;
         default:
@@ -196,7 +206,7 @@ int Game::RemoveRows(Board *board) {
             i++;
         }
     }
-    return removed_lines;
+    return (removed_lines > 4) ? 4 : removed_lines;
 }
 
 void Game::DrawUpcoming(Board const *const board, Shape *next) {
