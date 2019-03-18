@@ -72,8 +72,10 @@ void Shape::DropDown(Board *const board) {
 
 void Shape::PlaceShape(Board *const board) {
     for (int i = 0; i < shape_size; i++)
-        for (int j = 0; j < shape_size; j++)
-            if (GetCharAt(i, j) != ' ') board->Put(pos_x + i, pos_y + j);
+        for (int j = 0; j < shape_size; j++) {
+            char s = GetCharAt(i, j);
+            if (s != ' ') board->Put(pos_x + i, pos_y + j, s);
+        }
 }
 
 Shape::Shape(BG_COLOR color, int shape_size, const char *const shape) :

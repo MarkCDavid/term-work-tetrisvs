@@ -24,6 +24,10 @@ public:
     void Draw() override;
 
 private:
+    Shape *l_hold;
+    Shape *r_hold;
+    std::queue<Shape *> l_shapes;
+    std::queue<Shape *> r_shapes;
     float tick_time = 1.0f;
     float c_tick_time = 0.0f;
     ShapeFactory *shape_factory;

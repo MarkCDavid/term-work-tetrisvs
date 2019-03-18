@@ -8,7 +8,7 @@
 
 
 Shape *ShapeFactory::Regular() {
-    srand((unsigned) time(0));
+
     int choice = rand() % 7;
     switch (choice) {
         case 0:
@@ -35,7 +35,7 @@ Shape *ShapeFactory::Garbage(int level) {
 }
 
 ShapeFactory::ShapeFactory() {
-
+    srand((unsigned) time(0));
     regular_shapes = new char *[7];
     // ---------- I shape ----------
     regular_shapes[0] = new char[16]{' ', 'C', ' ', ' ',

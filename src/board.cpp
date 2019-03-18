@@ -16,8 +16,8 @@ char Board::Get(int x, int y) const {
     return board[index];
 }
 
-void Board::Put(int x, int y) {
+void Board::Put(int x, int y, char s) {
     int index = x + y * Width;
     if (index < 0 || index > Width * Height) return;
-    board[index] = 'P';
+    board[index] = s;
 }
