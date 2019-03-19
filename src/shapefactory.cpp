@@ -3,13 +3,12 @@
 //
 
 #include "shapefactory.h"
-#include <random>
 #include <ctime>
 
 
 Shape ShapeFactory::Regular() {
 
-    int choice = rand() % 7;
+    int choice = GetRandom(0, 7);
     switch (choice) {
         case 0:
             return Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
@@ -32,7 +31,7 @@ Shape ShapeFactory::Regular() {
 
 
 Shape ShapeFactory::Garbage(int level) {
-    int choice = (level - 1) * 4 + (rand() % 4);
+    int choice = GetRandom(0, 16);
     switch (choice) {
         case 0:
             return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
@@ -72,7 +71,7 @@ Shape ShapeFactory::Garbage(int level) {
 }
 
 ShapeFactory::ShapeFactory() {
-    srand((unsigned) time(0));
+
     regular_shapes = new char *[7];
     garbage_shapes = new char *[16];
     // ---------- I shape ----------
@@ -182,4 +181,10 @@ ShapeFactory::ShapeFactory() {
                                       ' ', 'V', 'V', ' ',
                                       ' ', ' ', 'V', ' '};
 
+}
+
+int ShapeFactory::GetRandom(int from, int to) {
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(from, to);
+    return dist(mt);
 }
