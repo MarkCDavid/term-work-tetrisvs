@@ -20,6 +20,10 @@ public:
 
     virtual bool PutAt(int x, int y, char symbol, FG_COLOR fg, BG_COLOR bg) = 0;
 
+    virtual char GetAt(int x, int y) const = 0;
+
+    virtual void InitEmptyBuffer() = 0;
+
     virtual bool PutStringAt(int x, int y, const char *message, FG_COLOR fg, BG_COLOR bg) = 0;
 
     virtual bool PutLine(int fx, int fy, int tx, int ty, char symbol, FG_COLOR fg, BG_COLOR bg) = 0;

@@ -31,6 +31,10 @@ public:
 
     bool PutAt(int x, int y, char symbol, FG_COLOR fg, BG_COLOR bg) override;
 
+    char GetAt(int x, int y) const override;
+
+    void InitEmptyBuffer() override;
+
     bool PutStringAt(int x, int y, const char *message, FG_COLOR fg, BG_COLOR bg) override;
 
     bool PutLine(int fx, int fy, int tx, int ty, char symbol, FG_COLOR fg, BG_COLOR bg) override;
