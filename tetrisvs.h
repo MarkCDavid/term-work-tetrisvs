@@ -14,8 +14,6 @@
 
 class TetrisVS : public GameEngine {
 private:
-    float tick_time = 1.0f;
-    float current_tick_time = 0.0f;
     AbstractView *current_view;
     bool Start() override;
     bool Update(float delta_time) override;
