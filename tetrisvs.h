@@ -10,6 +10,7 @@
 #include "src/views/game.h"
 #include "src/views/menu.h"
 #include "src/views/controls.h"
+#include "src/views/endgame.h"
 
 
 class TetrisVS : public GameEngine {

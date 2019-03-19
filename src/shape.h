@@ -11,13 +11,12 @@ class Board;
 
 class Shape {
 private:
-    bool IsValidPosition(Board const *const board) const;
-
     int Modulo(int value, int min, int max);
 
     int Clamp(int value, int min, int max);
 
 protected:
+
     char *shape;
     int pos_x;
     int pos_y;
@@ -38,6 +37,8 @@ public:
         this->color = other.color;
         return *this;
     }
+
+    bool IsValidPosition(Board const *const board) const;
 
     int shape_size;
 

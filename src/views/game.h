@@ -21,6 +21,9 @@ public:
 
     void Draw() override;
 
+    int *l_score = new int[5]{};
+    int *r_score = new int[5]{};
+    char loser = '-';
 private:
     Shape *l_hold;
     Shape *r_hold;

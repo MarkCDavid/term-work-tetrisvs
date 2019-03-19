@@ -12,7 +12,7 @@ Board::Board(int root_x, int root_y) : root_x(root_x), root_y(root_y), board(new
 
 char Board::Get(int x, int y) const {
     int index = x + y * Width;
-    if (index < 0 || index > Width * Height || x <= 0 || x > Width) return 'X';
+    if (index < 0 || index > Width * Height || x < 0 || x > Width) return 'X';
     return board[index];
 }
 

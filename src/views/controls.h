@@ -10,6 +10,7 @@
 class Controls : public AbstractView {
 private:
     AbstractInput *input;
+    int winner = -1;
 public:
 
     Controls(AbstractTerminal *terminal, AbstractInput *input);

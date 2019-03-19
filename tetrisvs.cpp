@@ -34,6 +34,21 @@ bool TetrisVS::Update(float delta_time) {
             current_view = new Menu(g_terminal, g_in);
             current_view->InitialDraw();
             break;
+        case 35: {
+            Game *game = dynamic_cast<Game *>(current_view);
+            int *l_score = game->l_score;
+            int *r_score = game->r_score;
+            char loser = game->loser;
+            delete current_view;
+            current_view = new EndGame(g_terminal, g_in, l_score, r_score, loser);
+            current_view->InitialDraw();
+            break;
+        }
+        case 90:
+            delete current_view;
+            current_view = new Menu(g_terminal, g_in);
+            current_view->InitialDraw();
+            break;
         default:
             break;
     }

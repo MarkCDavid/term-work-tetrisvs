@@ -14,13 +14,27 @@ int Game::Update(float delta_time) {
 
         if (l_board->current_shape.MoveDown(l_board)) {
             int garbage_level = RemoveRows(l_board);
-            if (garbage_level > 0) { PutGarbage(r_shapes, garbage_level); }
+            if (garbage_level > 0) {
+                l_score[garbage_level - 1]++;
+                PutGarbage(r_shapes, (garbage_level > 4) ? 4 : garbage_level);
+            }
             l_board->current_shape = GetNext(l_shapes);
+            if (!l_board->current_shape.IsValidPosition(l_board)) {
+                loser = 'l';
+                return 35;
+            }
         }
         if (r_board->current_shape.MoveDown(r_board)) {
             int garbage_level = RemoveRows(r_board);
-            if (garbage_level > 0) { PutGarbage(l_shapes, garbage_level); }
+            if (garbage_level > 0) {
+                r_score[garbage_level - 1]++;
+                PutGarbage(l_shapes, (garbage_level > 4) ? 4 : garbage_level);
+            }
             r_board->current_shape = GetNext(r_shapes);
+            if (!r_board->current_shape.IsValidPosition(r_board)) {
+                loser = 'r';
+                return 35;
+            }
         }
     }
     l_controller->Apply(l_board);
@@ -67,8 +81,7 @@ void Game::DrawSeparatingLine() {
     int mid_point = terminal->GetWidth() / 2;
     terminal->PutLine(
             mid_point, 0,
-            // FIXME: Error inside the game engine, if no -1, it draw random stuff on rboard.
-            mid_point, terminal->GetHeight() - 1,
+            mid_point, terminal->GetHeight(),
             ' ', FG_COLOR::WHITE, BG_COLOR::WHITE);
 }
 
@@ -207,7 +220,7 @@ int Game::RemoveRows(Board *board) {
             i++;
         }
     }
-    return (removed_lines > 4) ? 4 : removed_lines;
+    return removed_lines;
 }
 
 void Game::DrawUpcoming(Board const *const board, Shape &next) {
