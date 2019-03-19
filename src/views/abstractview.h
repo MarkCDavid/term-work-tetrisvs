@@ -10,7 +10,7 @@
 
 class AbstractView {
 public:
-    AbstractView(AbstractTerminal *terminal) : terminal(terminal) {}
+    explicit AbstractView(AbstractTerminal *terminal) : terminal(terminal) {}
 
     virtual int Update(float delta_time) = 0;
 
@@ -23,7 +23,7 @@ public:
         terminal->Draw();
     }
 
-    virtual ~AbstractView() {};
+    virtual ~AbstractView() = default;
 
 protected:
     AbstractTerminal *terminal;
