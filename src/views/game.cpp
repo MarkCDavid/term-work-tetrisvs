@@ -12,16 +12,14 @@ int Game::Update(float delta_time) {
     if (c_tick_time > tick_time) {
         c_tick_time = 0.0f;
 
-        if (l_board->current_shape->MoveDown(l_board)) {
+        if (l_board->current_shape.MoveDown(l_board)) {
             int garbage_level = RemoveRows(l_board);
             if (garbage_level > 0) { PutGarbage(r_shapes, garbage_level); }
-            delete l_board->current_shape;
             l_board->current_shape = GetNext(l_shapes);
         }
-        if (r_board->current_shape->MoveDown(r_board)) {
+        if (r_board->current_shape.MoveDown(r_board)) {
             int garbage_level = RemoveRows(r_board);
             if (garbage_level > 0) { PutGarbage(l_shapes, garbage_level); }
-            delete r_board->current_shape;
             r_board->current_shape = GetNext(r_shapes);
         }
     }
@@ -32,6 +30,7 @@ int Game::Update(float delta_time) {
 
 
 void Game::InitialDraw() {
+    ClearScreen();
     DrawSeparatingLine();
 
     DrawBorders(l_board);
@@ -105,21 +104,21 @@ void Game::DrawHoldBox(Board const *const board) {
 
 
 void Game::DrawShape(Board const *const board) {
-    for (int i = 0; i < board->current_shape->shape_size; i++)
-        for (int j = 0; j < board->current_shape->shape_size; j++) {
-            if (board->current_shape->GetCharAt(i, j) != ' ') {
+    for (int i = 0; i < board->current_shape.shape_size; i++)
+        for (int j = 0; j < board->current_shape.shape_size; j++) {
+            if (board->current_shape.GetCharAt(i, j) != ' ') {
                 terminal->PutAt(
-                        board->root_x + board->current_shape->X() + i,
-                        board->root_y + board->current_shape->Y() + j,
+                        board->root_x + board->current_shape.X() + i,
+                        board->root_y + board->current_shape.Y() + j,
                         ' ',
                         FG_COLOR::BLACK,
-                        board->current_shape->color);
+                        board->current_shape.color);
             }
         }
 }
 
 void Game::DrawBoard(Board const *const board) {
-    for (int i = 0; i < Board::Width; i++)
+    for (int i = 0; i <= Board::Width; i++)
         for (int j = 0; j < Board::Height; j++) {
             char symbol = board->Get(i, j);
             if (symbol != ' ') {
@@ -176,7 +175,7 @@ Game::Game(AbstractTerminal *terminal, AbstractInput *input) : AbstractView(term
     int ystep = terminal->GetHeight() / 5;
     int l_offset = xstep;
     int r_offset = terminal->GetWidth() - xstep - (Board::Width + 2);
-    l_board = new Board(5, 5);
+    l_board = new Board(l_offset, ystep);
     r_board = new Board(r_offset, ystep);
     l_board->current_shape = GetNext(l_shapes);
     r_board->current_shape = GetNext(r_shapes);
@@ -189,6 +188,7 @@ int Game::RemoveRows(Board *board) {
     for (int i = Board::Height - 1; i >= 0; i--) {
         bool line_full = true;
         for (int j = 1; j <= Board::Width; j++) {
+
             char symbol = board->Get(j, i);
             if (symbol == ' ' || symbol == 'X') {
                 line_full = false;
@@ -210,7 +210,7 @@ int Game::RemoveRows(Board *board) {
     return (removed_lines > 4) ? 4 : removed_lines;
 }
 
-void Game::DrawUpcoming(Board const *const board, Shape *next) {
+void Game::DrawUpcoming(Board const *const board, Shape &next) {
     int mid_point = terminal->GetWidth() / 2;
     int offset_x = (board->root_x < mid_point) ? 15 : -8;
     int offset_y = -5;
@@ -220,9 +220,9 @@ void Game::DrawUpcoming(Board const *const board, Shape *next) {
                             BG_COLOR::BLACK);
         }
     }
-    for (int i = 0; i < next->shape_size; i++) {
-        for (int j = 0; j < next->shape_size; j++) {
-            char symbol = next->GetCharAt(i, j);
+    for (int i = 0; i < next.shape_size; i++) {
+        for (int j = 0; j < next.shape_size; j++) {
+            char symbol = next.GetCharAt(i, j);
             terminal->PutAt(board->root_x + offset_x + i, board->root_y + offset_y + j, ' ', FG_COLOR::BLACK,
                             GetColor(symbol));
         }
@@ -233,12 +233,12 @@ void Game::DrawHold(Board const *const board) {
 
 }
 
-Shape *Game::GetNext(std::queue<Shape *> &shape_queue) {
+Shape Game::GetNext(std::queue<Shape> &shape_queue) {
     if (shape_queue.empty()) {
         shape_queue.push(shape_factory->Regular());
         return shape_factory->Regular();
     } else {
-        Shape *next_shape = shape_queue.front();
+        Shape next_shape = shape_queue.front();
         shape_queue.pop();
         if (shape_queue.empty())
             shape_queue.push(shape_factory->Regular());
@@ -246,7 +246,7 @@ Shape *Game::GetNext(std::queue<Shape *> &shape_queue) {
     }
 }
 
-void Game::PutGarbage(std::queue<Shape *> &shape_queue, int level) {
+void Game::PutGarbage(std::queue<Shape> &shape_queue, int level) {
     shape_queue.push(shape_factory->Garbage(level));
 }
 

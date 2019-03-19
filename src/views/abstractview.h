@@ -18,11 +18,12 @@ public:
 
     virtual void Draw() = 0;
 
-    virtual ~AbstractView() {
-        for (int i = 0; i < terminal->GetWidth(); i++)
-            for (int j = 0; j < terminal->GetWidth(); j++)
-                terminal->PutAt(i, j, ' ', FG_COLOR::BLACK, BG_COLOR::BLACK);
-    };
+    void ClearScreen() {
+        terminal->InitEmptyBuffer();
+        terminal->Draw();
+    }
+
+    virtual ~AbstractView() {};
 
 protected:
     AbstractTerminal *terminal;

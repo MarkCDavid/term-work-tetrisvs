@@ -24,8 +24,8 @@ public:
 private:
     Shape *l_hold;
     Shape *r_hold;
-    std::queue<Shape *> l_shapes;
-    std::queue<Shape *> r_shapes;
+    std::queue<Shape> l_shapes;
+    std::queue<Shape> r_shapes;
     float tick_time = 1.0f;
     float c_tick_time = 0.0f;
     ShapeFactory *shape_factory;
@@ -40,7 +40,7 @@ private:
 
     void DrawUpcomingBox(Board const *const board);
 
-    void DrawUpcoming(Board const *const board, Shape *next);
+    void DrawUpcoming(Board const *const board, Shape &next);
 
     void DrawHoldBox(Board const *const board);
 
@@ -56,9 +56,9 @@ private:
 
     int RemoveRows(Board *board);
 
-    Shape *GetNext(std::queue<Shape *> &shape_queue);
+    Shape GetNext(std::queue<Shape> &shape_queue);
 
-    void PutGarbage(std::queue<Shape *> &shape_queue, int level);
+    void PutGarbage(std::queue<Shape> &shape_queue, int level);
 
 
 };

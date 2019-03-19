@@ -18,20 +18,34 @@ private:
     int Clamp(int value, int min, int max);
 
 protected:
-    const char *const shape;
+    char *shape;
     int pos_x;
     int pos_y;
     int rotation = 0;
 public:
-    Shape(BG_COLOR color, int shape_size, const char *const shape);
+    Shape() : shape(nullptr), shape_size(0), pos_x(5), pos_y(0), color(BG_COLOR::WHITE) {}
 
-    const int shape_size;
+    Shape(BG_COLOR color, int shape_size, char *shape);
 
-    const BG_COLOR color;
+    Shape(const Shape &other) : shape(other.shape), shape_size(other.shape_size), pos_x(other.pos_x),
+                                pos_y(other.pos_y), color(other.color) {}
 
-    int X() { return pos_x; }
+    Shape &operator=(const Shape &other) {
+        this->shape = other.shape;
+        this->shape_size = other.shape_size;
+        this->pos_x = other.pos_x;
+        this->pos_y = other.pos_y;
+        this->color = other.color;
+        return *this;
+    }
 
-    int Y() { return pos_y; }
+    int shape_size;
+
+    BG_COLOR color;
+
+    int X() const { return pos_x; }
+
+    int Y() const { return pos_y; }
 
     void Rotate(Board const *const board, int dir);
 

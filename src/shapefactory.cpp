@@ -7,73 +7,74 @@
 #include <ctime>
 
 
-Shape *ShapeFactory::Regular() {
+Shape ShapeFactory::Regular() {
 
     int choice = rand() % 7;
     switch (choice) {
         case 0:
-            return new Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
+            return Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
         case 1:
-            return new Shape(BG_COLOR::YELLOW, 2, regular_shapes[1]);
+            return Shape(BG_COLOR::YELLOW, 2, regular_shapes[1]);
         case 2:
-            return new Shape(BG_COLOR::MAGENTA, 3, regular_shapes[2]);
+            return Shape(BG_COLOR::MAGENTA, 3, regular_shapes[2]);
         case 3:
-            return new Shape(BG_COLOR::DARK_BLUE, 3, regular_shapes[3]);
+            return Shape(BG_COLOR::DARK_BLUE, 3, regular_shapes[3]);
         case 4:
-            return new Shape(BG_COLOR::DARK_YELLOW, 3, regular_shapes[4]);
+            return Shape(BG_COLOR::DARK_YELLOW, 3, regular_shapes[4]);
         case 5:
-            return new Shape(BG_COLOR::GREEN, 3, regular_shapes[5]);
+            return Shape(BG_COLOR::GREEN, 3, regular_shapes[5]);
         case 6:
-            return new Shape(BG_COLOR::RED, 3, regular_shapes[6]);
+            return Shape(BG_COLOR::RED, 3, regular_shapes[6]);
         default:
-            return nullptr;
+            return Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
     }
 }
 
 
-Shape *ShapeFactory::Garbage(int level) {
+Shape ShapeFactory::Garbage(int level) {
     int choice = (level - 1) * 4 + (rand() % 4);
     switch (choice) {
         case 0:
-            return new Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
+            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
         case 1:
-            return new Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[1]);
+            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[1]);
         case 2:
-            return new Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[2]);
+            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[2]);
         case 3:
-            return new Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[3]);
+            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[3]);
         case 4:
-            return new Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[4]);
+            return Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[4]);
         case 5:
-            return new Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[5]);
+            return Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[5]);
         case 6:
-            return new Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[6]);
+            return Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[6]);
         case 7:
-            return new Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[7]);
+            return Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[7]);
         case 8:
-            return new Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[8]);
+            return Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[8]);
         case 9:
-            return new Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[9]);
+            return Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[9]);
         case 10:
-            return new Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[10]);
+            return Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[10]);
         case 11:
-            return new Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[11]);
+            return Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[11]);
         case 12:
-            return new Shape(BG_COLOR::GREY, 4, garbage_shapes[12]);
+            return Shape(BG_COLOR::GREY, 4, garbage_shapes[12]);
         case 13:
-            return new Shape(BG_COLOR::GREY, 4, garbage_shapes[13]);
+            return Shape(BG_COLOR::GREY, 4, garbage_shapes[13]);
         case 14:
-            return new Shape(BG_COLOR::GREY, 3, garbage_shapes[14]);
+            return Shape(BG_COLOR::GREY, 3, garbage_shapes[14]);
         case 15:
-            return new Shape(BG_COLOR::GREY, 3, garbage_shapes[15]);
+            return Shape(BG_COLOR::GREY, 3, garbage_shapes[15]);
         default:
-            return nullptr;
+            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
     }
 }
 
 ShapeFactory::ShapeFactory() {
     srand((unsigned) time(0));
     regular_shapes = new char *[7];
+    garbage_shapes = new char *[16];
     // ---------- I shape ----------
     regular_shapes[0] = new char[16]{' ', 'C', ' ', ' ',
                                      ' ', 'C', ' ', ' ',
@@ -104,7 +105,7 @@ ShapeFactory::ShapeFactory() {
                                     ' ', ' ', ' '};
 
 
-    garbage_shapes = new char *[16];
+
     // ---------- Level 1 ----------
     garbage_shapes[0] = new char[9]{' ', 'n', 'n',
                                     'n', 'n', ' ',
@@ -139,6 +140,7 @@ ShapeFactory::ShapeFactory() {
                                      ' ', 'N', ' ', ' ',
                                      ' ', 'N', 'N', ' ',
                                      ' ', 'N', ' ', ' '};
+
     // ---------- Level 3 ----------
     garbage_shapes[8] = new char[16]{' ', 'v', 'v', ' ',
                                      ' ', 'v', ' ', ' ',
@@ -169,7 +171,7 @@ ShapeFactory::ShapeFactory() {
                                       'V', 'V', 'V', 'V', 'V',
                                       'V', 'V', 'V', 'V', 'V'};
     // ---------- Level 4 ----------
-    garbage_shapes[13] = new char[25]{' ', ' ', ' ', ' ', ' ',
+    garbage_shapes[14] = new char[25]{' ', ' ', ' ', ' ', ' ',
                                       ' ', 'V', ' ', ' ', 'V',
                                       'V', 'V', 'V', 'V', 'V',
                                       ' ', 'V', ' ', ' ', 'V',

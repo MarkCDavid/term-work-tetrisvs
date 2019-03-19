@@ -4,7 +4,7 @@
 
 #include "board.h"
 
-Board::Board(int root_x, int root_y): root_x(root_x), root_y(root_y) {
+Board::Board(int root_x, int root_y) : root_x(root_x), root_y(root_y), board(new char[Width * Height + 1]) {
     for (int i = 0; i <= Width * Height; i++) {
         board[i] = ' ';
     }

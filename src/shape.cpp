@@ -67,7 +67,7 @@ bool Shape::MoveDown(Board *const board) {
 
 
 void Shape::DropDown(Board *const board) {
-    while (!board->current_shape->MoveDown(board));
+    while (!board->current_shape.MoveDown(board));
 }
 
 void Shape::PlaceShape(Board *const board) {
@@ -78,7 +78,7 @@ void Shape::PlaceShape(Board *const board) {
         }
 }
 
-Shape::Shape(BG_COLOR color, int shape_size, const char *const shape) :
+Shape::Shape(BG_COLOR color, int shape_size, char *shape) :
         color(color), pos_x(5), pos_y(0), shape_size(shape_size), shape(shape) {
 }
 

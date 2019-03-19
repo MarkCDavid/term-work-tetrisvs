@@ -22,6 +22,7 @@ int Menu::Update(float delta_time) {
 }
 
 void Menu::InitialDraw() {
+    ClearScreen();
     int menu_left = terminal->GetWidth() / 5;
     int menu_top = terminal->GetHeight() / 3;
     terminal->PutStringAt(menu_left, menu_top - 11, R"(##############################################)",
@@ -65,5 +66,4 @@ void Menu::Draw() {
 }
 
 Menu::Menu(AbstractTerminal *terminal, AbstractInput *input) : AbstractView(terminal), input(input) {
-
 }

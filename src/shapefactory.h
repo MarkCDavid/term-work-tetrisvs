@@ -14,9 +14,9 @@ private:
 public:
     ShapeFactory();
 
-    Shape *Regular();
+    Shape Regular();
 
-    Shape *Garbage(int level);
+    Shape Garbage(int level);
 };
 
 

@@ -17,6 +17,7 @@ int Controls::Update(float delta_time) {
 }
 
 void Controls::InitialDraw() {
+    ClearScreen();
     int menu_left = terminal->GetWidth() / 5;
     int menu_top = terminal->GetHeight() / 3;
     terminal->PutStringAt(menu_left, menu_top - 11, R"( ############################################## )",
