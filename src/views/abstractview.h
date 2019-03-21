@@ -5,12 +5,10 @@
 #ifndef TETRISVS_ABSTRACTVIEW_H
 #define TETRISVS_ABSTRACTVIEW_H
 
-#include "../../lib/tge/terminal/abstractterminal.h"
-#include "../../lib/tge/input/abstractinput.h"
 
 class AbstractView {
 public:
-    explicit AbstractView(AbstractTerminal *terminal) : terminal(terminal) {}
+    AbstractView() {}
 
     virtual int Update(float delta_time) = 0;
 
@@ -18,15 +16,8 @@ public:
 
     virtual void Draw() = 0;
 
-    void ClearScreen() {
-        terminal->InitEmptyBuffer();
-        terminal->Draw();
-    }
-
     virtual ~AbstractView() = default;
 
-protected:
-    AbstractTerminal *terminal;
 };
 
 

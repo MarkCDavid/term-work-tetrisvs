@@ -9,17 +9,17 @@
 
 class Menu : public AbstractView {
 private:
-    AbstractInput *input;
     int prev_menu_item = 0;
     int menu_item = 0;
 public:
-    Menu(AbstractTerminal *terminal, AbstractInput *input);
+    Menu();
 
     int Update(float delta_time) override;
 
     void InitialDraw() override;
 
     void Draw() override;
+
 
 };
 

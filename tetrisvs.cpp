@@ -1,68 +1,25 @@
 //
 // Created by Mark David on 13/03/2019.
 //
-#include "tetrisvs.h"
-#include "lib/tge/input/Win32Input.h"
-#include "lib/tge/terminal/CMDTerminal.h"
-
-TetrisVS::TetrisVS() :
-        GameEngine(new Win32Input(), new CMDTerminal()) {}
-
-
-bool TetrisVS::Start() {
-    current_view = new Menu(g_terminal, g_in);
-    current_view->InitialDraw();
-    return true;
-}
-
-bool TetrisVS::Update(float delta_time) {
-    int message = current_view->Update(delta_time);
-    current_view->Draw();
-    switch (message) {
-        case 0:
-            delete current_view;
-            current_view = new Game(g_terminal, g_in);
-            current_view->InitialDraw();
-            break;
-        case 4:
-            delete current_view;
-            current_view = new Controls(g_terminal, g_in);
-            current_view->InitialDraw();
-            break;
-        case 11:
-            delete current_view;
-            current_view = new Menu(g_terminal, g_in);
-            current_view->InitialDraw();
-            break;
-        case 35: {
-            Game *game = dynamic_cast<Game *>(current_view);
-            int *l_score = game->l_score;
-            int *r_score = game->r_score;
-            char loser = game->loser;
-            delete current_view;
-            current_view = new EndGame(g_terminal, g_in, l_score, r_score, loser);
-            current_view->InitialDraw();
-            break;
-        }
-        case 90:
-            delete current_view;
-            current_view = new Menu(g_terminal, g_in);
-            current_view->InitialDraw();
-            break;
-        default:
-            break;
-    }
-    return true;
-}
-
-bool TetrisVS::Exit() {
-
-    return GameEngine::Exit();
-}
+#include "lib/curses/curses.h"
+#include "src/views/abstractview.h"
+#include "src/views/menu.h"
 
 
 int main() {
-    GameEngine *engine = new TetrisVS();
-    engine->SetWindow(81, 50, 20);
-    engine->Launch();
+
+    AbstractView *current_view = new Menu();
+    initscr();
+    resize_term(50, 150);
+
+    start_color();
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    attron(COLOR_PAIR(1));
+    current_view->InitialDraw();
+    attroff(COLOR_PAIR(1));
+    refresh();
+    getch();
+    endwin();
+
+    return 0;
 }
