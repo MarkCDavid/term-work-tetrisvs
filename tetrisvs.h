@@ -5,6 +5,8 @@
 #ifndef TERM_WORK_TETRISVS_TETRISVS_H
 #define TERM_WORK_TETRISVS_TETRISVS_H
 
+#include "src/color.h"
+
 class TetrisVS {
 
 };

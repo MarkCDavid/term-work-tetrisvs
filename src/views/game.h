@@ -1,69 +1,52 @@
 //
-// Created by Mark David on 18/03/2019.
+// Created by Mark David on 26/03/2019.
 //
 
 #ifndef TETRISVS_GAME_H
 #define TETRISVS_GAME_H
 
-#include "../board.h"
+#include "../model/board.h"
+#include "../model/shape.h"
 #include "../shapefactory.h"
-#include "../controllers/abstractcontroller.h"
-#include "abstractview.h"
 #include <queue>
+#include <map>
 
-class Game : public AbstractView {
+class Game {
 public:
-    Game(AbstractTerminal *terminal, AbstractInput *input);
+    int xOff, yOff;
+    int xHOff, yHOff;
+    int xNOff, yNOff;
+    Board board;
+    Shape current_shape;
+    Shape repr_shape;
+    Shape next_shape;
+    Shape hold_shape;
+    std::queue<Shape> garbage_shapes;
 
-    int Update(float delta_time) override;
+    Game(int xOffset, int yOffset, ShapeFactory *shapeFactory);
 
-    void InitialDraw() override;
+    void NextShape();
 
-    void Draw() override;
+    void PutGarbage(int level);
 
-    int *l_score = new int[5]{};
-    int *r_score = new int[5]{};
-    char loser = '-';
+    void HoldShape();
+
+    bool IncreaseTick(float max, float delta_time);
+
+    void AddScore(int clear);
+
+    int SpeedModifier();
+
+    int ClearedLines();
+
+    std::map<int, int> GetLineClears();
 private:
-    Shape *l_hold;
-    Shape *r_hold;
-    std::queue<Shape> l_shapes;
-    std::queue<Shape> r_shapes;
-    float tick_time = 1.0f;
-    float c_tick_time = 0.0f;
-    ShapeFactory *shape_factory;
-    AbstractController *l_controller;
-    AbstractController *r_controller;
-    Board *l_board;
-    Board *r_board;
-
-    BG_COLOR GetColor(const char symbol) const;
-
-    void DrawBorders(Board const *const board);
-
-    void DrawUpcomingBox(Board const *const board);
-
-    void DrawUpcoming(Board const *const board, Shape &next);
-
-    void DrawHoldBox(Board const *const board);
-
-    void DrawHold(Board const *const board);
-
-    void DrawSeparatingLine();
-
-    void DrawBoard(Board const *const board);
-
-    void ClearBoard(Board const *const board);
-
-    void DrawShape(Board const *const board);
-
-    int RemoveRows(Board *board);
-
-    Shape GetNext(std::queue<Shape> &shape_queue);
-
-    void PutGarbage(std::queue<Shape> &shape_queue, int level);
-
-
+    int game_speed[10] = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};
+    ShapeFactory *shapeFactory;
+    bool hold_changed = false;
+    int cleared = 0;
+    std::map<int, int> line_clears;
+    float tick = 0.0f;
 };
 
 

@@ -6,22 +6,21 @@
 #define TETRISVS_SHAPEFACTORY_H
 
 #include <random>
-#include "shape.h"
+#include "model/shape.h"
 
 class ShapeFactory {
+public:
+    ShapeFactory();
+    Shape Regular();
+    Shape Garbage(int level);
+
 private:
-    std::random_device rd;
 
 
     char **regular_shapes;
     char **garbage_shapes;
-public:
-    GetRandom(int from, int to);
-    ShapeFactory();
 
-    Shape Regular();
-
-    Shape Garbage(int level);
+    int GetRandom(int from, int to);
 };
 
 

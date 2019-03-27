@@ -3,7 +3,7 @@
 //
 
 #include "shapefactory.h"
-#include <ctime>
+#include <chrono>
 
 
 Shape ShapeFactory::Regular() {
@@ -11,62 +11,62 @@ Shape ShapeFactory::Regular() {
     int choice = GetRandom(0, 7);
     switch (choice) {
         case 0:
-            return Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
-        case 1:
-            return Shape(BG_COLOR::YELLOW, 2, regular_shapes[1]);
-        case 2:
-            return Shape(BG_COLOR::MAGENTA, 3, regular_shapes[2]);
-        case 3:
-            return Shape(BG_COLOR::DARK_BLUE, 3, regular_shapes[3]);
-        case 4:
-            return Shape(BG_COLOR::DARK_YELLOW, 3, regular_shapes[4]);
-        case 5:
-            return Shape(BG_COLOR::GREEN, 3, regular_shapes[5]);
-        case 6:
-            return Shape(BG_COLOR::RED, 3, regular_shapes[6]);
         default:
-            return Shape(BG_COLOR::CYAN, 4, regular_shapes[0]);
+            return Shape(4, regular_shapes[0]);
+        case 1:
+            return Shape(2, regular_shapes[1]);
+        case 2:
+            return Shape(3, regular_shapes[2]);
+        case 3:
+            return Shape(3, regular_shapes[3]);
+        case 4:
+            return Shape(3, regular_shapes[4]);
+        case 5:
+            return Shape(3, regular_shapes[5]);
+        case 6:
+            return Shape(3, regular_shapes[6]);
     }
 }
 
 
 Shape ShapeFactory::Garbage(int level) {
-    int choice = GetRandom(0, 16);
+    level = (level < 1) ? 1 : level;
+    level = (level > 4) ? 4 : level;
+    int choice = GetRandom((level - 1) * 4, level * 4 - 1);
     switch (choice) {
         case 0:
-            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
-        case 1:
-            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[1]);
-        case 2:
-            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[2]);
-        case 3:
-            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[3]);
-        case 4:
-            return Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[4]);
-        case 5:
-            return Shape(BG_COLOR::DARK_GREEN, 3, garbage_shapes[5]);
-        case 6:
-            return Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[6]);
-        case 7:
-            return Shape(BG_COLOR::DARK_GREEN, 4, garbage_shapes[7]);
-        case 8:
-            return Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[8]);
-        case 9:
-            return Shape(BG_COLOR::DARK_GREY, 4, garbage_shapes[9]);
-        case 10:
-            return Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[10]);
-        case 11:
-            return Shape(BG_COLOR::DARK_GREY, 3, garbage_shapes[11]);
-        case 12:
-            return Shape(BG_COLOR::GREY, 4, garbage_shapes[12]);
-        case 13:
-            return Shape(BG_COLOR::GREY, 4, garbage_shapes[13]);
-        case 14:
-            return Shape(BG_COLOR::GREY, 3, garbage_shapes[14]);
-        case 15:
-            return Shape(BG_COLOR::GREY, 3, garbage_shapes[15]);
         default:
-            return Shape(BG_COLOR::DARK_RED, 3, garbage_shapes[0]);
+            return Shape(3, garbage_shapes[0]);
+        case 1:
+            return Shape(3, garbage_shapes[1]);
+        case 2:
+            return Shape(3, garbage_shapes[2]);
+        case 3:
+            return Shape(3, garbage_shapes[3]);
+        case 4:
+            return Shape(3, garbage_shapes[4]);
+        case 5:
+            return Shape(3, garbage_shapes[5]);
+        case 6:
+            return Shape(4, garbage_shapes[6]);
+        case 7:
+            return Shape(4, garbage_shapes[7]);
+        case 8:
+            return Shape(4, garbage_shapes[8]);
+        case 9:
+            return Shape(3, garbage_shapes[9]);
+        case 10:
+            return Shape(3, garbage_shapes[10]);
+        case 11:
+            return Shape(4, garbage_shapes[11]);
+        case 12:
+            return Shape(4, garbage_shapes[12]);
+        case 13:
+            return Shape(5, garbage_shapes[13]);
+        case 14:
+            return Shape(5, garbage_shapes[14]);
+        case 15:
+            return Shape(4, garbage_shapes[15]);
     }
 }
 
@@ -75,116 +75,119 @@ ShapeFactory::ShapeFactory() {
     regular_shapes = new char *[7];
     garbage_shapes = new char *[16];
     // ---------- I shape ----------
-    regular_shapes[0] = new char[16]{' ', 'C', ' ', ' ',
-                                     ' ', 'C', ' ', ' ',
-                                     ' ', 'C', ' ', ' ',
-                                     ' ', 'C', ' ', ' '};
+    regular_shapes[0] = new char[16]{' ', 'B', ' ', ' ',
+                                     ' ', 'B', ' ', ' ',
+                                     ' ', 'B', ' ', ' ',
+                                     ' ', 'B', ' ', ' '};
     // ---------- O shape ----------
-    regular_shapes[1] = new char[4]{'Y', 'Y',
-                                    'Y', 'Y'};
+    regular_shapes[1] = new char[4]{'C', 'C',
+                                    'C', 'C'};
     // ---------- T shape ----------
     regular_shapes[2] = new char[9]{'M', 'M', 'M',
                                     ' ', 'M', ' ',
                                     ' ', ' ', ' '};
     // ---------- J shape ----------
-    regular_shapes[3] = new char[9]{' ', 'b', ' ',
-                                    ' ', 'b', ' ',
-                                    'b', 'b', ' '};
+    regular_shapes[3] = new char[9]{' ', 'R', ' ',
+                                    ' ', 'R', ' ',
+                                    'R', 'R', ' '};
     // ---------- L shape ----------
-    regular_shapes[4] = new char[9]{' ', 'y', ' ',
-                                    ' ', 'y', ' ',
-                                    ' ', 'y', 'y',};
+    regular_shapes[4] = new char[9]{' ', 'Y', ' ',
+                                    ' ', 'Y', ' ',
+                                    ' ', 'Y', 'Y',};
     // ---------- S shape ----------
     regular_shapes[5] = new char[9]{' ', 'G', 'G',
                                     'G', 'G', ' ',
                                     ' ', ' ', ' '};
     // ---------- Z shape ----------
-    regular_shapes[6] = new char[9]{'R', 'R', ' ',
-                                    ' ', 'R', 'R',
+    regular_shapes[6] = new char[9]{'B', 'B', ' ',
+                                    ' ', 'B', 'B',
                                     ' ', ' ', ' '};
 
 
 
     // ---------- Level 1 ----------
-    garbage_shapes[0] = new char[9]{' ', 'n', 'n',
-                                    'n', 'n', ' ',
-                                    ' ', 'n', ' '};
+    garbage_shapes[0] = new char[9]{' ', 'R', 'R',
+                                    'R', 'R', ' ',
+                                    ' ', 'R', ' '};
     // ---------- Level 1 ----------
-    garbage_shapes[1] = new char[9]{'n', 'n', 'n',
-                                    ' ', 'n', ' ',
-                                    ' ', 'n', ' '};
+    garbage_shapes[1] = new char[9]{'R', 'R', 'R',
+                                    ' ', 'R', ' ',
+                                    ' ', 'R', ' '};
     // ---------- Level 1 ----------
-    garbage_shapes[2] = new char[9]{' ', ' ', 'n',
-                                    'n', 'n', 'n',
-                                    'n', ' ', ' '};
+    garbage_shapes[2] = new char[9]{' ', ' ', 'R',
+                                    'R', 'R', 'R',
+                                    'R', ' ', ' '};
     // ---------- Level 1 ----------
-    garbage_shapes[3] = new char[9]{' ', 'n', ' ',
-                                    'n', 'n', 'n',
-                                    ' ', 'n', ' '};
+    garbage_shapes[3] = new char[9]{' ', 'R', ' ',
+                                    'R', 'R', 'R',
+                                    ' ', 'R', ' '};
     // ---------- Level 2 ----------
-    garbage_shapes[4] = new char[9]{'N', ' ', ' ',
-                                    'N', 'N', ' ',
-                                    ' ', 'N', 'N'};
+    garbage_shapes[4] = new char[9]{'G', ' ', ' ',
+                                    'G', 'G', ' ',
+                                    ' ', 'G', 'G'};
     // ---------- Level 2 ----------
-    garbage_shapes[5] = new char[9]{'N', ' ', 'N',
-                                    'N', 'N', 'N',
+    garbage_shapes[5] = new char[9]{'G', ' ', 'G',
+                                    'G', 'G', 'G',
                                     ' ', ' ', ' '};
     // ---------- Level 2 ----------
     garbage_shapes[6] = new char[16]{' ', ' ', ' ', ' ',
-                                     'N', 'N', 'N', ' ',
-                                     ' ', ' ', 'N', 'N',
+                                     'G', 'G', 'G', ' ',
+                                     ' ', ' ', 'G', 'G',
                                      ' ', ' ', ' ', ' '};
     // ---------- Level 2 ----------
-    garbage_shapes[7] = new char[16]{' ', 'N', ' ', ' ',
-                                     ' ', 'N', ' ', ' ',
-                                     ' ', 'N', 'N', ' ',
-                                     ' ', 'N', ' ', ' '};
+    garbage_shapes[7] = new char[16]{' ', 'G', ' ', ' ',
+                                     ' ', 'G', ' ', ' ',
+                                     ' ', 'G', 'G', ' ',
+                                     ' ', 'G', ' ', ' '};
 
     // ---------- Level 3 ----------
-    garbage_shapes[8] = new char[16]{' ', 'v', 'v', ' ',
-                                     ' ', 'v', ' ', ' ',
-                                     ' ', 'v', 'v', ' ',
-                                     ' ', 'v', ' ', ' '};
+    garbage_shapes[8] = new char[16]{' ', 'M', 'M', ' ',
+                                     ' ', 'M', ' ', ' ',
+                                     ' ', 'M', 'M', ' ',
+                                     ' ', 'M', ' ', ' '};
     // ---------- Level 3 ----------
-    garbage_shapes[9] = new char[9]{'v', 'v', ' ',
-                                    'v', 'v', ' ',
-                                    'v', 'v', ' '};
+    garbage_shapes[9] = new char[9]{'M', 'M', ' ',
+                                    'M', 'M', ' ',
+                                    'M', 'M', ' '};
     // ---------- Level 3 ----------
-    garbage_shapes[10] = new char[9]{' ', 'v', ' ',
-                                     'v', 'v', 'v',
-                                     'v', 'v', ' '};
+    garbage_shapes[10] = new char[9]{' ', 'M', ' ',
+                                     'M', 'M', 'M',
+                                     'M', 'M', ' '};
     // ---------- Level 3 ----------
     garbage_shapes[11] = new char[16]{' ', ' ', ' ', ' ',
-                                      'v', 'v', ' ', 'v',
-                                      ' ', 'v', 'v', 'v',
+                                      'M', 'M', ' ', 'M',
+                                      ' ', 'M', 'M', 'M',
                                       ' ', ' ', ' ', ' '};
     // ---------- Level 4 ----------
-    garbage_shapes[12] = new char[16]{' ', ' ', 'V', ' ',
-                                      ' ', 'V', 'V', ' ',
-                                      'V', 'V', ' ', ' ',
-                                      'V', ' ', ' ', ' '};
+    garbage_shapes[12] = new char[16]{' ', ' ', 'B', ' ',
+                                      ' ', 'B', 'B', ' ',
+                                      'B', 'B', ' ', ' ',
+                                      'B', ' ', ' ', ' '};
     // ---------- Level 4 ----------
-    garbage_shapes[13] = new char[25]{'V', 'V', 'V', 'V', 'V',
-                                      'V', 'V', 'V', 'V', 'V',
-                                      'V', 'V', 'V', 'V', 'V',
-                                      'V', 'V', 'V', 'V', 'V',
-                                      'V', 'V', 'V', 'V', 'V'};
+    garbage_shapes[13] = new char[25]{'B', 'B', 'B', 'B', 'B',
+                                      'B', 'B', 'B', 'B', 'B',
+                                      'B', 'B', 'B', 'B', 'B',
+                                      'B', 'B', 'B', 'B', 'B',
+                                      'B', 'B', 'B', 'B', 'B'};
     // ---------- Level 4 ----------
     garbage_shapes[14] = new char[25]{' ', ' ', ' ', ' ', ' ',
-                                      ' ', 'V', ' ', ' ', 'V',
-                                      'V', 'V', 'V', 'V', 'V',
-                                      ' ', 'V', ' ', ' ', 'V',
+                                      ' ', 'B', ' ', ' ', 'B',
+                                      'B', 'B', 'B', 'B', 'B',
+                                      ' ', 'B', ' ', ' ', 'B',
                                       ' ', ' ', ' ', ' ', ' '};
     // ---------- Level 4 ----------
-    garbage_shapes[15] = new char[16]{'V', 'V', 'V', 'V',
-                                      ' ', 'V', ' ', ' ',
-                                      ' ', 'V', 'V', ' ',
-                                      ' ', ' ', 'V', ' '};
+    garbage_shapes[15] = new char[16]{'B', 'B', 'B', 'B',
+                                      ' ', 'B', ' ', ' ',
+                                      ' ', 'B', 'B', ' ',
+                                      ' ', ' ', 'B', ' '};
 
 }
 
 int ShapeFactory::GetRandom(int from, int to) {
-    std::mt19937 mt(rd());
+    static long long request = 0;
+    request += 45378534;
+    long long seed = std::chrono::system_clock::now().time_since_epoch().count() + request;
+    std::minstd_rand0 prng(seed);
     std::uniform_int_distribution<int> dist(from, to);
-    return dist(mt);
+    return dist(prng);
 }
