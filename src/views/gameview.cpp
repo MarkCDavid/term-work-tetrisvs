@@ -4,7 +4,10 @@
 
 #include "ncurses.h"
 #include "gameview.h"
+#include "scoreview.h"
 #include "../color.h"
+#include "../symbols.h"
+#include "../../tetrisvs.h"
 
 GameView::GameView() {
     shapeFactory = new ShapeFactory();
@@ -31,7 +34,7 @@ void GameView::InitialDraw() {
         for (int i = -1; i <= Board::Width; i++) {
             for (int j = 0; j <= Board::Height; j++) {
                 char board_char = cgame->board.GetSymbolAt(i, j);
-                if (board_char != Board::EMPTY) {
+                if (board_char != Symbols::EMPTY) {
                     attron(COLOR_PAIR(get_color(board_char)));
                     mvaddch(cgame->yOff + j, cgame->xOff + i, ' ');
                     attroff(COLOR_PAIR(get_color(board_char)));
@@ -71,7 +74,7 @@ void GameView::Draw() {
     DrawScore();
 }
 
-int GameView::Update(float delta_time) {
+void GameView::Update(float delta_time) {
     keyboard.Update();
     c_tick_timer += delta_time;
     for (int game_index = 0; game_index < 2; game_index++) {
@@ -88,7 +91,9 @@ int GameView::Update(float delta_time) {
 
                 cgame->NextShape();
                 if (!cgame->board.IsValidPosition(cgame->current_shape)) {
-                    return 1000 + game_index;
+                    TetrisVS::Instance()->Switch(new ScoreView((game_index == 0) ? 'r' : 'l', games[0]->GetLineClears(),
+                                                               games[1]->GetLineClears()));
+                    return;
                 }
             }
         }
@@ -97,7 +102,8 @@ int GameView::Update(float delta_time) {
 // P1 CONTROLS
     if (keyboard.GetKey('w')) {
         if (!games[0]->board.IsValidPosition(games[0]->repr_shape)) {
-            return 1000;
+            TetrisVS::Instance()->Switch(new ScoreView('r', games[0]->GetLineClears(), games[1]->GetLineClears()));
+            return;
         }
         int cleared = games[0]->board.Place(games[0]->repr_shape);
         if (cleared > 0) {
@@ -137,7 +143,8 @@ int GameView::Update(float delta_time) {
 // P2 CONTROLS
     if (keyboard.GetKey('o')) {
         if (!games[1]->board.IsValidPosition(games[1]->repr_shape)) {
-            return 1001;
+            TetrisVS::Instance()->Switch(new ScoreView('l', games[0]->GetLineClears(), games[1]->GetLineClears()));
+            return;
         }
         int cleared = games[1]->board.Place(games[1]->repr_shape);
         if (cleared > 0) {
@@ -177,7 +184,7 @@ int GameView::Update(float delta_time) {
 
 
     keyboard.Flush();
-    return 0;
+    //return 0;
 }
 
 void GameView::DrawShape() {
@@ -188,7 +195,7 @@ void GameView::DrawShape() {
         for (int i = 0; i < shape.Size(); i++) {
             for (int j = 0; j < shape.Size(); j++) {
                 char shape_char = shape.GetSymbolAt(i, j);
-                if (shape_char != Board::EMPTY) {
+                if (shape_char != Symbols::EMPTY) {
                     attron(COLOR_PAIR(get_color(shape_char)));
                     mvaddch(cgame->yOff + shape.Y() + j, cgame->xOff + shape.X() + i, ' ');
                     attroff(COLOR_PAIR(get_color(shape_char)));
@@ -224,7 +231,7 @@ void GameView::DrawShadow() {
         for (int i = 0; i < shape.Size(); i++) {
             for (int j = 0; j < shape.Size(); j++) {
                 char shape_char = shape.GetSymbolAt(i, j);
-                if (shape_char != Board::EMPTY) {
+                if (shape_char != Symbols::EMPTY) {
                     attron(COLOR_PAIR(CYAN_BLACK));
                     mvaddch(cgame->yOff + shape.Y() + j, cgame->xOff + shape.X() + i, '#');
                     attroff(COLOR_PAIR(CYAN_BLACK));
@@ -242,7 +249,7 @@ void GameView::DrawHold() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 char s_char = cgame->hold_shape.GetSymbolAt(i, j);
-                if (s_char != Board::EMPTY && i < cgame->hold_shape.Size() && j < cgame->hold_shape.Size()) {
+                if (s_char != Symbols::EMPTY && i < cgame->hold_shape.Size() && j < cgame->hold_shape.Size()) {
                     attron(COLOR_PAIR(get_color(s_char)));
                     mvaddch(cgame->yHOff + j, cgame->xHOff + i, ' ');
                     attroff(COLOR_PAIR(get_color(s_char)));
@@ -262,7 +269,7 @@ void GameView::DrawNext() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 char s_char = cgame->next_shape.GetSymbolAt(i, j);
-                if (s_char != Board::EMPTY && i < cgame->next_shape.Size() && j < cgame->next_shape.Size()) {
+                if (s_char != Symbols::EMPTY && i < cgame->next_shape.Size() && j < cgame->next_shape.Size()) {
                     attron(COLOR_PAIR(get_color(s_char)));
                     mvaddch(cgame->yNOff + j, cgame->xNOff + i, ' ');
                     attroff(COLOR_PAIR(get_color(s_char)));

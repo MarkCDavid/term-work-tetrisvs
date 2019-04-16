@@ -18,7 +18,7 @@ public:
 
     ~GameView() override;
 
-    int Update(float delta_time) override;
+    void Update(float delta_time) override;
 
     void InitialDraw() override;
 

@@ -15,12 +15,9 @@ public:
     Shape Garbage(int level);
 
 private:
-
-
     char **regular_shapes;
     char **garbage_shapes;
 
-    int GetRandom(int from, int to);
 };
 
 

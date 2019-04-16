@@ -10,7 +10,7 @@
 
 class ControlsView : public AbstractView {
 public:
-    int Update(float delta_time) override;
+    void Update(float delta_time) override;
 
     void InitialDraw() override;
 

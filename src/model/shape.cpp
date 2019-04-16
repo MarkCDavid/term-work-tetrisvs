@@ -10,21 +10,9 @@ Shape::Shape(int size, char *shape) : size(size), shape(shape), xPos(5), yPos(0)
 Shape::Shape() : size(-1), shape(nullptr), xPos(-1), yPos(-1), rotation(-1),
                  oldxPos(-1), oldyPos(-1), oldrotation(-1) {}
 
-Shape::Shape(const Shape &other) : size(other.size), shape(other.shape), xPos(other.xPos),
-                                   yPos(other.yPos), rotation(other.rotation), oldxPos(other.oldxPos),
-                                   oldyPos(other.oldyPos), oldrotation(other.oldrotation) {}
+Shape::Shape(const Shape &other) = default;
 
-Shape &Shape::operator=(const Shape &other) {
-    size = other.size;
-    shape = other.shape;
-    xPos = other.xPos;
-    yPos = other.yPos;
-    rotation = other.rotation;
-    oldxPos = other.oldxPos;
-    oldyPos = other.oldyPos;
-    oldrotation = other.oldrotation;
-    return *this;
-}
+Shape &Shape::operator=(const Shape &other) = default;
 
 char Shape::GetSymbolAt(int x, int y) const {
     switch (rotation) {

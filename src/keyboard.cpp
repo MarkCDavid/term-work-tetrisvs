@@ -5,10 +5,11 @@
 #include "keyboard.h"
 
 void Keyboard::Update() {
-    int key;
-    while ((key = getch()) != ERR) {
+    static int key;
+    // if there are multiple keys pressed, getch returns
+    // the keycode for all of them, one by one
+    while ((key = getch()) != ERR)
         keys.insert(key);
-    }
 }
 
 void Keyboard::Flush() {

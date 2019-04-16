@@ -13,7 +13,7 @@ class ScoreView : public AbstractView {
 public:
     ScoreView(char winner, std::map<int, int> l_player_score, std::map<int, int> r_player_score);
 
-    int Update(float delta_time) override;
+    void Update(float delta_time) override;
 
     void InitialDraw() override;
 

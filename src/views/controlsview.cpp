@@ -3,15 +3,15 @@
 //
 
 #include "controlsview.h"
+#include "menu.h"
+#include "../../tetrisvs.h"
 
 
-int ControlsView::Update(float delta_time) {
+void ControlsView::Update(float delta_time) {
     keyboard.Update();
-    if (keyboard.GetKey('f')) {
-        return 1100;
-    };
+    if (keyboard.GetKey('f'))
+        TetrisVS::Instance()->Switch(new Menu());
     keyboard.Flush();
-    return 0;
 }
 
 void ControlsView::InitialDraw() {

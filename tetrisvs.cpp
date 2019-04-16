@@ -6,11 +6,17 @@
 #include "src/views/gameview.h"
 #include "src/views/scoreview.h"
 #include "src/views/controlsview.h"
-#include <chrono>
 
+
+TetrisVS *TetrisVS::instance = nullptr;
 
 int main() {
+    while (TetrisVS::Instance()->GameRunning())
+        TetrisVS::Instance()->Update();
+}
 
+
+TetrisVS::TetrisVS() {
     initscr(); // Initialize the screen
     resize_term(50, 150); // Set the size
     curs_set(0); // Turn off the cursor
@@ -19,80 +25,41 @@ int main() {
     timeout(1); // set non blocking getch
     start_color(); // Start coloring
     init_color_pairs(); // Initialize the pairs.
-
-    AbstractView *view = new Menu();
+    view = new Menu();
     view->InitialDraw();
-    auto last = std::chrono::system_clock::now();
-    auto current = std::chrono::system_clock::now();
-    bool game_running = true;
-    while (game_running) {
-        current = std::chrono::system_clock::now();
-        auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(current - last);
-        last = current;
-        int event_id = view->Update(difference.count());
-        view->Draw();
-        refresh();
-        switch (event_id) {
-            case 500: // Player vs Player
-            {
-                delete view;
-                view = new GameView();
-                view->InitialDraw();
-                break;
-            }
-            case 501: // Player vs Computer
-            {
-                delete view;
-                view = new Menu();
-                view->InitialDraw();
-                break;
-            }
-            case 502: // Controls
-            {
-                delete view;
-                view = new ControlsView();
-                view->InitialDraw();
-                break;
-            }
-            case 503: // Quit Game
-            {
-                game_running = false;
-                break;
-            }
-            case 1000: // Player 1 lost.
-            {
-                auto *game = dynamic_cast<GameView *>(view);
-                std::map<int, int> lscore;
-                std::map<int, int> rscore;
-                game->GetScore(lscore, rscore);
-                AbstractView *new_view = new ScoreView('r', lscore, rscore);
-                delete view;
-                view = new_view;
-                view->InitialDraw();
-                break;
-            }
-            case 1001: // Player 2 lost.
-            {
-                auto *game = dynamic_cast<GameView *>(view);
-                std::map<int, int> lscore;
-                std::map<int, int> rscore;
-                game->GetScore(lscore, rscore);
-                AbstractView *new_view = new ScoreView('l', lscore, rscore);
-                delete view;
-                view = new_view;
-                view->InitialDraw();
-                break;
-            }
-            case 1100: // Return to menu.
-                delete view;
-                view = new Menu();
-                view->InitialDraw();
-                break;
-            default:
-                break;
-        }
-    }
+}
 
+TetrisVS::~TetrisVS() {
+    delete view;
     endwin();
-    return 0;
+}
+
+
+void TetrisVS::Update() {
+    current_time = std::chrono::system_clock::now();
+    auto delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - previous_time);
+    previous_time = current_time;
+    view->Update(delta_time.count());
+    view->Draw();
+    refresh();
+}
+
+void TetrisVS::Switch(AbstractView *new_view) {
+    delete view;
+    view = new_view;
+    view->InitialDraw();
+}
+
+TetrisVS *TetrisVS::Instance() {
+    if (instance == nullptr)
+        instance = new TetrisVS();
+    return instance;
+}
+
+bool TetrisVS::GameRunning() {
+    return game_running;
+}
+
+void TetrisVS::StopGame() {
+    game_running = false;
 }

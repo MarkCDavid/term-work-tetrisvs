@@ -3,12 +3,13 @@
 //
 
 #include "shapefactory.h"
+#include "random.h"
 #include <chrono>
 
 
 Shape ShapeFactory::Regular() {
 
-    int choice = GetRandom(0, 7);
+    int choice = Random::GetRandom(0, 7);
     switch (choice) {
         case 0:
         default:
@@ -28,11 +29,10 @@ Shape ShapeFactory::Regular() {
     }
 }
 
-
 Shape ShapeFactory::Garbage(int level) {
     level = (level < 1) ? 1 : level;
     level = (level > 4) ? 4 : level;
-    int choice = GetRandom((level - 1) * 4, level * 4 - 1);
+    int choice = Random::GetRandom((level - 1) * 4, level * 4 - 1);
     switch (choice) {
         case 0:
         default:
@@ -183,11 +183,3 @@ ShapeFactory::ShapeFactory() {
 
 }
 
-int ShapeFactory::GetRandom(int from, int to) {
-    static long long request = 0;
-    request += 45378534;
-    long long seed = std::chrono::system_clock::now().time_since_epoch().count() + request;
-    std::minstd_rand0 prng(seed);
-    std::uniform_int_distribution<int> dist(from, to);
-    return dist(prng);
-}

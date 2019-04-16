@@ -7,11 +7,8 @@
 
 #include "shape.h"
 
-
 class Board {
 public:
-    static const char EMPTY = ' ';
-    static const char OOB = 'X';
     static const int Width = 10;
     static const int Height = 24;
 
@@ -27,6 +24,8 @@ private:
     char Get(int x, int y) const;
 
     void Put(int x, int y, char s);
+
+    int Coordinate(int x, int y) const;
 
     int Clear(const Shape &shape);
 

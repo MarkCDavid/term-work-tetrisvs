@@ -3,33 +3,30 @@
 //
 
 #include "board.h"
+#include "../symbols.h"
 
 Board::Board() {
-    for (int i = 0; i < Width * Height; i++)
-        board[i] = EMPTY;
+    for (char &i : board)
+        i = Symbols::EMPTY;
 }
 
 bool Board::IsValidPosition(const Shape &shape) const {
-    for (int row = 0; row < shape.Size(); row++) {
+    for (int row = 0; row < shape.Size(); row++)
         for (int col = 0; col < shape.Size(); col++) {
             char b_char = GetSymbolAt(shape.X() + row, shape.Y() + col);
             char s_char = shape.GetSymbolAt(row, col);
-            if (s_char != EMPTY && b_char != EMPTY) return false;
+            if (s_char != Symbols::EMPTY && b_char != Symbols::EMPTY) return false;
         }
-    }
     return true;
 }
 
-char Board::GetSymbolAt(int x, int y) const {
-    if (x < 0 || x >= Width || y >= Height) return OOB;
-    return Get(x, y);
-}
+
 
 int Board::Place(const Shape &shape) {
     for (int row = 0; row < shape.Size(); row++)
         for (int col = 0; col < shape.Size(); col++) {
             char s_char = shape.GetSymbolAt(row, col);
-            if (s_char != EMPTY)
+            if (s_char != Symbols::EMPTY)
                 Put(shape.X() + row, shape.Y() + col, shape.GetSymbolAt(row, col));
         }
     int cleared = Clear(shape);
@@ -37,25 +34,19 @@ int Board::Place(const Shape &shape) {
     return cleared;
 }
 
-char Board::Get(int x, int y) const {
-    return board[x + y * Width];
-}
 
-void Board::Put(int x, int y, char s) {
-    board[x + y * Width] = s;
-}
 
 int Board::Clear(const Shape &shape) {
     int cleared = 0;
     for (int row = shape.Y(); row < shape.Y() + shape.Size() && row < Height; row++) {
         bool clear = true;
         for (int col = 0; col < 10; col++)
-            if (GetSymbolAt(col, row) == EMPTY) {
+            if (GetSymbolAt(col, row) == Symbols::EMPTY) {
                 clear = false;
                 break;
             }
         if (clear) {
-            for (int col = 0; col < 10; col++) Put(col, row, ' ');
+            for (int col = 0; col < 10; col++) Put(col, row, Symbols::EMPTY);
             cleared++;
         }
     }
@@ -66,7 +57,7 @@ void Board::Cascade(const Shape &shape) {
     for (int row = Height - 1; row > 0; row--) {
         bool empty = true;
         for (int col = 0; col < 10; col++)
-            if (GetSymbolAt(col, row) != EMPTY) {
+            if (GetSymbolAt(col, row) != Symbols::EMPTY) {
                 empty = false;
                 break;
             }
@@ -76,7 +67,7 @@ void Board::Cascade(const Shape &shape) {
             while (next_row_empty) {
                 next_row--;
                 for (int col = 0; col < 10; col++)
-                    if (GetSymbolAt(col, next_row) != EMPTY)
+                    if (GetSymbolAt(col, next_row) != Symbols::EMPTY)
                         next_row_empty = false;
 
             }
@@ -88,4 +79,21 @@ void Board::Cascade(const Shape &shape) {
             }
         }
     }
-};
+}
+
+int Board::Coordinate(int x, int y) const {
+    return x + y * Width;
+}
+
+char Board::Get(int x, int y) const {
+    return board[Coordinate(x, y)];
+}
+
+void Board::Put(int x, int y, char s) {
+    board[Coordinate(x, y)] = s;
+}
+
+char Board::GetSymbolAt(int x, int y) const {
+    if (x < 0 || x >= Width || y >= Height) return Symbols::OOB;
+    return Get(x, y);
+}

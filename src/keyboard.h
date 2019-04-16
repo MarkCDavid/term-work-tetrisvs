@@ -11,14 +11,10 @@
 class Keyboard {
 public:
     void Update();
-
     void Flush();
-
     bool GetKey(int keycode);
-
 private:
     std::set<int> keys;
-
 };
 
 
