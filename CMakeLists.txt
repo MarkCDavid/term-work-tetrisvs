@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(TetrisVS)
 include_directories(lib/tge)
-add_executable(tetrisvs tetrisvs.cpp src/color.h src/model/board.cpp src/model/board.h src/views/menu.cpp src/model/board.h src/model/shape.cpp src/model/shape.h src/shapefactory.cpp src/shapefactory.h src/views/abstractview.h src/views/game.cpp src/views/game.h src/views/gameview.cpp src/views/gameview.h src/keyboard.cpp src/keyboard.h src/views/scoreview.cpp src/views/scoreview.h src/views/controlsview.cpp src/views/controlsview.h src/random.h src/symbols.h)
+add_executable(tetrisvs tetrisvs.cpp src/color.h src/model/board.cpp src/model/board.h src/views/menu.cpp src/model/board.h src/model/shape.cpp src/model/shape.h src/shapefactory.cpp src/shapefactory.h src/views/abstractview.h src/model/game.cpp src/model/game.h src/views/gameview.cpp src/views/gameview.h src/keyboard.cpp src/keyboard.h src/views/scoreview.cpp src/views/scoreview.h src/views/controlsview.cpp src/views/controlsview.h src/random.h src/symbols.h src/model/scoring/abstractscoring.h src/model/scoring/neuralscoring.cpp src/model/scoring/neuralscoring.h)
 target_link_libraries(tetrisvs ${CMAKE_CURRENT_SOURCE_DIR}/lib/pdcurses.a)
 set(CMAKE_CXX_STANDARD 14)
 set(GCC_COVERAGE_COMPILE_FLAGS "-static")

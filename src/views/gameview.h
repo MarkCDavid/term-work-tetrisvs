@@ -7,7 +7,7 @@
 
 #include "abstractview.h"
 #include "../keyboard.h"
-#include "game.h"
+#include "../model/game.h"
 #include <map>
 
 class GameView : public AbstractView {
