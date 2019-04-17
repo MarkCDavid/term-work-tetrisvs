@@ -9,7 +9,7 @@
 #include "../symbols.h"
 #include "../../tetrisvs.h"
 
-GameView::GameView(bool bot) : bot(bot) {
+GameView::GameView(bool bot, bool hard) : bot(bot), hard(hard) {
     shapeFactory = new ShapeFactory();
     int width, height;
     getmaxyx(stdscr, height, width);
@@ -93,8 +93,9 @@ void GameView::Update(float delta_time) {
                 cgame->scored = false;
                 cgame->score = -1e9;
                 if (!cgame->board.IsValidPosition(cgame->current_shape)) {
-                    TetrisVS::Instance()->Switch(new ScoreView((game_index == 0) ? 'r' : 'l', games[0]->GetLineClears(),
-                                                               games[1]->GetLineClears()));
+                    TetrisVS::Instance()->Switch(
+                            new ScoreView((game_index == 0) ? (bot) ? 'c' : 'r' : 'l', games[0]->GetLineClears(),
+                                          games[1]->GetLineClears()));
                     keyboard.TurnOff();
                     return;
                 }
@@ -124,33 +125,40 @@ void GameView::Update(float delta_time) {
             games[1]->scored = true;
             for (int col = -1; col < 10; col++) {
                 for (int rot = 0; rot < 4; rot++) {
-                    for (int col_c = -1; col_c < 10; col_c++) {
-                        for (int rot_c = 0; rot_c < 4; rot_c++) {
-                            Board cboard = games[1]->board;
+                    Board cboard = games[1]->board;
 
-                            Shape check = games[1]->current_shape;
-                            check.SetPos(col, 0);
-                            check.SetRot(rot);
-                            if (!cboard.IsValidPosition(check)) continue;
-                            while (cboard.IsValidPosition(check))
-                                check.Move(Shape::Movement::DOWN);
-                            check.Revert();
-                            cboard.Place(check);
+                    Shape check = games[1]->current_shape;
+                    check.SetPos(col, 0);
+                    check.SetRot(rot);
+                    if (!cboard.IsValidPosition(check)) continue;
+                    while (cboard.IsValidPosition(check))
+                        check.Move(Shape::Movement::DOWN);
+                    check.Revert();
+                    cboard.Place(check);
+                    if (hard) {
+                        for (int col_c = -1; col_c < 10; col_c++) {
+                            for (int rot_c = 0; rot_c < 4; rot_c++) {
+                                Shape check_next = games[1]->next_shape;
+                                check_next.SetPos(col_c, 0);
+                                check_next.SetRot(rot_c);
+                                if (!cboard.IsValidPosition(check_next)) continue;
+                                while (cboard.IsValidPosition(check_next))
+                                    check_next.Move(Shape::Movement::DOWN);
+                                check_next.Revert();
+                                cboard.Place(check_next);
 
-                            Shape check_next = games[1]->next_shape;
-                            check_next.SetPos(col_c, 0);
-                            check_next.SetRot(rot_c);
-                            if (!cboard.IsValidPosition(check_next)) continue;
-                            while (cboard.IsValidPosition(check_next))
-                                check_next.Move(Shape::Movement::DOWN);
-                            check_next.Revert();
-                            cboard.Place(check_next);
-
-                            float score = games[1]->GetScore(cboard);
-                            if (score > games[1]->score) {
-                                games[1]->score = score;
-                                games[1]->best_move = check;
+                                float score = games[1]->GetScore(cboard);
+                                if (score > games[1]->score) {
+                                    games[1]->score = score;
+                                    games[1]->best_move = check;
+                                }
                             }
+                        }
+                    } else {
+                        float score = games[1]->GetScore(cboard);
+                        if (score > games[1]->score) {
+                            games[1]->score = score;
+                            games[1]->best_move = check;
                         }
                     }
                 }
@@ -168,8 +176,8 @@ void GameView::Update(float delta_time) {
         }
 
         if (move_delta == 0 && rot_delta == 0) {
-            DropShape(1);
-            //MoveShape(1, Shape::Movement::DOWN);
+            //DropShape(1);
+            MoveShape(1, Shape::Movement::DOWN);
         }
 
     }

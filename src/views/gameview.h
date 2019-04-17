@@ -14,7 +14,7 @@ class GameView : public AbstractView {
 
 public:
 
-    GameView(bool bot);
+    GameView(bool bot, bool hard = false);
 
     ~GameView() override;
 
@@ -31,6 +31,7 @@ private:
     ShapeFactory *shapeFactory;
     Keyboard keyboard;
     bool bot = false;
+    bool hard = false;
     float c_tick_timer = 0.0f;
     float tick = 1000.0f;
 

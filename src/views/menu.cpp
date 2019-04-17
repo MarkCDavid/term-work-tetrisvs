@@ -34,10 +34,14 @@ void Menu::Update(float delta_time) {
                 keyboard.TurnOff();
                 break;
             case 2 :
-                TetrisVS::Instance()->Switch(new ControlsView());
+                TetrisVS::Instance()->Switch(new GameView(true, true));
                 keyboard.TurnOff();
                 break;
             case 3 :
+                TetrisVS::Instance()->Switch(new ControlsView());
+                keyboard.TurnOff();
+                break;
+            case 4 :
                 TetrisVS::Instance()->StopGame();
                 break;
 

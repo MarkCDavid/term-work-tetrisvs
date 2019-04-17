@@ -44,6 +44,7 @@ private:
     std::vector<std::string> menu_options = {
             "Player vs Player",
             "Player vs Computer",
+            "Player vs Hard Computer",
             "Controls",
             "Exit Game",
     };
