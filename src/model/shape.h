@@ -51,7 +51,7 @@ private:
     int xPos, yPos;
     int rotation;
 
-    int oldxPos, oldyPos;
+    int oldxPos = 0, oldyPos = 0;
     int oldrotation;
     int size;
     const char *shape;

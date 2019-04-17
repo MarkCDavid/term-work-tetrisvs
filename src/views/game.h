@@ -19,7 +19,7 @@ public:
     int xHOff, yHOff;
     int xNOff, yNOff;
     bool scored = false;
-    int score = -1;
+    float score = -1e9;
     Board board;
     Shape current_shape;
     Shape best_move;
@@ -45,9 +45,16 @@ public:
 
     int ClearedLines();
 
-    int GetScore(Shape &shape);
+    float GetScore(Board &cboard);
     std::map<int, int> GetLineClears();
 private:
+
+
+    std::pair<int, int> AggregateHeightAndBumpiness(Board &cboard);
+
+    int CompleteLines(Board &cboard);
+
+    int HoleCount(Board &cboard);
     int game_speed[10] = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};
     ShapeFactory *shapeFactory;
     bool hold_changed = false;

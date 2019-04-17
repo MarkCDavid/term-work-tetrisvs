@@ -71,69 +71,74 @@ std::map<int, int> Game::GetLineClears() {
     return line_clears;
 }
 
-int Game::GetScore(Shape &shape) {
-    int score = 0;
+float Game::GetScore(Board &cboard) {
+    // Implementation from https://codemyroad.wordpress.com/2013/04/14/tetris-ai-the-near-perfect-player/
+    float a = -0.510066;
+    float b = 0.760666;
+    float c = -0.356630;
+    float d = -0.184483;
 
-    int shape_rows = 0;
-    for (int row = shape.Y(); row < shape.Y() + shape.Size(); row++) {
-        for (int col = shape.X(); col < shape.X() + shape.Size(); col++) {
-            char s_char = shape.GetSymbolAt(col, row);
-            if (s_char != Symbols::EMPTY) {
-                shape_rows++;
+    int lines = CompleteLines(cboard);
+    int holes = HoleCount(cboard);
+    auto height_bumpiness = AggregateHeightAndBumpiness(cboard);
+    int height = height_bumpiness.first;
+    int bumpiness = height_bumpiness.second;
+
+    return a * height + b * lines + c * holes + d * bumpiness;
+}
+
+std::pair<int, int> Game::AggregateHeightAndBumpiness(Board &cboard) {
+    std::vector<int> heights;
+    heights.resize(10);
+    int height = 0;
+
+    for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < Board::Height; row++) {
+            char bchar = cboard.GetSymbolAt(col, row);
+            if (bchar != Symbols::EMPTY) {
+                heights[col] = Board::Height - row;
+                height += heights[col];
                 break;
             }
         }
     }
+    int bumpiness = 0;
+    for (int i = 0; i < 9; i++)
+        bumpiness += std::abs(heights[i] - heights[i + 1]);
+    return std::make_pair(height, bumpiness);
+}
 
-    // Clearing lines is good.
-    int cleared_lines = 0;
-    for (int row = shape.Y(); row < shape.Y() + shape.Size(); row++) {
-        bool row_clear = true;
-        for (int col = 0; col < 10 && row_clear; col++) {
-            if (col < shape.X() && col >= shape.X() + shape.Size() && board.GetSymbolAt(col, row) == Symbols::EMPTY)
-                row_clear = false;
-            else if (shape.GetSymbolAt(col - shape.X(), row - shape.Y()) == Symbols::EMPTY)
-                row_clear = false;
-        }
-        if (row_clear) {
-            cleared_lines++;
-            score += 80 * cleared_lines * (Board::Height - row);
-        }
-        if (cleared_lines >= 4) score += 10000000;
-    }
-
-    // Share as many edges as possible.
-    for (int row = shape.Y(); row < shape.Y() + shape.Size(); row++) {
-        for (int col = shape.X(); col < shape.X() + shape.Size(); col++) {
-            char s_char = shape.GetSymbolAt(col - shape.X(), row - shape.Y());
-            if (s_char != Symbols::EMPTY) {
-                score += 1000 * (board.GetSymbolAt(col + 1, row) != Symbols::EMPTY);
-                score += 1000 * (board.GetSymbolAt(col - 1, row) != Symbols::EMPTY);
-                score += 1000 * (board.GetSymbolAt(col, row + 1) != Symbols::EMPTY);
-                score += 1000 * (board.GetSymbolAt(col, row - 1) != Symbols::EMPTY);
-                // Try not to leave shadows;
-                char lower_char = shape.GetSymbolAt(col - shape.X(), row - shape.Y() + 1);
-                score -= 4000 * (Board::Height - row) *
-                         (board.GetSymbolAt(col, row + 1) == Symbols::EMPTY && lower_char == Symbols::EMPTY);
+int Game::CompleteLines(Board &cboard) {
+    int clear = 0;
+    for (int row = 0; row < Board::Height; row++) {
+        bool is_clear = true;
+        for (int col = 0; col < 10; col++) {
+            char bchar = cboard.GetSymbolAt(col, row);
+            if (bchar == Symbols::EMPTY) {
+                is_clear = false;
+                break;
             }
         }
+        clear += is_clear;
     }
+    return clear;
+}
 
-    // Try not to build on top of holes, if we leave behind something.
-    for (int row = shape.Y(); row < shape.Y() + shape.Size(); row++) {
-        for (int col = shape.X(); col < shape.X() + shape.Size(); col++) {
-            char s_char = shape.GetSymbolAt(col - shape.X(), row - shape.Y());
-            if (s_char != Symbols::EMPTY) {
-                for (int row_check = row; row_check < Board::Height; row_check++) {
-                    char b_char = board.GetSymbolAt(col, row_check);
-                    if (b_char == Symbols::EMPTY)
-                        score -= 500;
+int Game::HoleCount(Board &cboard) {
+    int hole_count = 0;
+    for (int row = 0; row < Board::Height; row++) {
+        for (int col = 0; col < 10; col++) {
+            char bchar = cboard.GetSymbolAt(col, row);
+            if (bchar == Symbols::EMPTY) {
+                for (int i = row; i > 0; i--) {
+                    char char_top = cboard.GetSymbolAt(col, i);
+                    if (char_top != Symbols::EMPTY) {
+                        hole_count++;
+                        break;
+                    }
                 }
             }
         }
     }
-
-    // Prefer building lower
-    score += 5000 * shape.Y();
-    return score;
+    return hole_count;
 }
