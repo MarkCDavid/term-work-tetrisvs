@@ -87,10 +87,10 @@ bool Board::IsEmpty(int row) const {
 }
 
 void Board::CascadeSymbols(int row, int offset) {
-    for (int i = 0; i > -(row + offset); i--) {
+    for (int i = 0; i > -(row - offset); i--) {
 
         int to = row + i;
-        int from = row + offset + i;
+        int from = row - offset + i;
 
         for (int col = 0; col < 10; col++) {
             Put(col, to, GetSymbolAt(col, from));
