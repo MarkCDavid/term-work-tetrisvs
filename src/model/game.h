@@ -15,17 +15,6 @@
 
 class Game {
 public:
-    int xOff, yOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
-    int xHOff, yHOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
-    int xNOff, yNOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
-    Board board;
-    Shape current_shape;
-    Shape repr_shape;
-    Shape next_shape;
-    Shape hold_shape;
-
-    std::queue<Shape> garbage_shapes;
-
     Game(int xOffset, int yOffset);
 
     void NextShape();
@@ -35,7 +24,6 @@ public:
     void HoldShape();
 
     bool IncreaseTick(float max, float delta_time); // +/-
-
     void AddLineClear(int clear);
 
     int SpeedModifier();
@@ -44,12 +32,26 @@ public:
 
     std::map<int, int> GetLineClears();
 
+    int xOff, yOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
+    int xHOff, yHOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
+    int xNOff, yNOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
+    Board board;
+    Shape current_shape;
+    Shape repr_shape;
+    Shape next_shape;
+    Shape hold_shape;
+    std::queue<Shape> garbage_shapes;
+
 private:
+    Shape GetNextShape();
+
+    Shape GetRegular();
+
+    Shape GetGarbage();
 
     bool hold_changed = false;
     int cleared = 0;
     float tick = 0.0f;
-
     std::vector<int> game_speed = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};
     std::map<int, int> line_clears;
 };
