@@ -9,7 +9,7 @@
 #include "../symbols.h"
 #include "../../tetrisvs.h"
 
-GameView::GameView() {
+GameView::GameView(bool bot) : bot(bot) {
     shapeFactory = new ShapeFactory();
     int width, height;
     getmaxyx(stdscr, height, width);
@@ -90,9 +90,12 @@ void GameView::Update(float delta_time) {
                 }
 
                 cgame->NextShape();
+                cgame->scored = false;
+                cgame->score = -1;
                 if (!cgame->board.IsValidPosition(cgame->current_shape)) {
                     TetrisVS::Instance()->Switch(new ScoreView((game_index == 0) ? 'r' : 'l', games[0]->GetLineClears(),
                                                                games[1]->GetLineClears()));
+                    keyboard.TurnOff();
                     return;
                 }
             }
@@ -100,91 +103,60 @@ void GameView::Update(float delta_time) {
     }
 
 // P1 CONTROLS
-    if (keyboard.GetKey('w')) {
-        if (!games[0]->board.IsValidPosition(games[0]->repr_shape)) {
-            TetrisVS::Instance()->Switch(new ScoreView('r', games[0]->GetLineClears(), games[1]->GetLineClears()));
-            return;
-        }
-        int cleared = games[0]->board.Place(games[0]->repr_shape);
-        if (cleared > 0) {
-            games[1]->PutGarbage(cleared);
-            games[0]->AddScore(cleared);
-        }
-        games[0]->NextShape();
-    }
-    if (keyboard.GetKey('s')) {
-        games[0]->current_shape.Move(Shape::Movement::DOWN);
-        if (!games[0]->board.IsValidPosition(games[0]->current_shape))
-            games[0]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('a')) {
-        games[0]->current_shape.Move(Shape::Movement::LEFT);
-        if (!games[0]->board.IsValidPosition(games[0]->current_shape))
-            games[0]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('d')) {
-        games[0]->current_shape.Move(Shape::Movement::RIGHT);
-        if (!games[0]->board.IsValidPosition(games[0]->current_shape))
-            games[0]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('z')) {
-        games[0]->HoldShape();
-    }
-    if (keyboard.GetKey('x')) {
-        games[0]->current_shape.Rotate(Shape::Rotation::COUNTERCLOCKWISE);
-        if (!games[0]->board.IsValidPosition(games[0]->current_shape))
-            games[0]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('c')) {
-        games[0]->current_shape.Rotate(Shape::Rotation::CLOCKWISE);
-        if (!games[0]->board.IsValidPosition(games[0]->current_shape))
-            games[0]->current_shape.Revert();
-    }
+    if (keyboard.GetKey('w')) DropShape(0);
+    if (keyboard.GetKey('s')) MoveShape(0, Shape::Movement::DOWN);
+    if (keyboard.GetKey('a')) MoveShape(0, Shape::Movement::LEFT);
+    if (keyboard.GetKey('d')) MoveShape(0, Shape::Movement::RIGHT);
+    if (keyboard.GetKey('z')) games[0]->HoldShape();
+    if (keyboard.GetKey('x')) RotateShape(0, Shape::Rotation::COUNTERCLOCKWISE);
+    if (keyboard.GetKey('c')) RotateShape(0, Shape::Rotation::CLOCKWISE);
 // P2 CONTROLS
-    if (keyboard.GetKey('o')) {
-        if (!games[1]->board.IsValidPosition(games[1]->repr_shape)) {
-            TetrisVS::Instance()->Switch(new ScoreView('l', games[0]->GetLineClears(), games[1]->GetLineClears()));
-            return;
+    if (!bot) {
+        if (keyboard.GetKey('o'))DropShape(1);
+        if (keyboard.GetKey('l'))MoveShape(1, Shape::Movement::DOWN);
+        if (keyboard.GetKey('k'))MoveShape(1, Shape::Movement::LEFT);
+        if (keyboard.GetKey(';'))MoveShape(1, Shape::Movement::RIGHT);
+        if (keyboard.GetKey(','))games[1]->HoldShape();
+        if (keyboard.GetKey('.'))RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
+        if (keyboard.GetKey('/'))RotateShape(1, Shape::Rotation::CLOCKWISE);
+    } else {
+        if (!games[1]->scored) {
+            games[1]->scored = true;
+            for (int col = -1; col < 10; col++) {
+                for (int rot = 0; rot < 4; rot++) {
+                    Shape check = games[1]->current_shape;
+                    check.SetPos(col, 0);
+                    check.SetRot(rot);
+                    if (!games[1]->board.IsValidPosition(check)) continue;
+                    while (games[1]->board.IsValidPosition(check))
+                        check.Move(Shape::Movement::DOWN);
+                    check.Revert();
+                    int score = games[1]->GetScore(check);
+                    if (score > games[1]->score) {
+                        games[1]->score = score;
+                        games[1]->best_move = check;
+                    }
+                }
+            }
         }
-        int cleared = games[1]->board.Place(games[1]->repr_shape);
-        if (cleared > 0) {
-            games[0]->PutGarbage(cleared);
-            games[1]->AddScore(cleared);
+        int move_delta = games[1]->current_shape.X() - games[1]->best_move.X();
+        int rot_delta = games[1]->current_shape.GetRot() - games[1]->best_move.GetRot();
+        if (rot_delta != 0) {
+            if (move_delta > 0) RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
+            else RotateShape(1, Shape::Rotation::CLOCKWISE);
         }
-        games[1]->NextShape();
-    }
-    if (keyboard.GetKey('l')) {
-        games[1]->current_shape.Move(Shape::Movement::DOWN);
-        if (!games[1]->board.IsValidPosition(games[1]->current_shape))
-            games[1]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('k')) {
-        games[1]->current_shape.Move(Shape::Movement::LEFT);
-        if (!games[1]->board.IsValidPosition(games[1]->current_shape))
-            games[1]->current_shape.Revert();
-    }
-    if (keyboard.GetKey(';')) {
-        games[1]->current_shape.Move(Shape::Movement::RIGHT);
-        if (!games[1]->board.IsValidPosition(games[1]->current_shape))
-            games[1]->current_shape.Revert();
-    }
-    if (keyboard.GetKey(',')) {
-        games[1]->HoldShape();
-    }
-    if (keyboard.GetKey('.')) {
-        games[1]->current_shape.Rotate(Shape::Rotation::COUNTERCLOCKWISE);
-        if (!games[1]->board.IsValidPosition(games[1]->current_shape))
-            games[1]->current_shape.Revert();
-    }
-    if (keyboard.GetKey('/')) {
-        games[1]->current_shape.Rotate(Shape::Rotation::CLOCKWISE);
-        if (!games[1]->board.IsValidPosition(games[1]->current_shape))
-            games[1]->current_shape.Revert();
-    }
+        if (rot_delta == 0 && move_delta != 0) {
+            if (move_delta > 0) MoveShape(1, Shape::Movement::LEFT);
+            else MoveShape(1, Shape::Movement::RIGHT);
+        }
 
+        if (move_delta == 0 && rot_delta == 0) {
+            //DropShape(1);
+            MoveShape(1, Shape::Movement::DOWN);
+        }
 
+    }
     keyboard.Flush();
-    //return 0;
 }
 
 void GameView::DrawShape() {
@@ -295,4 +267,33 @@ void GameView::DrawScore() {
 void GameView::GetScore(std::map<int, int> &lscore, std::map<int, int> &rscore) {
     lscore = games[0]->GetLineClears();
     rscore = games[1]->GetLineClears();
+}
+
+void GameView::DropShape(int board) {
+    if (!games[board]->board.IsValidPosition(games[board]->repr_shape)) {
+        TetrisVS::Instance()->Switch(new ScoreView((board == 0) ? 'r' : 'l', games[board]->GetLineClears(),
+                                                   games[(board + 1) % 2]->GetLineClears()));
+        keyboard.TurnOff();
+        return;
+    }
+    int cleared = games[board]->board.Place(games[board]->repr_shape);
+    if (cleared > board) {
+        games[(board + 1) % 2]->PutGarbage(cleared);
+        games[board]->AddScore(cleared);
+    }
+    games[board]->scored = false;
+    games[board]->score = -1;
+    games[board]->NextShape();
+}
+
+void GameView::MoveShape(int board, Shape::Movement move) {
+    games[board]->current_shape.Move(move);
+    if (!games[board]->board.IsValidPosition(games[board]->current_shape))
+        games[board]->current_shape.Revert();
+}
+
+void GameView::RotateShape(int board, Shape::Rotation rotation) {
+    games[board]->current_shape.Rotate(rotation);
+    if (!games[board]->board.IsValidPosition(games[board]->current_shape))
+        games[board]->current_shape.Revert();
 }

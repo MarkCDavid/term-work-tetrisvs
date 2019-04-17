@@ -8,6 +8,8 @@
 #include "../model/board.h"
 #include "../model/shape.h"
 #include "../shapefactory.h"
+#include "../symbols.h"
+#include "../random.h"
 #include <queue>
 #include <map>
 
@@ -16,11 +18,15 @@ public:
     int xOff, yOff;
     int xHOff, yHOff;
     int xNOff, yNOff;
+    bool scored = false;
+    int score = -1;
     Board board;
     Shape current_shape;
+    Shape best_move;
     Shape repr_shape;
     Shape next_shape;
     Shape hold_shape;
+
     std::queue<Shape> garbage_shapes;
 
     Game(int xOffset, int yOffset, ShapeFactory *shapeFactory);
@@ -39,6 +45,7 @@ public:
 
     int ClearedLines();
 
+    int GetScore(Shape &shape);
     std::map<int, int> GetLineClears();
 private:
     int game_speed[10] = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};

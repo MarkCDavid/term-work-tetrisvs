@@ -83,3 +83,11 @@ void Shape::UpdateOld() {
     oldrotation = rotation;
 }
 
+void Shape::SetRot(int rot) {
+    rotation = rot;
+}
+
+int Shape::GetRot() const {
+    return rotation;
+}
+

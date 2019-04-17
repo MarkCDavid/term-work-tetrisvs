@@ -14,7 +14,7 @@ class GameView : public AbstractView {
 
 public:
 
-    GameView();
+    GameView(bool bot);
 
     ~GameView() override;
 
@@ -30,6 +30,7 @@ private:
     Game **games;
     ShapeFactory *shapeFactory;
     Keyboard keyboard;
+    bool bot = false;
     float c_tick_timer = 0.0f;
     float tick = 1000.0f;
 
@@ -44,6 +45,12 @@ private:
     void DrawNext();
 
     void DrawScore();
+
+    void DropShape(int board);
+
+    void MoveShape(int board, Shape::Movement move);
+
+    void RotateShape(int board, Shape::Rotation rotation);
 };
 
 

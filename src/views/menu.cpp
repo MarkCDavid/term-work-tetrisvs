@@ -25,14 +25,17 @@ void Menu::Update(float delta_time) {
     if (keyboard.GetKey('f')) {
         switch (menu_item) {
             case 0 :
-                TetrisVS::Instance()->Switch(new GameView());
+                TetrisVS::Instance()->Switch(new GameView(false));
+                keyboard.TurnOff();
                 break;
             default:
             case 1 :
-                TetrisVS::Instance()->Switch(new Menu());
+                TetrisVS::Instance()->Switch(new GameView(true));
+                keyboard.TurnOff();
                 break;
             case 2 :
                 TetrisVS::Instance()->Switch(new ControlsView());
+                keyboard.TurnOff();
                 break;
             case 3 :
                 TetrisVS::Instance()->StopGame();

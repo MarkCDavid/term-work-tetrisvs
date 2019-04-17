@@ -9,8 +9,11 @@
 
 void ControlsView::Update(float delta_time) {
     keyboard.Update();
-    if (keyboard.GetKey('f'))
+    if (keyboard.GetKey('f')) {
         TetrisVS::Instance()->Switch(new Menu());
+        keyboard.TurnOff();
+        return;
+    }
     keyboard.Flush();
 }
 

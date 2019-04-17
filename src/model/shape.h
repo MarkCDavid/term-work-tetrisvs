@@ -27,6 +27,10 @@ public:
 
     void SetPos(int x, int y);
 
+    void SetRot(int rot);
+
+    int GetRot() const;
+
     int Size() const;
 
     void Move(Movement mov);
