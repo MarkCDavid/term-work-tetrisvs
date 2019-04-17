@@ -9,6 +9,7 @@
 
 
 TetrisVS *TetrisVS::instance = nullptr;
+ShapeFactory *ShapeFactory::instance = nullptr;
 
 int main() {
     while (TetrisVS::Instance()->GameRunning())

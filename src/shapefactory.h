@@ -10,11 +10,19 @@
 
 class ShapeFactory {
 public:
-    ShapeFactory();
+    static ShapeFactory *Instance();
+
     Shape Regular();
+
     Shape Garbage(int level);
 
+protected:
+    ShapeFactory();
+
+    ~ShapeFactory();
+
 private:
+    static ShapeFactory *instance;
     char **regular_shapes;
     char **garbage_shapes;
 

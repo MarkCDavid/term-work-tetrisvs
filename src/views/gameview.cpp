@@ -10,21 +10,19 @@
 #include "../../tetrisvs.h"
 
 GameView::GameView(bool bot, bool hard) : bot(bot), hard(hard) {
-    shapeFactory = new ShapeFactory();
     int width, height;
     getmaxyx(stdscr, height, width);
     int x_step = width / 6;
     int y_step = height / 4;
     games = new Game *[2];
-    games[0] = new Game(x_step, y_step, shapeFactory);
-    games[1] = new Game(x_step * 4, y_step, shapeFactory);
+    games[0] = new Game(x_step, y_step);
+    games[1] = new Game(x_step * 4, y_step);
 }
 
 GameView::~GameView() {
     delete games[0];
     delete games[1];
     delete games;
-    delete shapeFactory;
 }
 
 void GameView::InitialDraw() {
@@ -86,7 +84,7 @@ void GameView::Update(float delta_time) {
                 int cleared = cgame->board.Place(cgame->current_shape);
                 if (cleared > 0) {
                     games[(game_index + 1) % 2]->PutGarbage(cleared);
-                    cgame->AddScore(cleared);
+                    cgame->AddLineClear(cleared);
                 }
 
                 cgame->NextShape();
@@ -138,16 +136,17 @@ void GameView::Update(float delta_time) {
                     if (hard) {
                         for (int col_c = -1; col_c < 10; col_c++) {
                             for (int rot_c = 0; rot_c < 4; rot_c++) {
+                                Board hcboard = cboard;
                                 Shape check_next = games[1]->next_shape;
                                 check_next.SetPos(col_c, 0);
                                 check_next.SetRot(rot_c);
-                                if (!cboard.IsValidPosition(check_next)) continue;
-                                while (cboard.IsValidPosition(check_next))
+                                if (!hcboard.IsValidPosition(check_next)) continue;
+                                while (hcboard.IsValidPosition(check_next))
                                     check_next.Move(Shape::Movement::DOWN);
                                 check_next.Revert();
-                                cboard.Place(check_next);
+                                hcboard.Place(check_next);
 
-                                float score = games[1]->GetScore(cboard);
+                                float score = games[1]->GetScore(hcboard);
                                 if (score > games[1]->score) {
                                     games[1]->score = score;
                                     games[1]->best_move = check;
@@ -175,7 +174,7 @@ void GameView::Update(float delta_time) {
             else MoveShape(1, Shape::Movement::RIGHT);
         }
 
-        if (move_delta == 0 && rot_delta == 0) {
+        if (move_delta == 0 && rot_delta == 0 && (hard) ? std::cos(c_tick_timer) < 0.5f : std::cos(c_tick_timer) > 0) {
             //DropShape(1);
             MoveShape(1, Shape::Movement::DOWN);
         }
@@ -302,9 +301,9 @@ void GameView::DropShape(int board) {
         return;
     }
     int cleared = games[board]->board.Place(games[board]->repr_shape);
-    if (cleared > board) {
+    if (cleared > 0) {
         games[(board + 1) % 2]->PutGarbage(cleared);
-        games[board]->AddScore(cleared);
+        games[board]->AddLineClear(cleared);
     }
     games[board]->scored = false;
     games[board]->score = -1e9;

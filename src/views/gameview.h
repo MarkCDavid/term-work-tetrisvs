@@ -14,21 +14,20 @@ class GameView : public AbstractView {
 
 public:
 
-    GameView(bool bot, bool hard = false);
+    GameView(bool bot, bool hard = false); // -
 
     ~GameView() override;
 
-    void Update(float delta_time) override;
+    void Update(float delta_time) override; // +
 
-    void InitialDraw() override;
+    void InitialDraw() override; // +
 
-    void Draw() override;
+    void Draw() override; // +
 
-    void GetScore(std::map<int, int> &lscore, std::map<int, int> &rscore);
+    void GetScore(std::map<int, int> &lscore, std::map<int, int> &rscore); // +/-
 
 private:
     Game **games;
-    ShapeFactory *shapeFactory;
     Keyboard keyboard;
     bool bot = false;
     bool hard = false;

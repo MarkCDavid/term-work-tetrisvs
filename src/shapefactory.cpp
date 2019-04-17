@@ -106,24 +106,24 @@ ShapeFactory::ShapeFactory() {
 
 
     // ---------- Level 1 ----------
-    garbage_shapes[0] = new char[9]{' ', 'R', 'R',
+    garbage_shapes[0] = new char[9]{'R', 'R', 'R',
                                     'R', 'R', ' ',
-                                    ' ', 'R', ' '};
+                                    ' ', ' ', ' '};
     // ---------- Level 1 ----------
     garbage_shapes[1] = new char[9]{'R', 'R', 'R',
                                     ' ', 'R', ' ',
                                     ' ', 'R', ' '};
     // ---------- Level 1 ----------
     garbage_shapes[2] = new char[9]{' ', ' ', 'R',
-                                    'R', 'R', 'R',
-                                    'R', ' ', ' '};
+                                    ' ', 'R', 'R',
+                                    'R', 'R', ' '};
     // ---------- Level 1 ----------
-    garbage_shapes[3] = new char[9]{' ', 'R', ' ',
-                                    'R', 'R', 'R',
-                                    ' ', 'R', ' '};
+    garbage_shapes[3] = new char[9]{'R', 'R', 'R',
+                                    'R', ' ', ' ',
+                                    'R', ' ', ' '};
     // ---------- Level 2 ----------
-    garbage_shapes[4] = new char[9]{'G', ' ', ' ',
-                                    'G', 'G', ' ',
+    garbage_shapes[4] = new char[9]{'G', 'G', ' ',
+                                    ' ', 'G', ' ',
                                     ' ', 'G', 'G'};
     // ---------- Level 2 ----------
     garbage_shapes[5] = new char[9]{'G', ' ', 'G',
@@ -141,28 +141,28 @@ ShapeFactory::ShapeFactory() {
                                      ' ', 'G', ' ', ' '};
 
     // ---------- Level 3 ----------
-    garbage_shapes[8] = new char[16]{' ', 'M', 'M', ' ',
+    garbage_shapes[8] = new char[16]{'M', 'M', 'M', ' ',
                                      ' ', 'M', ' ', ' ',
                                      ' ', 'M', 'M', ' ',
                                      ' ', 'M', ' ', ' '};
     // ---------- Level 3 ----------
-    garbage_shapes[9] = new char[9]{'M', 'M', ' ',
-                                    'M', 'M', ' ',
-                                    'M', 'M', ' '};
+    garbage_shapes[9] = new char[9]{'M', 'M', 'M',
+                                    'M', ' ', 'M',
+                                    'M', 'M', 'M'};
     // ---------- Level 3 ----------
-    garbage_shapes[10] = new char[9]{' ', 'M', ' ',
+    garbage_shapes[10] = new char[9]{'M', ' ', ' ',
                                      'M', 'M', 'M',
                                      'M', 'M', ' '};
     // ---------- Level 3 ----------
-    garbage_shapes[11] = new char[16]{' ', ' ', ' ', ' ',
+    garbage_shapes[11] = new char[16]{' ', ' ', ' ', 'M',
                                       'M', 'M', ' ', 'M',
                                       ' ', 'M', 'M', 'M',
-                                      ' ', ' ', ' ', ' '};
+                                      ' ', 'M', ' ', ' '};
     // ---------- Level 4 ----------
     garbage_shapes[12] = new char[16]{' ', ' ', 'B', ' ',
-                                      ' ', 'B', 'B', ' ',
-                                      'B', 'B', ' ', ' ',
-                                      'B', ' ', ' ', ' '};
+                                      ' ', 'B', 'B', 'B',
+                                      'B', 'B', 'B', ' ',
+                                      'B', ' ', 'B', 'B'};
     // ---------- Level 4 ----------
     garbage_shapes[13] = new char[25]{'B', 'B', 'B', 'B', 'B',
                                       'B', 'B', 'B', 'B', 'B',
@@ -170,16 +170,26 @@ ShapeFactory::ShapeFactory() {
                                       'B', 'B', 'B', 'B', 'B',
                                       'B', 'B', 'B', 'B', 'B'};
     // ---------- Level 4 ----------
-    garbage_shapes[14] = new char[25]{' ', ' ', ' ', ' ', ' ',
+    garbage_shapes[14] = new char[25]{' ', ' ', ' ', ' ', 'B',
                                       ' ', 'B', ' ', ' ', 'B',
                                       'B', 'B', 'B', 'B', 'B',
                                       ' ', 'B', ' ', ' ', 'B',
-                                      ' ', ' ', ' ', ' ', ' '};
+                                      ' ', 'B', ' ', ' ', ' '};
     // ---------- Level 4 ----------
     garbage_shapes[15] = new char[16]{'B', 'B', 'B', 'B',
                                       ' ', 'B', ' ', ' ',
-                                      ' ', 'B', 'B', ' ',
+                                      ' ', 'B', 'B', 'B',
                                       ' ', ' ', 'B', ' '};
 
+}
+
+ShapeFactory *ShapeFactory::Instance() {
+    if (instance == nullptr)
+        instance = new ShapeFactory();
+    return instance;
+}
+
+ShapeFactory::~ShapeFactory() {
+    delete instance;
 }
 
