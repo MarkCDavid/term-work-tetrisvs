@@ -21,63 +21,32 @@ bool Board::IsValidPosition(const Shape &shape) const {
 }
 
 
-
-int Board::Place(const Shape &shape) {
+void Board::Place(const Shape &shape) {
     for (int row = 0; row < shape.Size(); row++)
-        for (int col = 0; col < shape.Size(); col++) {
-            char s_char = shape.GetSymbolAt(row, col);
-            if (s_char != Symbols::EMPTY)
+        for (int col = 0; col < shape.Size(); col++)
+            if (shape.GetSymbolAt(row, col) != Symbols::EMPTY)
                 Put(shape.X() + row, shape.Y() + col, shape.GetSymbolAt(row, col));
-        }
-    int cleared = Clear(shape);
-    if (cleared > 0) Cascade(shape);
-    return cleared;
 }
 
-
-
-int Board::Clear(const Shape &shape) {
+int Board::Clear() {
     int cleared = 0;
-    for (int row = shape.Y(); row < shape.Y() + shape.Size() && row < Height; row++) {
-        bool clear = true;
-        for (int col = 0; col < 10; col++)
-            if (GetSymbolAt(col, row) == Symbols::EMPTY) {
-                clear = false;
-                break;
+    for (int row = 0; row < Board::Height; row++)
+        for (int col = 0; col < Board::Width; col++)
+            if (IsClear(row)) {
+                ClearRow(row);
+                cleared++;
             }
-        if (clear) {
-            for (int col = 0; col < 10; col++) Put(col, row, Symbols::EMPTY);
-            cleared++;
-        }
-    }
     return cleared;
 }
 
-void Board::Cascade(const Shape &shape) {
+void Board::Cascade() {
     for (int row = Height - 1; row > 0; row--) {
-        bool empty = true;
-        for (int col = 0; col < 10; col++)
-            if (GetSymbolAt(col, row) != Symbols::EMPTY) {
-                empty = false;
-                break;
-            }
-        if (empty) {
-            int next_row = row;
-            bool next_row_empty = true;
-            while (next_row_empty) {
-                next_row--;
-                for (int col = 0; col < 10; col++)
-                    if (GetSymbolAt(col, next_row) != Symbols::EMPTY)
-                        next_row_empty = false;
-
-            }
-            for (int offset = 0; next_row - offset > 0; offset++) {
-                for (int col = 0; col < 10; col++) {
-                    Put(col, row - offset, GetSymbolAt(col, next_row - offset));
-                    Put(col, next_row - offset, ' ');
-                }
-            }
-        }
+        int offset = 0;
+        if (IsEmpty(row))
+            do offset++;
+            while (IsEmpty(row - offset));
+        if (offset > 0)
+            CascadeSymbols(row, offset);
     }
 }
 
@@ -97,3 +66,37 @@ char Board::GetSymbolAt(int x, int y) const {
     if (x < 0 || x >= Width || y >= Height) return Symbols::OOB;
     return Get(x, y);
 }
+
+bool Board::IsClear(int row) const {
+    for (int col = 0; col < 10; col++)
+        if (GetSymbolAt(col, row) == Symbols::EMPTY)
+            return false;
+    return true;
+}
+
+void Board::ClearRow(int row) {
+    for (int col = 0; col < 10; col++)
+        Put(col, row, Symbols::EMPTY);
+}
+
+bool Board::IsEmpty(int row) const {
+    for (int col = 0; col < 10; col++)
+        if (GetSymbolAt(col, row) != Symbols::EMPTY)
+            return false;
+    return true;
+}
+
+void Board::CascadeSymbols(int row, int offset) {
+    for (int i = 0; i > -(row + offset); i--) {
+
+        int to = row + i;
+        int from = row + offset + i;
+
+        for (int col = 0; col < 10; col++) {
+            Put(col, to, GetSymbolAt(col, from));
+            Put(col, from, Symbols::EMPTY);
+        }
+    }
+}
+
+

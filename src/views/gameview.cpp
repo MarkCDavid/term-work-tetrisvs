@@ -81,15 +81,15 @@ void GameView::Update(float delta_time) {
             cgame->current_shape.Move(Shape::Movement::DOWN);
             if (!cgame->board.IsValidPosition(cgame->current_shape)) {
                 cgame->current_shape.Revert();
-                int cleared = cgame->board.Place(cgame->current_shape);
+                cgame->board.Place(cgame->current_shape);
+                int cleared = cgame->board.Clear();
                 if (cleared > 0) {
+                    cgame->board.Cascade();
                     games[(game_index + 1) % 2]->PutGarbage(cleared);
                     cgame->AddLineClear(cleared);
                 }
 
                 cgame->NextShape();
-                cgame->scored = false;
-                cgame->score = -1e9f;
                 if (!cgame->board.IsValidPosition(cgame->current_shape)) {
                     TetrisVS::Instance()->Switch(
                             new ScoreView((game_index == 0) ? (bot) ? 'c' : 'r' : 'l', games[0]->GetLineClears(),
@@ -117,68 +117,68 @@ void GameView::Update(float delta_time) {
         if (Keyboard::Instance()->GetKey(','))games[1]->HoldShape();
         if (Keyboard::Instance()->GetKey('.'))RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
         if (Keyboard::Instance()->GetKey('/'))RotateShape(1, Shape::Rotation::CLOCKWISE);
-    } else {
-        if (!games[1]->scored) {
-            games[1]->scored = true;
-            for (int col = 0; col < 10; col++) {
-                for (int rot = 0; rot < 4; rot++) {
-                    Board cboard = games[1]->board;
-
-                    Shape check = games[1]->current_shape;
-                    check.SetPos(col, 0);
-                    check.SetRot(rot);
-                    if (!cboard.IsValidPosition(check)) continue;
-                    while (cboard.IsValidPosition(check))
-                        check.Move(Shape::Movement::DOWN);
-                    check.Revert();
-                    cboard.Place(check);
-                    if (hard) {
-                        for (int col_c = -1; col_c < 10; col_c++) {
-                            for (int rot_c = 0; rot_c < 4; rot_c++) {
-                                Board hcboard = cboard;
-                                Shape check_next = games[1]->next_shape;
-                                check_next.SetPos(col_c, 0);
-                                check_next.SetRot(rot_c);
-                                if (!hcboard.IsValidPosition(check_next)) continue;
-                                while (hcboard.IsValidPosition(check_next))
-                                    check_next.Move(Shape::Movement::DOWN);
-                                check_next.Revert();
-                                hcboard.Place(check_next);
-
-                                float score = games[1]->GetScore(hcboard);
-                                if (score > games[1]->score) {
-                                    games[1]->score = score;
-                                    games[1]->best_move = check;
-                                }
-                            }
-                        }
-                    } else {
-                        float score = games[1]->GetScore(cboard);
-                        if (score > games[1]->score) {
-                            games[1]->score = score;
-                            games[1]->best_move = check;
-                        }
-                    }
-                }
-            }
-        }
-        int move_delta = games[1]->current_shape.X() - games[1]->best_move.X();
-        int rot_delta = games[1]->current_shape.GetRot() - games[1]->best_move.GetRot();
-        if (rot_delta != 0) {
-            if (move_delta > 0) RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
-            else RotateShape(1, Shape::Rotation::CLOCKWISE);
-        }
-        if (rot_delta == 0 && move_delta != 0) {
-            if (move_delta > 0) MoveShape(1, Shape::Movement::LEFT);
-            else MoveShape(1, Shape::Movement::RIGHT);
-        }
-
-        if (move_delta == 0 && rot_delta == 0 && (hard) ? std::cos(c_tick_timer) < 1.0f : std::cos(c_tick_timer) > 0) {
-            //DropShape(1);
-            MoveShape(1, Shape::Movement::DOWN);
-        }
-
     }
+//    else {
+//        if (!games[1]->scored) {
+//            games[1]->scored = true;
+//            for (int col = 0; col < 10; col++) {
+//                for (int rot = 0; rot < 4; rot++) {
+//                    Board cboard = games[1]->board;
+//
+//                    Shape check = games[1]->current_shape;
+//                    check.SetPos(col, 0);
+//                    check.SetRot(rot);
+//                    if (!cboard.IsValidPosition(check)) continue;
+//                    while (cboard.IsValidPosition(check))
+//                        check.Move(Shape::Movement::DOWN);
+//                    check.Revert();
+//                    cboard.Place(check);
+//                    if (hard) {
+//                        for (int col_c = -1; col_c < 10; col_c++) {
+//                            for (int rot_c = 0; rot_c < 4; rot_c++) {
+//                                Board hcboard = cboard;
+//                                Shape check_next = games[1]->next_shape;
+//                                check_next.SetPos(col_c, 0);
+//                                check_next.SetRot(rot_c);
+//                                if (!hcboard.IsValidPosition(check_next)) continue;
+//                                while (hcboard.IsValidPosition(check_next))
+//                                    check_next.Move(Shape::Movement::DOWN);
+//                                check_next.Revert();
+//                                hcboard.Place(check_next);
+//
+//                                float score = games[1]->GetScore(hcboard);
+//                                if (score > games[1]->score) {
+//                                    games[1]->score = score;
+//                                    games[1]->best_move = check;
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        float score = games[1]->GetScore(cboard);
+//                        if (score > games[1]->score) {
+//                            games[1]->score = score;
+//                            games[1]->best_move = check;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        int move_delta = games[1]->current_shape.X() - games[1]->best_move.X();
+//        int rot_delta = games[1]->current_shape.GetRot() - games[1]->best_move.GetRot();
+//        if (rot_delta != 0) {
+//            if (move_delta > 0) RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
+//            else RotateShape(1, Shape::Rotation::CLOCKWISE);
+//        }
+//        if (rot_delta == 0 && move_delta != 0) {
+//            if (move_delta > 0) MoveShape(1, Shape::Movement::LEFT);
+//            else MoveShape(1, Shape::Movement::RIGHT);
+//        }
+//
+//        if (move_delta == 0 && rot_delta == 0 && (hard) ? std::cos(c_tick_timer) < 1.0f : std::cos(c_tick_timer) > 0) {
+//            //DropShape(1);
+//            MoveShape(1, Shape::Movement::DOWN);
+//        }
+//    }
     Keyboard::Instance()->Flush();
 }
 
@@ -288,19 +288,7 @@ void GameView::DrawScore() {
 }
 
 void GameView::DropShape(int board) {
-    if (!games[board]->board.IsValidPosition(games[board]->repr_shape)) {
-        TetrisVS::Instance()->Switch(new ScoreView((board == 0) ? 'r' : 'l', games[board]->GetLineClears(),
-                                                   games[(board + 1) % 2]->GetLineClears()));
-        return;
-    }
-    int cleared = games[board]->board.Place(games[board]->repr_shape);
-    if (cleared > 0) {
-        games[(board + 1) % 2]->PutGarbage(cleared);
-        games[board]->AddLineClear(cleared);
-    }
-    games[board]->scored = false;
-    games[board]->score = -1e9f;
-    games[board]->NextShape();
+    games[board]->current_shape = games[board]->repr_shape;
 }
 
 void GameView::MoveShape(int board, Shape::Movement move) {

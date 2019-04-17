@@ -18,18 +18,26 @@ public:
 
     char GetSymbolAt(int x, int y) const;
 
-    int Place(const Shape &shape);
+    void Place(const Shape &shape);
 
+    void Cascade();
+
+    int Clear();
 private:
+
     char Get(int x, int y) const;
 
     void Put(int x, int y, char s);
 
     int Coordinate(int x, int y) const;
 
-    int Clear(const Shape &shape);
+    bool IsClear(int row) const;
 
-    void Cascade(const Shape &shape);
+    bool IsEmpty(int row) const;
+
+    void ClearRow(int row);
+
+    void CascadeSymbols(int row, int offset);
 
     char board[Width * Height]{};
 };
