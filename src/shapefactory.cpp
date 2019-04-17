@@ -75,10 +75,10 @@ ShapeFactory::ShapeFactory() {
     regular_shapes = new char *[7];
     garbage_shapes = new char *[16];
     // ---------- I shape ----------
-    regular_shapes[0] = new char[16]{' ', 'B', ' ', ' ',
-                                     ' ', 'B', ' ', ' ',
-                                     ' ', 'B', ' ', ' ',
-                                     ' ', 'B', ' ', ' '};
+    regular_shapes[0] = new char[16]{'B', ' ', ' ', ' ',
+                                     'B', ' ', ' ', ' ',
+                                     'B', ' ', ' ', ' ',
+                                     'B', ' ', ' ', ' '};
     // ---------- O shape ----------
     regular_shapes[1] = new char[4]{'C', 'C',
                                     'C', 'C'};
@@ -87,13 +87,13 @@ ShapeFactory::ShapeFactory() {
                                     ' ', 'M', ' ',
                                     ' ', ' ', ' '};
     // ---------- J shape ----------
-    regular_shapes[3] = new char[9]{' ', 'R', ' ',
-                                    ' ', 'R', ' ',
-                                    'R', 'R', ' '};
+    regular_shapes[3] = new char[9]{' ', ' ', 'R',
+                                    ' ', ' ', 'R',
+                                    ' ', 'R', 'R'};
     // ---------- L shape ----------
-    regular_shapes[4] = new char[9]{' ', 'Y', ' ',
-                                    ' ', 'Y', ' ',
-                                    ' ', 'Y', 'Y',};
+    regular_shapes[4] = new char[9]{'Y', ' ', ' ',
+                                    'Y', ' ', ' ',
+                                    'Y', 'Y', ' ',};
     // ---------- S shape ----------
     regular_shapes[5] = new char[9]{' ', 'G', 'G',
                                     'G', 'G', ' ',

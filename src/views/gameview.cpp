@@ -120,7 +120,7 @@ void GameView::Update(float delta_time) {
     } else {
         if (!games[1]->scored) {
             games[1]->scored = true;
-            for (int col = -1; col < 10; col++) {
+            for (int col = 0; col < 10; col++) {
                 for (int rot = 0; rot < 4; rot++) {
                     Board cboard = games[1]->board;
 
@@ -173,7 +173,7 @@ void GameView::Update(float delta_time) {
             else MoveShape(1, Shape::Movement::RIGHT);
         }
 
-        if (move_delta == 0 && rot_delta == 0 && (hard) ? std::cos(c_tick_timer) < 0.5f : std::cos(c_tick_timer) > 0) {
+        if (move_delta == 0 && rot_delta == 0 && (hard) ? std::cos(c_tick_timer) < 1.0f : std::cos(c_tick_timer) > 0) {
             //DropShape(1);
             MoveShape(1, Shape::Movement::DOWN);
         }
