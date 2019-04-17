@@ -73,7 +73,7 @@ void GameView::Draw() {
 }
 
 void GameView::Update(float delta_time) {
-    keyboard.Update();
+    Keyboard::Instance()->Update();
     c_tick_timer += delta_time;
     for (int game_index = 0; game_index < 2; game_index++) {
         Game *cgame = games[game_index];
@@ -94,7 +94,6 @@ void GameView::Update(float delta_time) {
                     TetrisVS::Instance()->Switch(
                             new ScoreView((game_index == 0) ? (bot) ? 'c' : 'r' : 'l', games[0]->GetLineClears(),
                                           games[1]->GetLineClears()));
-                    keyboard.TurnOff();
                     return;
                 }
             }
@@ -102,22 +101,22 @@ void GameView::Update(float delta_time) {
     }
 
 // P1 CONTROLS
-    if (keyboard.GetKey('w')) DropShape(0);
-    if (keyboard.GetKey('s')) MoveShape(0, Shape::Movement::DOWN);
-    if (keyboard.GetKey('a')) MoveShape(0, Shape::Movement::LEFT);
-    if (keyboard.GetKey('d')) MoveShape(0, Shape::Movement::RIGHT);
-    if (keyboard.GetKey('z')) games[0]->HoldShape();
-    if (keyboard.GetKey('x')) RotateShape(0, Shape::Rotation::COUNTERCLOCKWISE);
-    if (keyboard.GetKey('c')) RotateShape(0, Shape::Rotation::CLOCKWISE);
+    if (Keyboard::Instance()->GetKey('w')) DropShape(0);
+    if (Keyboard::Instance()->GetKey('s')) MoveShape(0, Shape::Movement::DOWN);
+    if (Keyboard::Instance()->GetKey('a')) MoveShape(0, Shape::Movement::LEFT);
+    if (Keyboard::Instance()->GetKey('d')) MoveShape(0, Shape::Movement::RIGHT);
+    if (Keyboard::Instance()->GetKey('z')) games[0]->HoldShape();
+    if (Keyboard::Instance()->GetKey('x')) RotateShape(0, Shape::Rotation::COUNTERCLOCKWISE);
+    if (Keyboard::Instance()->GetKey('c')) RotateShape(0, Shape::Rotation::CLOCKWISE);
 // P2 CONTROLS
     if (!bot) {
-        if (keyboard.GetKey('o'))DropShape(1);
-        if (keyboard.GetKey('l'))MoveShape(1, Shape::Movement::DOWN);
-        if (keyboard.GetKey('k'))MoveShape(1, Shape::Movement::LEFT);
-        if (keyboard.GetKey(';'))MoveShape(1, Shape::Movement::RIGHT);
-        if (keyboard.GetKey(','))games[1]->HoldShape();
-        if (keyboard.GetKey('.'))RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
-        if (keyboard.GetKey('/'))RotateShape(1, Shape::Rotation::CLOCKWISE);
+        if (Keyboard::Instance()->GetKey('o'))DropShape(1);
+        if (Keyboard::Instance()->GetKey('l'))MoveShape(1, Shape::Movement::DOWN);
+        if (Keyboard::Instance()->GetKey('k'))MoveShape(1, Shape::Movement::LEFT);
+        if (Keyboard::Instance()->GetKey(';'))MoveShape(1, Shape::Movement::RIGHT);
+        if (Keyboard::Instance()->GetKey(','))games[1]->HoldShape();
+        if (Keyboard::Instance()->GetKey('.'))RotateShape(1, Shape::Rotation::COUNTERCLOCKWISE);
+        if (Keyboard::Instance()->GetKey('/'))RotateShape(1, Shape::Rotation::CLOCKWISE);
     } else {
         if (!games[1]->scored) {
             games[1]->scored = true;
@@ -180,7 +179,7 @@ void GameView::Update(float delta_time) {
         }
 
     }
-    keyboard.Flush();
+    Keyboard::Instance()->Flush();
 }
 
 void GameView::DrawShape() {
@@ -297,7 +296,6 @@ void GameView::DropShape(int board) {
     if (!games[board]->board.IsValidPosition(games[board]->repr_shape)) {
         TetrisVS::Instance()->Switch(new ScoreView((board == 0) ? 'r' : 'l', games[board]->GetLineClears(),
                                                    games[(board + 1) % 2]->GetLineClears()));
-        keyboard.TurnOff();
         return;
     }
     int cleared = games[board]->board.Place(games[board]->repr_shape);

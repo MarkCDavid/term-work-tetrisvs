@@ -20,7 +20,6 @@ public:
     void Draw() override;
 
 private:
-    Keyboard keyboard;
     char winner;
     std::map<int, int> l_player_score;
     std::map<int, int> r_player_score;

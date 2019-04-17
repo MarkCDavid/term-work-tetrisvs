@@ -51,18 +51,18 @@ public:
 
 private:
 
-
     std::pair<int, int> AggregateHeightAndBumpiness(Board &cboard); // -
 
     int CompleteLines(Board &cboard); // -
 
     int HoleCount(Board &cboard); // -
 
-    int game_speed[10] = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};  // +/-
     bool hold_changed = false; // +
     int cleared = 0; // +
-    std::map<int, int> line_clears; // +
     float tick = 0.0f; // +
+
+    std::vector<int> game_speed = {12, 25, 39, 54, 70, 85, 99, 112, 124, 135};  // +/-
+    std::map<int, int> line_clears; // +
 };
 
 

@@ -49,11 +49,10 @@ void Game::AddLineClear(int clear) {
 }
 
 int Game::SpeedModifier() {
-    static int max = 10;
-    for (int i = 0; i < max; i++)
+    for (int i = 0; i < game_speed.size(); i++)
         if (cleared < game_speed[i])
             return (i + 1);
-    return max + 1;
+    return game_speed.size() + 1;
 }
 
 bool Game::IncreaseTick(float max, float delta_time) {

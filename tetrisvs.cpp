@@ -10,6 +10,7 @@
 
 TetrisVS *TetrisVS::instance = nullptr;
 ShapeFactory *ShapeFactory::instance = nullptr;
+Keyboard *Keyboard::instance = nullptr;
 
 int main() {
     while (TetrisVS::Instance()->GameRunning())
@@ -46,6 +47,7 @@ void TetrisVS::Update() {
 }
 
 void TetrisVS::Switch(AbstractView *new_view) {
+    Keyboard::Instance()->Flush();
     delete view;
     view = new_view;
     view->InitialDraw();

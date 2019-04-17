@@ -25,7 +25,6 @@ private:
     const int title_height = 28;
     const int title_width = 117;
 
-    Keyboard keyboard;
     int prev_menu_item = 0;
     int menu_item = 0;
     int menu_option_count = 0;

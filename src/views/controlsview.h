@@ -15,9 +15,6 @@ public:
     void InitialDraw() override;
 
     void Draw() override;
-
-private:
-    Keyboard keyboard;
 };
 
 

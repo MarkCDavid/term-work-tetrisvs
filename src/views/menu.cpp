@@ -10,36 +10,32 @@
 #include "../../tetrisvs.h"
 
 void Menu::Update(float delta_time) {
-    keyboard.Update();
-    if (keyboard.GetKey(KEY_DOWN)) {
+    Keyboard::Instance()->Update();
+    if (Keyboard::Instance()->GetKey(KEY_DOWN)) {
         prev_menu_item = menu_item;
         menu_item++;
         if (menu_item >= menu_option_count) menu_item = menu_option_count - 1;
 
     }
-    if (keyboard.GetKey(KEY_UP)) {
+    if (Keyboard::Instance()->GetKey(KEY_UP)) {
         prev_menu_item = menu_item;
         menu_item--;
         if (menu_item < 0) menu_item = 0;
     }
-    if (keyboard.GetKey('f')) {
+    if (Keyboard::Instance()->GetKey('f')) {
         switch (menu_item) {
             case 0 :
                 TetrisVS::Instance()->Switch(new GameView(false, false));
-                keyboard.TurnOff();
                 break;
             default:
             case 1 :
                 TetrisVS::Instance()->Switch(new GameView(true, false));
-                keyboard.TurnOff();
                 break;
             case 2 :
                 TetrisVS::Instance()->Switch(new GameView(true, true));
-                keyboard.TurnOff();
                 break;
             case 3 :
                 TetrisVS::Instance()->Switch(new ControlsView());
-                keyboard.TurnOff();
                 break;
             case 4 :
                 TetrisVS::Instance()->StopGame();
@@ -49,7 +45,7 @@ void Menu::Update(float delta_time) {
         }
 
     } else {
-        keyboard.Flush();
+        Keyboard::Instance()->Flush();
     }
 }
 

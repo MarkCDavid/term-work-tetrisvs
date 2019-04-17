@@ -9,13 +9,12 @@
 #include <utility>
 
 void ScoreView::Update(float delta_time) {
-    keyboard.Update();
-    if (keyboard.GetKey('f')) {
+    Keyboard::Instance()->Update();
+    if (Keyboard::Instance()->GetKey('f')) {
         TetrisVS::Instance()->Switch(new Menu());
-        keyboard.TurnOff();
         return;
     }
-    keyboard.Flush();
+    Keyboard::Instance()->Flush();
 }
 
 void ScoreView::InitialDraw() {

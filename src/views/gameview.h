@@ -28,7 +28,6 @@ public:
 
 private:
     Game **games;
-    Keyboard keyboard;
     bool bot = false;
     bool hard = false;
     float c_tick_timer = 0.0f;

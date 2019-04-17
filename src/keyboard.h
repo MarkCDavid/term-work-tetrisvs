@@ -10,12 +10,12 @@
 
 class Keyboard {
 public:
-    void TurnOff();
+    static Keyboard *Instance();
     void Update();
     void Flush();
     bool GetKey(int keycode);
 private:
-    bool active = true;
+    static Keyboard *instance;
     std::set<int> keys;
 };
 
