@@ -31,7 +31,7 @@ private:
 
     void Cascade(const Shape &shape);
 
-    char board[Width * Height];
+    char board[Width * Height]{};
 };
 
 

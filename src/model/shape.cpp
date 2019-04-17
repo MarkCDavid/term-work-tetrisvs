@@ -4,8 +4,8 @@
 
 #include "shape.h"
 
-Shape::Shape(int size, char *shape) : size(size), shape(shape), xPos(5), yPos(0), rotation(0),
-                                      oldxPos(xPos), oldyPos(yPos), oldrotation(rotation) {}
+Shape::Shape(int size, const char *shape) : size(size), shape(shape), xPos(5), yPos(0), rotation(0),
+                                            oldxPos(xPos), oldyPos(yPos), oldrotation(rotation) {}
 
 Shape::Shape() : size(-1), shape(nullptr), xPos(-1), yPos(-1), rotation(-1),
                  oldxPos(-1), oldyPos(-1), oldrotation(-1) {}

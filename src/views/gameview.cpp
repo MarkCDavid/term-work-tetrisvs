@@ -89,7 +89,7 @@ void GameView::Update(float delta_time) {
 
                 cgame->NextShape();
                 cgame->scored = false;
-                cgame->score = -1e9;
+                cgame->score = -1e9f;
                 if (!cgame->board.IsValidPosition(cgame->current_shape)) {
                     TetrisVS::Instance()->Switch(
                             new ScoreView((game_index == 0) ? (bot) ? 'c' : 'r' : 'l', games[0]->GetLineClears(),
@@ -287,11 +287,6 @@ void GameView::DrawScore() {
     }
 }
 
-void GameView::GetScore(std::map<int, int> &lscore, std::map<int, int> &rscore) {
-    lscore = games[0]->GetLineClears();
-    rscore = games[1]->GetLineClears();
-}
-
 void GameView::DropShape(int board) {
     if (!games[board]->board.IsValidPosition(games[board]->repr_shape)) {
         TetrisVS::Instance()->Switch(new ScoreView((board == 0) ? 'r' : 'l', games[board]->GetLineClears(),
@@ -304,7 +299,7 @@ void GameView::DropShape(int board) {
         games[board]->AddLineClear(cleared);
     }
     games[board]->scored = false;
-    games[board]->score = -1e9;
+    games[board]->score = -1e9f;
     games[board]->NextShape();
 }
 

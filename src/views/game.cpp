@@ -74,10 +74,10 @@ std::map<int, int> Game::GetLineClears() {
 
 float Game::GetScore(Board &cboard) {
     // Implementation from https://codemyroad.wordpress.com/2013/04/14/tetris-ai-the-near-perfect-player/
-    float a = -0.510066;
-    float b = 0.760666;
-    float c = -0.356630;
-    float d = -0.184483;
+    float a = -0.510066f;
+    float b = 0.760666f;
+    float c = -0.356630f;
+    float d = -0.184483f;
 
     int lines = CompleteLines(cboard);
     int holes = HoleCount(cboard);

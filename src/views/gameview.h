@@ -14,7 +14,7 @@ class GameView : public AbstractView {
 
 public:
 
-    GameView(bool bot, bool hard = false); // -
+    explicit GameView(bool bot, bool hard = false); // -
 
     ~GameView() override;
 
@@ -23,8 +23,6 @@ public:
     void InitialDraw() override; // +
 
     void Draw() override; // +
-
-    void GetScore(std::map<int, int> &lscore, std::map<int, int> &rscore); // +/-
 
 private:
     Game **games;

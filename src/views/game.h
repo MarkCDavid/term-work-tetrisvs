@@ -19,7 +19,7 @@ public:
     int xHOff, yHOff;
     int xNOff, yNOff;
     bool scored = false;
-    float score = -1e9;
+    float score = -1e9f;
     Board board; // +
     Shape current_shape; // +
     Shape best_move; // -
@@ -51,11 +51,11 @@ public:
 
 private:
 
-    std::pair<int, int> AggregateHeightAndBumpiness(Board &cboard); // -
+    static std::pair<int, int> AggregateHeightAndBumpiness(Board &cboard); // -
 
-    int CompleteLines(Board &cboard); // -
+    static int CompleteLines(Board &cboard); // -
 
-    int HoleCount(Board &cboard); // -
+    static int HoleCount(Board &cboard); // -
 
     bool hold_changed = false; // +
     int cleared = 0; // +

@@ -48,14 +48,14 @@ private:
             "Exit Game",
     };
 
-    int WidthFromOffsets(std::vector<unsigned int> &offsets, int letter_count);
+    static int WidthFromOffsets(std::vector<unsigned int> &offsets, int letter_count);
 
     void DrawBigLetters(std::string &letters, int letter_count, std::vector<unsigned int> offsets,
                         std::vector<int> color_id, int top_offset, int bot_offset);
 
     void DrawMenuOptions(int tOffset = 0, int lOffset = 0, int step = 2);
 
-    void ReadFromFile(const char *file_path, std::string &read_to);
+    static void ReadFromFile(const char *file_path, std::string &read_to);
 
 
 };

@@ -41,20 +41,20 @@ public:
 
     Shape();
 
-    Shape(int size, char *shape);
+    Shape(int size, const char *shape);
 
     Shape(const Shape &other);
 
     Shape &operator=(const Shape &other);
 
 private:
-    int xPos, yPos;
-    int rotation;
+    int xPos{}, yPos{};
+    int rotation{};
 
     int oldxPos = 0, oldyPos = 0;
-    int oldrotation;
-    int size;
-    const char *shape;
+    int oldrotation{};
+    int size{};
+    const char *shape{};
 
     void UpdateOld();
 };

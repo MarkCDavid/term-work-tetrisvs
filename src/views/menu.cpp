@@ -77,7 +77,7 @@ void Menu::DrawBigLetters(std::string &letters, int letter_count, std::vector<un
     std::string portion;
     unsigned int offset = 0;
     int width = WidthFromOffsets(offsets, letter_count);
-    int row_count = std::ceil(letters.size() / (float) width);
+    auto row_count = static_cast<int>(std::ceil(letters.size() / (float) width));
     for (int row = 0; row < row_count; row++) {
         for (int letter = 0; letter < letter_count; letter++) {
             attron(COLOR_PAIR(color_id[letter]));
