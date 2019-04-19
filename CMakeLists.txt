@@ -5,4 +5,7 @@ add_executable(tetrisvs tetrisvs.cpp src/color.h src/model/board.cpp src/model/b
 target_link_libraries(tetrisvs ${CMAKE_CURRENT_SOURCE_DIR}/lib/pdcurses.a)
 set(CMAKE_CXX_STANDARD 14)
 set(GCC_COVERAGE_COMPILE_FLAGS "-static")
+if (UNIX)
+    set(GCC_COVERAGE_COMPILE_FLAGS "-lmenu")
+endif ()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
