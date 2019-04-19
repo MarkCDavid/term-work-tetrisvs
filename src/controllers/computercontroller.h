@@ -17,16 +17,15 @@ public:
 private:
 
     std::vector<Shape> GeneratePermutations(Shape shape);
-    bool AlreadyScored(Shape* shape);
+    bool AlreadyScored(Shape shape);
     void Score(Game* game);
-    Board PlaceInBoard(Board board, const Shape& shape);
+    Board PlaceInBoard(Board board, Shape& shape);
     void UpdateBestScore(Shape shape, float score);
 
     bool look_ahead = false;
     float best_score;
     AbstractScoring* scoring;
     Shape best_move;
-    Shape* last_scored = nullptr;
 };
 
 #endif //TETRISVS_COMPUTERCONTROLLER_H

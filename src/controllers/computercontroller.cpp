@@ -23,9 +23,9 @@ void ComputerController::Update(Game* game)
     if (move_delta==0 && rotation_delta==0) MoveShape(game, Shape::Movement::DOWN);
 
 }
-bool ComputerController::AlreadyScored(Shape* shape)
+bool ComputerController::AlreadyScored(Shape shape)
 {
-    return shape==last_scored;
+    return shape.X()!=5 || shape.Y()!=0 || shape.GetRot()!=0;
 }
 
 void ComputerController::UpdateBestScore(Shape shape, float score)
@@ -52,15 +52,12 @@ std::vector<Shape> ComputerController::GeneratePermutations(Shape shape)
 
 void ComputerController::Score(Game* game)
 {
-    if (!AlreadyScored(&game->current_shape)) {
-
-        last_scored = &game->current_shape;
+    if (!AlreadyScored(game->current_shape)) {
         best_score = -1e9f;
-
-        for (const auto& shape : GeneratePermutations(game->current_shape)) {
+        for (auto& shape : GeneratePermutations(game->current_shape)) {
             Board board = PlaceInBoard(game->board, shape);
             if (look_ahead) {
-                for (const auto& shape_next : GeneratePermutations(game->next_shape)) {
+                for (auto& shape_next : GeneratePermutations(game->next_shape)) {
                     Board board_next = PlaceInBoard(board, shape_next);
                     UpdateBestScore(shape, scoring->GetScore(board_next));
                 }
@@ -70,8 +67,11 @@ void ComputerController::Score(Game* game)
         }
     }
 }
-Board ComputerController::PlaceInBoard(Board board, const Shape& shape)
+Board ComputerController::PlaceInBoard(Board board, Shape& shape)
 {
+    while (board.IsValidPosition(shape))
+        shape.Move(Shape::Movement::DOWN);
+    shape.Revert();
     board.Place(shape);
     return board;
 }
