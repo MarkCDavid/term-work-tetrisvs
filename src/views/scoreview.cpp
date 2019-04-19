@@ -8,7 +8,8 @@
 #include "../../tetrisvs.h"
 #include <utility>
 
-void ScoreView::Update(float delta_time) {
+void ScoreView::Update()
+{
     Keyboard::Instance()->Update();
     if (Keyboard::Instance()->GetKey('f')) {
         TetrisVS::Instance()->Switch(new Menu());

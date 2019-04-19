@@ -17,7 +17,7 @@ public:
 
     Menu();
 
-    void Update(float delta_time) override;
+    void Update() override;
     void InitialDraw() override;
     void Draw() override;
 

@@ -9,7 +9,8 @@
 #include "../symbols.h"
 #include "../../tetrisvs.h"
 
-void Menu::Update(float delta_time) {
+void Menu::Update()
+{
     Keyboard::Instance()->Update();
     if (Keyboard::Instance()->GetKey(KEY_DOWN)) {
         prev_menu_item = menu_item;
@@ -24,15 +25,12 @@ void Menu::Update(float delta_time) {
     }
     if (Keyboard::Instance()->GetKey('f')) {
         switch (menu_item) {
-            case 0 :
-                TetrisVS::Instance()->Switch(new GameView(false, false));
+            case 0 :TetrisVS::Instance()->Switch(new GameView());
                 break;
             default:
-            case 1 :
-                TetrisVS::Instance()->Switch(new GameView(true, false));
+            case 1 :TetrisVS::Instance()->Switch(new GameView());
                 break;
-            case 2 :
-                TetrisVS::Instance()->Switch(new GameView(true, true));
+            case 2 :TetrisVS::Instance()->Switch(new GameView());
                 break;
             case 3 :
                 TetrisVS::Instance()->Switch(new ControlsView());

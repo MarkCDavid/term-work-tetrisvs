@@ -5,11 +5,13 @@
 #ifndef TETRISVS_ABSTRACTVIEW_H
 #define TETRISVS_ABSTRACTVIEW_H
 
+#include "../model/game.h"
+
 class AbstractView {
 public:
     AbstractView() = default;
 
-    virtual void Update(float delta_time) = 0;
+    virtual void Update() = 0;
 
     virtual void InitialDraw() = 0;
 
