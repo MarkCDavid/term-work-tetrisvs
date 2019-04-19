@@ -2,6 +2,7 @@
 // Created by Mark David on 13/03/2019.
 //
 #include "tetrisvs.h"
+#include "src/gametime.h"
 #include "src/views/menu.h"
 #include "src/views/gameview.h"
 #include "src/views/scoreview.h"
@@ -12,9 +13,13 @@ TetrisVS *TetrisVS::instance = nullptr;
 ShapeFactory *ShapeFactory::instance = nullptr;
 Keyboard *Keyboard::instance = nullptr;
 
+GameTime* GameTime::instance = nullptr;
+
 int main() {
-    while (TetrisVS::Instance()->GameRunning())
+    while (TetrisVS::Instance()->GameRunning()) {
+        GameTime::Instance()->Refresh();
         TetrisVS::Instance()->Update();
+    }
 }
 
 
@@ -38,10 +43,7 @@ TetrisVS::~TetrisVS() {
 
 
 void TetrisVS::Update() {
-    current_time = std::chrono::system_clock::now();
-    auto delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - previous_time);
-    previous_time = current_time;
-    view->Update(delta_time.count());
+    view->Update();
     view->Draw();
     refresh();
 }

@@ -7,7 +7,6 @@
 
 #include "src/color.h"
 #include "src/views/abstractview.h"
-#include <chrono>
 
 class TetrisVS {
 public:
@@ -30,8 +29,6 @@ private:
     static TetrisVS *instance;
     bool game_running = true;
     AbstractView *view;
-    std::chrono::system_clock::time_point current_time = std::chrono::system_clock::now();
-    std::chrono::system_clock::time_point previous_time = std::chrono::system_clock::now();
 };
 
 

@@ -40,17 +40,19 @@ void Game::AddLineClear(int clear) {
     line_clears[clear]++;
 }
 
-int Game::SpeedModifier() {
-    for (int i = 0; i < game_speed.size(); i++)
-        if (cleared < game_speed[i])
-            return (i + 1);
-    return game_speed.size() + 1;
+float Game::CurrentTickLength()
+{
+    for (auto speed : game_speed)
+        if (cleared<speed.first)
+            return speed.second;
+    return game_speed[game_speed.size()-1].second;
 }
 
-bool Game::IncreaseTick(float max, float delta_time) {
-    tick += delta_time * SpeedModifier();
-    if (tick > max)
-        tick = 0.0f;
+bool Game::IncreaseTick()
+{
+    tick += GameTime::Instance()->DeltaTime();
+    if (tick>CurrentTickLength())
+        ResetTick();
     return tick == 0.0f;
 }
 
@@ -75,4 +77,9 @@ Shape Game::GetGarbage() {
 Shape Game::GetNextShape() {
     if (garbage_shapes.empty()) return GetRegular();
     else return GetGarbage();
+}
+
+void Game::ResetTick()
+{
+    tick = 0.0f;
 }
