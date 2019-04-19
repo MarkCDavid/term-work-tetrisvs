@@ -12,6 +12,7 @@
 class ComputerController: public AbstractController {
 public:
     ComputerController(AbstractScoring* scoring, bool look_ahead);
+    ~ComputerController();
     void Update(Game* game) override;
 private:
 

@@ -10,7 +10,7 @@ void ControlsView::Update()
 {
     Keyboard::Instance()->Update();
     if (Keyboard::Instance()->GetKey('f')) {
-        TetrisVS::Instance()->Switch(new Menu());
+        //TetrisVS::Instance()->Switch(new Menu());
         return;
     }
     Keyboard::Instance()->Flush();

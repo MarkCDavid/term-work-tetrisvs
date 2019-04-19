@@ -15,7 +15,7 @@ class GameView : public AbstractView {
 
 public:
 
-    GameView(std::vector<Game*> games); // +
+    explicit GameView(std::vector<Game*> games); // +
 
     void Update() override; // +
 

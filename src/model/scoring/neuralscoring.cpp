@@ -25,6 +25,7 @@ int NeuralScoring::HoleCount(Board &board) const {
         for (int col = 0; col < 10; col++)
             if (board.GetSymbolAt(col, row) == Symbols::EMPTY)
                 hole_count += NonEmptyOnTop(board, row, col);
+    return hole_count;
 }
 
 int NeuralScoring::AggregateHeight(std::vector<int> &heights) const {
@@ -45,6 +46,7 @@ bool NeuralScoring::NonEmptyOnTop(Board &board, int row, int col) const {
     for (int i = row; i > 0; i--)
         if (board.GetSymbolAt(col, i) != Symbols::EMPTY)
             return true;
+    return false;
 }
 
 bool NeuralScoring::IsClear(Board &board, int row) const {

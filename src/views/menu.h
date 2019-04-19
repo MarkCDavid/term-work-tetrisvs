@@ -11,23 +11,21 @@
 #include <vector>
 #include <string>
 #include "../keyboard.h"
+#include "../model/menudata.h"
 
 class Menu : public AbstractView {
 public:
 
-    Menu();
+    Menu(const MenuData* data);
 
     void Update() override;
     void InitialDraw() override;
     void Draw() override;
 
 private:
+    const MenuData* data;
     const int title_height = 28;
     const int title_width = 117;
-
-    int prev_menu_item = 0;
-    int menu_item = 0;
-    int menu_option_count = 0;
 
     int tOffset = 0;
     int lOffset = 0;
@@ -39,14 +37,6 @@ private:
                                   Color::MAGENTA_BLACK, Color::CYAN_BLACK, Color::YELLOW_BLACK};
 
     std::vector<int> color_bottom = {Color::RED_BLACK, Color::YELLOW_BLACK};
-
-    std::vector<std::string> menu_options = {
-            "Player vs Player",
-            "Player vs Computer",
-            "Player vs Hard Computer",
-            "Controls",
-            "Exit Game",
-    };
 
     static int WidthFromOffsets(std::vector<unsigned int> &offsets, int letter_count);
 

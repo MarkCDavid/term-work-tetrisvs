@@ -70,8 +70,8 @@ void GameView::DrawShape() {
 
 void GameView::DrawBoard() {
     for (auto game: games) {
-        for (int i = 0; i < Board::Width; i++) {
-            for (int j = 0; j < Board::Height; j++) {
+        for (int i = -1; i<=Board::Width; i++) {
+            for (int j = 0; j<=Board::Height; j++) {
                 char board_char = game->board.GetSymbolAt(i, j);
                 attron(COLOR_PAIR(get_color(board_char)));
                 mvaddch(game->yOff+j, game->xOff+i, ' ');
@@ -130,11 +130,11 @@ void GameView::DrawNext() {
                 char s_char = game->next_shape.GetSymbolAt(i, j);
                 if (s_char!=Symbols::EMPTY && i<game->next_shape.Size() && j<game->next_shape.Size()) {
                     attron(COLOR_PAIR(get_color(s_char)));
-                    mvaddch(cgame->yNOff+j, game->xNOff+i, ' ');
+                    mvaddch(game->yNOff+j, game->xNOff+i, ' ');
                     attroff(COLOR_PAIR(get_color(s_char)));
                 } else {
                     attron(COLOR_PAIR(FULL_BLACK));
-                    mvaddch(cgame->yNOff+j, game->xNOff+i, ' ');
+                    mvaddch(game->yNOff+j, game->xNOff+i, ' ');
                     attroff(COLOR_PAIR(FULL_BLACK));
                 }
             }

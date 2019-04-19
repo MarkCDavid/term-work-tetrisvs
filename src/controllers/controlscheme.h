@@ -5,7 +5,20 @@
 #ifndef TETRISVS_SRC_CONTROLLERS_CONTROLSCHEME_H_
 #define TETRISVS_SRC_CONTROLLERS_CONTROLSCHEME_H_
 
-struct ControlScheme {
+#include <fstream>
+#include <string>
+
+class ControlScheme {
+public:
+    ControlScheme(int scheme)
+    {
+        std::ifstream schemefile;
+        std::string scheme_path = "data/schemes/";
+        scheme_path += char(scheme+48);
+        schemefile.open(scheme_path);
+        schemefile >> LEFT >> RIGHT >> DOWN >> DROP >> ROTATECW >> ROTATECCW >> HOLD;
+        schemefile.close();
+    }
     char LEFT;
     char RIGHT;
     char DOWN;

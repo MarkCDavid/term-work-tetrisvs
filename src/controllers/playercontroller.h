@@ -14,7 +14,7 @@ public:
     explicit PlayerController(ControlScheme scheme);
     void Update(Game* game) override;
 private:
-    ControlScheme scheme;
+    const ControlScheme scheme;
 };
 
 #endif //TETRISVS_SRC_CONTROLLERS_PLAYERCONTROLLER_H_

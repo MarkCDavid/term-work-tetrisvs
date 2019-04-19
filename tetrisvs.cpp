@@ -7,12 +7,12 @@
 #include "src/views/gameview.h"
 #include "src/views/scoreview.h"
 #include "src/views/controlsview.h"
+#include "src/managers/menumanager.h"
 
 
 TetrisVS *TetrisVS::instance = nullptr;
 ShapeFactory *ShapeFactory::instance = nullptr;
 Keyboard *Keyboard::instance = nullptr;
-
 GameTime* GameTime::instance = nullptr;
 
 int main() {
@@ -32,25 +32,30 @@ TetrisVS::TetrisVS() {
     timeout(1); // set non blocking getch
     start_color(); // Start coloring
     init_color_pairs(); // Initialize the pairs.
-    view = new Menu();
-    view->InitialDraw();
+    auto* data = new MenuData();
+    Switch(new MenuManager(data), new Menu(data));
 }
 
 TetrisVS::~TetrisVS() {
     delete view;
+    delete manager;
     endwin();
 }
 
 
 void TetrisVS::Update() {
+    manager->Update();
     view->Update();
     view->Draw();
     refresh();
 }
 
-void TetrisVS::Switch(AbstractView *new_view) {
+void TetrisVS::Switch(AbstractManager* new_manager, AbstractView* new_view)
+{
     Keyboard::Instance()->Flush();
     delete view;
+    delete manager;
+    manager = new_manager;
     view = new_view;
     view->InitialDraw();
 }

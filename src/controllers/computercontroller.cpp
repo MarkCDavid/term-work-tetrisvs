@@ -75,4 +75,8 @@ Board ComputerController::PlaceInBoard(Board board, const Shape& shape)
     board.Place(shape);
     return board;
 }
+ComputerController::~ComputerController()
+{
+    delete scoring;
+}
 

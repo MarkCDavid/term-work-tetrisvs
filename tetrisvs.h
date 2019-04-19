@@ -7,6 +7,7 @@
 
 #include "src/color.h"
 #include "src/views/abstractview.h"
+#include "src/managers/abstractmanager.h"
 
 class TetrisVS {
 public:
@@ -18,7 +19,7 @@ public:
 
     void StopGame();
 
-    void Switch(AbstractView *new_view);
+    void Switch(AbstractManager* new_manager, AbstractView* new_view);
 
 protected:
     TetrisVS();
@@ -28,7 +29,8 @@ protected:
 private:
     static TetrisVS *instance;
     bool game_running = true;
-    AbstractView *view;
+    AbstractView* view = nullptr;
+    AbstractManager* manager = nullptr;
 };
 
 

@@ -25,8 +25,8 @@ void GameManager::Update()
                             gcp_garbage.paired->PutGarbage(cleared);
                     game->AddLineClear(cleared);
                 }
+                game->NextShape();
             }
-            game->NextShape();
             if (!game->board.IsValidPosition(game->current_shape)) {
                 // GAME OVER MAN
             }

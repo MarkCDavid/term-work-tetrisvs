@@ -19,6 +19,6 @@ float GameTime::DeltaTime()
 void GameTime::Refresh()
 {
     current_time = std::chrono::system_clock::now();
-    delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time-previous_time).count();
+    delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time-previous_time).count()/1000.0f;
     previous_time = current_time;
 }
