@@ -47,10 +47,7 @@ void MenuManager::Update()
             TetrisVS::Instance()->Switch(manager, view);
             break;
         }
-        case 3 :
-            //TetrisVS::Instance()->Switch(new ControlsView());
-            break;
-        case 4 :TetrisVS::Instance()->StopGame();
+        case 3 :TetrisVS::Instance()->StopGame();
             break;
         }
 

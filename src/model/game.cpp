@@ -23,7 +23,10 @@ void Game::HoldShape() {
     hold_changed = true;
 
     static Shape hold_switch;
-    if (hold_shape.Size() == -1) hold_switch = GetNextShape(); // TODO: Do proper checking for shape.
+    if (hold_shape.Size()==-1) {
+        hold_switch = next_shape;
+        next_shape = GetNextShape();
+    }
     else hold_switch = hold_shape;
 
     hold_shape = current_shape;

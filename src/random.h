@@ -11,8 +11,10 @@
 class Random {
 public:
     static int GetRandom(int from, int to) {
-        long long seed = std::chrono::system_clock::now().time_since_epoch().count();
-        std::minstd_rand0 prng(seed);
+        static long long call = 0;
+        call++;
+        long long seed = std::chrono::system_clock::now().time_since_epoch().count()+call;
+        std::mt19937 prng(seed);
         std::uniform_int_distribution<int> dist(from, to);
         return dist(prng);
     }
