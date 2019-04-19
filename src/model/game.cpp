@@ -4,7 +4,8 @@
 
 #include "game.h"
 
-Game::Game()
+Game::Game(char player_repr)
+        :player_repr(player_repr)
 {
     current_shape = GetRegular();
     next_shape = GetRegular();
@@ -82,3 +83,4 @@ void Game::ResetTick()
 {
     tick = 0.0f;
 }
+

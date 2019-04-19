@@ -6,6 +6,7 @@
 #define TETRISVS_SCOREVIEW_H
 
 #include "abstractview.h"
+#include "../managers/menumanager.h"
 #include "../keyboard.h"
 #include <map>
 

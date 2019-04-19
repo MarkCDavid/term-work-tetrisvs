@@ -16,7 +16,7 @@
 
 class Game {
 public:
-    Game();
+    Game(char player_repr);
 
     void NextShape();
 
@@ -34,6 +34,7 @@ public:
 
     std::map<int, int> GetLineClears();
 
+    const char player_repr = ' ';
     Board board;
     Shape current_shape;
     Shape repr_shape;

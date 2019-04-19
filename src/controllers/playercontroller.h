@@ -13,6 +13,7 @@ class PlayerController: public AbstractController {
 public:
     explicit PlayerController(ControlScheme scheme);
     void Update(Game* game) override;
+
 private:
     const ControlScheme scheme;
 };

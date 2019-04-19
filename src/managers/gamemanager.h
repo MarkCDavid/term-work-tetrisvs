@@ -6,8 +6,10 @@
 #define TETRISVS_GAMEMANAGER_H
 
 #include "../managers/abstractmanager.h"
+#include "../views/scoreview.h"
 #include "../model/controllerpair.h"
 #include "../keyboard.h"
+#include "../../tetrisvs.h"
 #include <vector>
 
 class GameManager: public AbstractManager {
@@ -16,6 +18,7 @@ public:
     void Update() override;
 
 private:
+    void EmplaceCheck(Game* game);
     std::vector<ControllerPair<Game>> games;
 };
 

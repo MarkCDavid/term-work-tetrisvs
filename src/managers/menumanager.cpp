@@ -15,8 +15,8 @@ void MenuManager::Update()
         switch (data->CurrentItem()) {
         case 0 : {
 
-            auto* left_game = new Game();
-            auto* right_game = new Game();
+            auto* left_game = new Game('l');
+            auto* right_game = new Game('r');
             auto* left_controller = new PlayerController(ControlScheme(1));
             auto* right_controller = new PlayerController(ControlScheme(2));
             auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});
@@ -27,8 +27,8 @@ void MenuManager::Update()
         default:
         case 1 : {
 
-            auto* left_game = new Game();
-            auto* right_game = new Game();
+            auto* left_game = new Game('l');
+            auto* right_game = new Game('c');
             auto* left_controller = new PlayerController(ControlScheme(1));
             auto* right_controller = new ComputerController(new NeuralScoring(), false);
             auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});
@@ -38,8 +38,8 @@ void MenuManager::Update()
         }
         case 2 : {
 
-            auto* left_game = new Game();
-            auto* right_game = new Game();
+            auto* left_game = new Game('l');
+            auto* right_game = new Game('c');
             auto* left_controller = new PlayerController(ControlScheme(1));
             auto* right_controller = new ComputerController(new NeuralScoring(), true);
             auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});

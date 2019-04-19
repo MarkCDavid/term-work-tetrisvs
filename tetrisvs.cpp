@@ -44,7 +44,8 @@ TetrisVS::~TetrisVS() {
 
 
 void TetrisVS::Update() {
-    manager->Update();
+    if (manager!=nullptr)
+        manager->Update();
     view->Update();
     view->Draw();
     refresh();
