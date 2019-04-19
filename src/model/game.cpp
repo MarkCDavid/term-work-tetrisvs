@@ -4,9 +4,8 @@
 
 #include "game.h"
 
-
-Game::Game(int xOffset, int yOffset) : xOff(xOffset), yOff(yOffset), xNOff(xOff + 14),
-                                       yNOff(yOff), xHOff(xOffset - 9), yHOff(yOff) {
+Game::Game()
+{
     current_shape = GetRegular();
     next_shape = GetRegular();
     repr_shape = current_shape;

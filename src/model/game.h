@@ -16,7 +16,7 @@
 
 class Game {
 public:
-    Game(int xOffset, int yOffset);
+    Game();
 
     void NextShape();
 
@@ -34,9 +34,6 @@ public:
 
     std::map<int, int> GetLineClears();
 
-    int xOff, yOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
-    int xHOff, yHOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
-    int xNOff, yNOff; // - TODO: VISUAL VARIABLES, SHOULD NOT BE IN A MODEL
     Board board;
     Shape current_shape;
     Shape repr_shape;

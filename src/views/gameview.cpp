@@ -10,30 +10,32 @@
 #include "../../tetrisvs.h"
 
 GameView::GameView(std::vector<Game*> games)
-        :games(games)
 {
     int width, height;
     getmaxyx(stdscr, height, width);
-    int x_step = width / 6;
+    int x_step = width/(3*games.size());
     int y_step = height / 4;
+    for (int i = 0; i<games.size(); i++)
+        gameboards.emplace_back(games[i], BoardOffsets(x_step*(1+3*i), y_step));
 }
 
 void GameView::InitialDraw() {
     clear();
     DrawBoard();
-    for (auto game : games) {
+    for (auto& game_offset_pair : gameboards) {
+        BoardOffsets& offsets = game_offset_pair.second;
         for (int i = -1; i <= 5; i++) {
             for (int j = -1; j <= 5; j++) {
                 if (i == -1 || j == -1 || i == 5 || j == 5) {
                     attron(COLOR_PAIR(FULL_WHITE));
-                    mvaddch(game->yNOff+j, game->xNOff+i, ' ');
-                    mvaddch(game->yHOff+j, game->xHOff+i, ' ');
+                    mvaddch(offsets.yNOff+j, offsets.xNOff+i, ' ');
+                    mvaddch(offsets.yHOff+j, offsets.xHOff+i, ' ');
                     attroff(COLOR_PAIR(FULL_WHITE));
                 }
             }
         }
-        mvaddstr(game->yNOff-2, game->xNOff, "NEXT");
-        mvaddstr(game->yHOff-2, game->xHOff, "HOLD");
+        mvaddstr(offsets.yNOff-2, offsets.xNOff, "NEXT");
+        mvaddstr(offsets.yHOff-2, offsets.xHOff, "HOLD");
     }
 }
 
@@ -52,7 +54,9 @@ void GameView::Update()
 }
 
 void GameView::DrawShape() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         Board& board = game->board;
         Shape& shape = game->current_shape;
         for (int i = 0; i < shape.Size(); i++) {
@@ -60,7 +64,7 @@ void GameView::DrawShape() {
                 char shape_char = shape.GetSymbolAt(i, j);
                 if (shape_char != Symbols::EMPTY) {
                     attron(COLOR_PAIR(get_color(shape_char)));
-                    mvaddch(game->yOff+shape.Y()+j, game->xOff+shape.X()+i, ' ');
+                    mvaddch(offsets.yOff+shape.Y()+j, offsets.xOff+shape.X()+i, ' ');
                     attroff(COLOR_PAIR(get_color(shape_char)));
                 }
             }
@@ -69,12 +73,14 @@ void GameView::DrawShape() {
 }
 
 void GameView::DrawBoard() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         for (int i = -1; i<=Board::Width; i++) {
             for (int j = 0; j<=Board::Height; j++) {
                 char board_char = game->board.GetSymbolAt(i, j);
                 attron(COLOR_PAIR(get_color(board_char)));
-                mvaddch(game->yOff+j, game->xOff+i, ' ');
+                mvaddch(offsets.yOff+j, offsets.xOff+i, ' ');
                 attroff(COLOR_PAIR(get_color(board_char)));
             }
         }
@@ -82,7 +88,9 @@ void GameView::DrawBoard() {
 }
 
 void GameView::DrawShadow() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         Board& board = game->board;
         game->repr_shape = game->current_shape;
         Shape& shape = game->repr_shape;
@@ -94,7 +102,7 @@ void GameView::DrawShadow() {
                 char shape_char = shape.GetSymbolAt(i, j);
                 if (shape_char != Symbols::EMPTY) {
                     attron(COLOR_PAIR(CYAN_BLACK));
-                    mvaddch(game->yOff+shape.Y()+j, game->xOff+shape.X()+i, '#');
+                    mvaddch(offsets.yOff+shape.Y()+j, offsets.xOff+shape.X()+i, '#');
                     attroff(COLOR_PAIR(CYAN_BLACK));
                 }
             }
@@ -103,7 +111,9 @@ void GameView::DrawShadow() {
 }
 
 void GameView::DrawHold() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         if (game->hold_shape.Size()==-1)
             continue;
         for (int i = 0; i < 5; i++) {
@@ -111,11 +121,11 @@ void GameView::DrawHold() {
                 char s_char = game->hold_shape.GetSymbolAt(i, j);
                 if (s_char!=Symbols::EMPTY && i<game->hold_shape.Size() && j<game->hold_shape.Size()) {
                     attron(COLOR_PAIR(get_color(s_char)));
-                    mvaddch(game->yHOff+j, game->xHOff+i, ' ');
+                    mvaddch(offsets.yHOff+j, offsets.xHOff+i, ' ');
                     attroff(COLOR_PAIR(get_color(s_char)));
                 } else {
                     attron(COLOR_PAIR(FULL_BLACK));
-                    mvaddch(game->yHOff+j, game->xHOff+i, ' ');
+                    mvaddch(offsets.yHOff+j, offsets.xHOff+i, ' ');
                     attroff(COLOR_PAIR(FULL_BLACK));
                 }
             }
@@ -124,17 +134,19 @@ void GameView::DrawHold() {
 }
 
 void GameView::DrawNext() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 char s_char = game->next_shape.GetSymbolAt(i, j);
                 if (s_char!=Symbols::EMPTY && i<game->next_shape.Size() && j<game->next_shape.Size()) {
                     attron(COLOR_PAIR(get_color(s_char)));
-                    mvaddch(game->yNOff+j, game->xNOff+i, ' ');
+                    mvaddch(offsets.yNOff+j, offsets.xNOff+i, ' ');
                     attroff(COLOR_PAIR(get_color(s_char)));
                 } else {
                     attron(COLOR_PAIR(FULL_BLACK));
-                    mvaddch(game->yNOff+j, game->xNOff+i, ' ');
+                    mvaddch(offsets.yNOff+j, offsets.xNOff+i, ' ');
                     attroff(COLOR_PAIR(FULL_BLACK));
                 }
             }
@@ -143,9 +155,11 @@ void GameView::DrawNext() {
 }
 
 void GameView::DrawScore() {
-    for (auto game: games) {
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
         int score = game->ClearedLines();
         std::string score_str = "Score: " + std::to_string(score);
-        mvaddstr(game->yNOff+8, game->xNOff, score_str.c_str());
+        mvaddstr(offsets.yNOff+8, offsets.xNOff, score_str.c_str());
     }
 }

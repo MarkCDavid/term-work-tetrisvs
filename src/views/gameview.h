@@ -11,6 +11,18 @@
 #include "../model/game.h"
 #include <map>
 
+struct BoardOffsets {
+    BoardOffsets(int xOffset, int yOffset)
+            :xOff(xOffset), yOff(yOffset), xNOff(xOffset+14),
+             yNOff(yOff), xHOff(xOffset-9), yHOff(yOff)
+    {
+    }
+    const int xOff, yOff;
+    const int xHOff, yHOff;
+    const int xNOff, yNOff;
+};
+
+
 class GameView : public AbstractView {
 
 public:
@@ -25,7 +37,7 @@ public:
 
 private:
 
-    std::vector<Game*> games;
+    std::vector<std::pair<Game*, BoardOffsets>> gameboards;
 
     void DrawBoard();
 
