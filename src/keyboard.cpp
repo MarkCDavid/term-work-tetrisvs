@@ -8,7 +8,7 @@ void Keyboard::Update() {
     static int key;
     // if there are multiple keys pressed, getch returns
     // the keycode for all of them, one by one
-    while ((key = getch()) != ERR)
+    while ((key = getch())!=ERR && !GetKey(key))
         keys.insert(key);
 }
 
