@@ -24,6 +24,7 @@ void GameManager::Update()
                         winner = gcp_winner.paired->player_repr;
                 }
                 TetrisVS::Instance()->Switch(nullptr, new ScoreView(winner, line_clears[0], line_clears[1]));
+                return;
             }
         }
         else {

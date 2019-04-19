@@ -54,7 +54,7 @@ private:
     bool hold_changed = false;
     int cleared = 0;
     float tick = 0.0f;
-    std::vector<std::pair<int, float>> game_speed = {{12, 1.0f}, {25, 0.9f}, {39, 0.8f},
+    const std::vector<std::pair<int, float>> game_speed = {{12, 1.0f}, {25, 0.9f}, {39, 0.8f},
                                                      {54, 0.7f}, {70, 0.6f}, {85, 0.5f},
                                                      {99, 0.45f}, {112, 0.4f}, {135, 0.35f}};
 
