@@ -18,10 +18,10 @@ private:
 
     // The source of values for the parameters of these heuristics
     // https://codemyroad.wordpress.com/2013/04/14/tetris-ai-the-near-perfect-player/
-    float pAggregate = -0.510066f;
-    float pLines = 0.760666f;
-    float pHoles = -0.356630f;
-    float pBumpiness = -0.184483f;
+    const float pAggregate = -0.510066f;
+    const float pLines = 0.760666f;
+    const float pHoles = -0.356630f;
+    const float pBumpiness = -0.184483f;
 
     int CompleteLineCount(Board &board) const;
 

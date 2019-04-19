@@ -9,6 +9,7 @@
 
 class AbstractScoring {
 public:
+    virtual ~AbstractScoring() = default;
     virtual float GetScore(Board &board) const = 0;
 };
 

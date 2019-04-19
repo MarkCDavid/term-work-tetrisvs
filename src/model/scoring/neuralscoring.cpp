@@ -6,10 +6,11 @@
 
 float NeuralScoring::GetScore(Board &board) const {
     auto heights = CalculateHeights(board);
-    return pAggregate * AggregateHeight(heights) +
-           pLines * CompleteLineCount(board) +
-           pHoles * HoleCount(board) +
-           pBumpiness * Bumpiness(heights);
+    float value = pAggregate*AggregateHeight(heights)+
+            pLines*CompleteLineCount(board)+
+            pHoles*HoleCount(board)+
+            pBumpiness*Bumpiness(heights);
+    return value;
 }
 
 int NeuralScoring::CompleteLineCount(Board &board) const {
@@ -60,8 +61,10 @@ std::vector<int> NeuralScoring::CalculateHeights(Board &board) const {
     std::vector<int> heights(10);
     for (int col = 0; col < 10; col++)
         for (int row = 0; row < Board::Height; row++)
-            if (board.GetSymbolAt(col, row) != Symbols::EMPTY)
-                heights[col] = Board::Height - row;
+            if (board.GetSymbolAt(col, row)!=Symbols::EMPTY) {
+                heights[col] = Board::Height-row;
+                break;
+            }
     return heights;
 }
 
