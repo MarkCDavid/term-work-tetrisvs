@@ -18,7 +18,8 @@ public:
     void Update() override;
 
 private:
-    void EmplaceCheck(Game* game);
+    void GameOver(Game * game);
+    void Emplace(Game *game);
     std::vector<ControllerPair<Game>> games;
 };
 
