@@ -4,21 +4,30 @@
 
 #include "abstractcontroller.h"
 
-void AbstractController::DropShape(Board &board) {
+void AbstractController::DropShape(Game* game)
+{
     game->current_shape = game->repr_shape;
 }
 
-void AbstractController::MoveShape(Board &board, Shape::Movement move) {
+void AbstractController::MoveShape(Game* game, Shape::Movement move)
+{
     game->current_shape.Move(move);
-    TryRevert();
+    TryRevert(game);
 }
 
-void AbstractController::RotateShape(Board &board, Shape::Rotation rotation) {
+void AbstractController::RotateShape(Game* game, Shape::Rotation rotation)
+{
     game->current_shape.Rotate(rotation);
-    TryRevert();
+    TryRevert(game);
 }
 
-void AbstractController::TryRevert() {
+void AbstractController::HoldShape(Game* game)
+{
+    game->HoldShape();
+}
+
+void AbstractController::TryRevert(Game* game)
+{
     if (!game->board.IsValidPosition(game->current_shape))
         game->current_shape.Revert();
 }

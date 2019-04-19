@@ -8,17 +8,18 @@
 #include "../model/game.h"
 
 class AbstractController {
-private:
-    Game *game;
+public:
+    virtual void Update(Game* game) = 0;
+protected:
+    void DropShape(Game* game);
 
-    void DropShape(Board &board);
+    void MoveShape(Game* game, Shape::Movement move);
 
-    void MoveShape(Board &board, Shape::Movement move);
+    void RotateShape(Game* game, Shape::Rotation rotation);
 
-    void RotateShape(Board &board, Shape::Rotation rotation);
+    void HoldShape(Game* game);
 
-    void TryRevert();
+    void TryRevert(Game* game);
 };
-
 
 #endif //TETRISVS_ABSTRACTCONTROLLER_H
