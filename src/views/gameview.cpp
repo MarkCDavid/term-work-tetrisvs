@@ -40,12 +40,15 @@ void GameView::InitialDraw() {
 }
 
 void GameView::Draw() {
+    CoverShape();
+    CoverShadow();
     DrawBoard();
     DrawShadow();
     DrawShape();
     DrawNext();
     DrawHold();
     DrawScore();
+    ResetUpdated();
 }
 
 void GameView::Update()
@@ -67,6 +70,7 @@ void GameView::DrawShape() {
                     mvaddch(offsets.yOff+shape.Y()+j, offsets.xOff+shape.X()+i, ' ');
                     attroff(COLOR_PAIR(get_color(shape_char)));
                 }
+
             }
         }
     }
@@ -76,6 +80,7 @@ void GameView::DrawBoard() {
     for (auto& game_offset_pair : gameboards) {
         Game* game = game_offset_pair.first;
         BoardOffsets& offsets = game_offset_pair.second;
+        if (!game->board.IsUpdated()) continue;
         for (int i = -1; i<=Board::Width; i++) {
             for (int j = 0; j<=Board::Height; j++) {
                 char board_char = game->board.GetSymbolAt(i, j);
@@ -161,5 +166,56 @@ void GameView::DrawScore() {
         int score = game->ClearedLines();
         std::string score_str = "Score: " + std::to_string(score);
         mvaddstr(offsets.yNOff+8, offsets.xNOff, score_str.c_str());
+    }
+}
+void GameView::CoverShape()
+{
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
+        Board& board = game->board;
+        Shape& shape = game->prev_shape;
+        if (!game->GetOld()) continue;
+        for (int i = 0; i<shape.Size(); i++) {
+            for (int j = 0; j<shape.Size(); j++) {
+                if (shape.GetSymbolAt(i, j)!=Symbols::EMPTY) {
+                    attron(COLOR_PAIR(Color::FULL_BLACK));
+                    mvaddch(offsets.yOff+shape.Y()+j, offsets.xOff+shape.X()+i, ' ');
+                    attroff(COLOR_PAIR(Color::FULL_BLACK));
+                }
+            }
+        }
+    }
+}
+
+void GameView::CoverShadow()
+{
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
+        Board& board = game->board;
+        Shape& shape = game->repr_shape;
+        if (!game->GetOld()) continue;
+        for (int i = 0; i<shape.Size(); i++) {
+            for (int j = 0; j<shape.Size(); j++) {
+                char b_char = board.GetSymbolAt(shape.X()+i, shape.Y()+j);
+                char s_char = shape.GetSymbolAt(i, j);
+                if (s_char!=Symbols::EMPTY && b_char==Symbols::EMPTY) {
+                    attron(COLOR_PAIR(Color::FULL_BLACK));
+                    mvaddch(offsets.yOff+shape.Y()+j, offsets.xOff+shape.X()+i, ' ');
+                    attroff(COLOR_PAIR(Color::FULL_BLACK));
+                }
+            }
+        }
+    }
+}
+void GameView::ResetUpdated()
+{
+    for (auto& game_offset_pair : gameboards) {
+        Game* game = game_offset_pair.first;
+        BoardOffsets& offsets = game_offset_pair.second;
+        Board& board = game->board;
+        game->ResetOld();
+        board.ResetUpdate();
     }
 }

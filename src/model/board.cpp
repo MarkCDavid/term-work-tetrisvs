@@ -59,6 +59,7 @@ char Board::Get(int x, int y) const {
 }
 
 void Board::Put(int x, int y, char s) {
+    updated = true;
     board[Coordinate(x, y)] = s;
 }
 
@@ -100,11 +101,11 @@ void Board::CascadeSymbols(int row, int offset) {
 }
 
 bool Board::IsUpdated() {
-    if(updated){
-        updated = false;
-        return true;
-    }
-    return false;
+    return updated;
+}
+void Board::ResetUpdate()
+{
+    updated = false;
 }
 
 

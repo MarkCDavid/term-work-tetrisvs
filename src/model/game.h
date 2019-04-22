@@ -18,15 +18,25 @@ class Game {
 public:
     Game(char player_repr);
 
+    bool GetOld();
+
+    void UpdateOld();
+
+    void ResetOld();
+
     void NextShape();
 
     void PutGarbage(int level);
 
     void HoldShape();
 
+    void AddLineClear(int clear);
+
+    bool IsTicked();
+
     bool IncreaseTick();
 
-    void AddLineClear(int clear);
+    void FillTick();
 
     void ResetTick();
 
@@ -37,6 +47,7 @@ public:
     const char player_repr = ' ';
     Board board;
     Shape current_shape;
+    Shape prev_shape;
     Shape repr_shape;
     Shape next_shape;
     Shape hold_shape;
@@ -52,6 +63,7 @@ private:
     Shape GetGarbage();
 
     bool hold_changed = false;
+    bool old_changed = false;
     int cleared = 0;
     float tick = 0.0f;
     const std::vector<std::pair<int, float>> game_speed = {{12, 1.0f}, {25, 0.9f}, {39, 0.8f},

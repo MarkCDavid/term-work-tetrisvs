@@ -12,7 +12,7 @@
 
 class ScoreView : public AbstractView {
 public:
-    ScoreView(char winner, std::map<int, int> l_player_score, std::map<int, int> r_player_score);
+    ScoreView(char winner, char loser, std::map<int, int> l_player_score, std::map<int, int> r_player_score);
 
     void Update() override;
 
@@ -22,6 +22,7 @@ public:
 
 private:
     char winner;
+    char loser;
     std::map<int, int> l_player_score;
     std::map<int, int> r_player_score;
 };

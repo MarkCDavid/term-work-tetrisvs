@@ -30,7 +30,7 @@ void MenuManager::Update()
             auto* left_game = new Game('l');
             auto* right_game = new Game('c');
             auto* left_controller = new PlayerController(ControlScheme(1));
-            auto* right_controller = new ComputerController(new NeuralScoring(), false);
+            auto* right_controller = new ComputerController(10.0f, new NeuralScoring(-0.4f, 0.5f, -0.3f, -0.3f), false);
             auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});
             auto* view = new GameView({left_game, right_game});
             TetrisVS::Instance()->Switch(manager, view);
@@ -41,13 +41,26 @@ void MenuManager::Update()
             auto* left_game = new Game('l');
             auto* right_game = new Game('c');
             auto* left_controller = new PlayerController(ControlScheme(1));
-            auto* right_controller = new ComputerController(new NeuralScoring(), true);
+            auto* right_controller = new ComputerController(5.0f,
+                    new NeuralScoring(-0.510066f, 0.760666f, -0.356630f, -0.184483f), false);
             auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});
             auto* view = new GameView({left_game, right_game});
             TetrisVS::Instance()->Switch(manager, view);
             break;
         }
-        case 3 :TetrisVS::Instance()->StopGame();
+        case 3 : {
+
+            auto* left_game = new Game('l');
+            auto* right_game = new Game('c');
+            auto* left_controller = new PlayerController(ControlScheme(1));
+            auto* right_controller = new ComputerController(10.0f,
+                    new NeuralScoring(-0.510066f, 0.760666f, -0.356630f, -0.184483f), true);
+            auto* manager = new GameManager({{left_game, left_controller}, {right_game, right_controller}});
+            auto* view = new GameView({left_game, right_game});
+            TetrisVS::Instance()->Switch(manager, view);
+            break;
+        }
+        case 4 :TetrisVS::Instance()->StopGame();
             break;
         }
 

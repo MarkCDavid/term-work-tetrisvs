@@ -15,6 +15,7 @@ public:
     void Update(Game* game) override;
 
 private:
+    bool KeyPressed();
     const ControlScheme scheme;
 };
 

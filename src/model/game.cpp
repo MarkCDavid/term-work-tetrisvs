@@ -56,7 +56,7 @@ bool Game::IncreaseTick()
     tick += GameTime::Instance()->DeltaTime();
     if (tick>CurrentTickLength())
         ResetTick();
-    return tick == 0.0f;
+    return IsTicked();
 }
 
 int Game::ClearedLines() {
@@ -85,5 +85,28 @@ Shape Game::GetNextShape() {
 void Game::ResetTick()
 {
     tick = 0.0f;
+}
+void Game::UpdateOld()
+{
+    if (!old_changed) {
+        old_changed = true;
+        prev_shape = current_shape;
+    }
+}
+void Game::ResetOld()
+{
+    old_changed = false;
+}
+void Game::FillTick()
+{
+    tick = CurrentTickLength();
+}
+bool Game::IsTicked()
+{
+    return tick==0.0f;
+}
+bool Game::GetOld()
+{
+    return old_changed;
 }
 

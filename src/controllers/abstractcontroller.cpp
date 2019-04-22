@@ -7,6 +7,7 @@
 void AbstractController::DropShape(Game* game)
 {
     game->current_shape = game->repr_shape;
+    game->FillTick();
 }
 
 void AbstractController::MoveShape(Game* game, Shape::Movement move)

@@ -20,6 +20,7 @@ protected:
     void HoldShape(Game* game);
 
     void TryRevert(Game* game);
+
 };
 
 #endif //TETRISVS_ABSTRACTCONTROLLER_H

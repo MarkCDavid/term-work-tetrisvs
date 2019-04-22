@@ -11,21 +11,26 @@
 
 class ComputerController: public AbstractController {
 public:
-    ComputerController(AbstractScoring* scoring, bool look_ahead);
+    ComputerController(float click_speed, AbstractScoring* scoring, bool look_ahead);
     ~ComputerController();
     void Update(Game* game) override;
 private:
 
     std::vector<Shape> GeneratePermutations(Shape shape);
     bool AlreadyScored(Shape shape);
+    bool ClickTimeSurpassed();
     void Score(Game* game);
     Board PlaceInBoard(Board board, Shape& shape);
     void UpdateBestScore(Shape shape, float score);
+
 
     bool look_ahead = false;
     float best_score;
     AbstractScoring* scoring;
     Shape best_move;
+    float click_speed = 0.0f;
+    float click_time = 0.0f;
+    float click_time_max = 1.0f;
 };
 
 #endif //TETRISVS_COMPUTERCONTROLLER_H

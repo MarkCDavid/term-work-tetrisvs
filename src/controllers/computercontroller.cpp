@@ -3,13 +3,14 @@
 //
 
 #include "computercontroller.h"
-ComputerController::ComputerController(AbstractScoring* scoring, bool look_ahead)
-        :scoring(scoring), look_ahead(look_ahead)
+ComputerController::ComputerController(float click_speed, AbstractScoring* scoring, bool look_ahead)
+        :click_speed(click_speed), scoring(scoring), look_ahead(look_ahead)
 {
 
 }
 void ComputerController::Update(Game* game)
 {
+    game->UpdateOld();
     Score(game);
     int move_delta = game->current_shape.X()-best_move.X();
     int rotation_delta = game->current_shape.GetRot()-best_move.GetRot();
@@ -20,7 +21,7 @@ void ComputerController::Update(Game* game)
     if (move_delta>0) MoveShape(game, Shape::Movement::LEFT);
     if (move_delta<0) MoveShape(game, Shape::Movement::RIGHT);
 
-    if (move_delta==0 && rotation_delta==0) MoveShape(game, Shape::Movement::DOWN);
+    if (move_delta==0 && rotation_delta==0 && ClickTimeSurpassed()) MoveShape(game, Shape::Movement::DOWN);
 
 }
 bool ComputerController::AlreadyScored(Shape shape)
@@ -78,5 +79,14 @@ Board ComputerController::PlaceInBoard(Board board, Shape& shape)
 ComputerController::~ComputerController()
 {
     delete scoring;
+}
+bool ComputerController::ClickTimeSurpassed()
+{
+    click_time += GameTime::Instance()->DeltaTime()*click_speed;
+    if (click_time>click_time_max) {
+        click_time = 0.0f;
+        return true;
+    }
+    return false;
 }
 

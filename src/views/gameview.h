@@ -41,7 +41,11 @@ private:
 
     void DrawBoard();
 
+    void CoverShape();
+
     void DrawShape();
+
+    void CoverShadow();
 
     void DrawShadow();
 
@@ -50,6 +54,9 @@ private:
     void DrawNext();
 
     void DrawScore();
+
+    void ResetUpdated();
+
 };
 
 

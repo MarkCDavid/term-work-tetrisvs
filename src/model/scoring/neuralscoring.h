@@ -12,16 +12,17 @@
 
 class NeuralScoring : public AbstractScoring {
 public:
+    NeuralScoring(float pAggregate, float pLines, float pHoles, float pBumpiness);
     float GetScore(Board &board) const override;
 
 private:
 
     // The source of values for the parameters of these heuristics
     // https://codemyroad.wordpress.com/2013/04/14/tetris-ai-the-near-perfect-player/
-    const float pAggregate = -0.510066f;
-    const float pLines = 0.760666f;
-    const float pHoles = -0.356630f;
-    const float pBumpiness = -0.184483f;
+    const float pAggregate;
+    const float pLines;
+    const float pHoles;
+    const float pBumpiness;
 
     int CompleteLineCount(Board &board) const;
 

@@ -21,6 +21,12 @@ public:
 
     int Y() const;
 
+    int PrevX() const;
+
+    int PrevY() const;
+
+    int PrevRot() const;
+
     void X(int x);
 
     void Y(int y);
@@ -46,6 +52,8 @@ public:
     Shape(const Shape &other);
 
     Shape &operator=(const Shape &other);
+
+    bool operator==(const Shape& rhs);
 
 private:
     int xPos{}, yPos{};

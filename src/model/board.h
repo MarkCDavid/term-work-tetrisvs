@@ -16,6 +16,8 @@ public:
 
     bool IsUpdated();
 
+    void ResetUpdate();
+
     bool IsValidPosition(const Shape &shape) const;
 
     char GetSymbolAt(int x, int y) const;
@@ -41,7 +43,7 @@ private:
 
     void CascadeSymbols(int row, int offset);
 
-    bool updated = false;
+    bool updated = true;
 
     char board[Width * Height]{};
 };

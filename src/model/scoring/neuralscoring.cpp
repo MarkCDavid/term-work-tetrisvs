@@ -67,4 +67,9 @@ std::vector<int> NeuralScoring::CalculateHeights(Board &board) const {
             }
     return heights;
 }
+NeuralScoring::NeuralScoring(float pAggregate, float pLines, float pHoles, float pBumpiness)
+        :pAggregate(pAggregate), pLines(pLines), pHoles(pHoles), pBumpiness(pBumpiness)
+{
+
+}
 
