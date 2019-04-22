@@ -5,6 +5,7 @@
 #ifndef TERM_WORK_TETRISVS_TETRISVS_H
 #define TERM_WORK_TETRISVS_TETRISVS_H
 
+#include "lib/curses.h"
 #include "src/color.h"
 #include "src/views/abstractview.h"
 #include "src/managers/abstractmanager.h"

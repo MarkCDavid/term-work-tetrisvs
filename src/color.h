@@ -4,7 +4,7 @@
 #ifndef TETRISVS_COLOR_H
 #define TETRISVS_COLOR_H
 
-#include <ncurses.h>
+#include "../lib/curses.h"
 
 
 enum Color {
