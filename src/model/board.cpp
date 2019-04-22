@@ -99,4 +99,12 @@ void Board::CascadeSymbols(int row, int offset) {
     }
 }
 
+bool Board::IsUpdated() {
+    if(updated){
+        updated = false;
+        return true;
+    }
+    return false;
+}
+
 
