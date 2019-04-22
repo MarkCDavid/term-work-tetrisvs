@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(TetrisVS)
 set(CMAKE_CXX_STANDARD 17)
+set(EXECUTABLE_OUTPUT_PATH "../build")
 
 if (WIN32)
     include_directories(lib/tge)
