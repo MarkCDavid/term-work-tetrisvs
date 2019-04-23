@@ -2,7 +2,12 @@
 // Created by Mark David on 26/03/2019.
 //
 
-#include "ncurses.h"
+#ifdef _WIN32
+#include "../lib/curses.h"
+#endif
+#ifdef __linux__
+#include <ncurses.h>
+#endif
 #include "gameview.h"
 #include "scoreview.h"
 #include "../color.h"
