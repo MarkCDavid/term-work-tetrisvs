@@ -5,7 +5,12 @@
 #ifndef TETRISVS_KEYBOARD_H
 #define TETRISVS_KEYBOARD_H
 
+#ifdef _WIN32
+#include "../lib/curses.h"
+#endif
+#ifdef __linux__
 #include <ncurses.h>
+#endif
 #include <set>
 
 class Keyboard {
