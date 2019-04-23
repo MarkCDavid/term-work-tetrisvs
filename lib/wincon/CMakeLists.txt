@@ -1,0 +1,7 @@
+if (WIN32)
+    project(wincon)
+    cmake_minimum_required(VERSION 2.8.9)
+    set(CMAKE_CXX_STANDARD 17)
+    include_directories(../)
+    add_library(wincon STATIC pdcclip.c pdcdisp.c pdcgetsc.c pdckbd.c pdcscrn.c pdcsetsc.c pdcutil.c pdcwin.h)
+endif (WIN32)
